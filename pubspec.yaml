@@ -1,4 +1,4 @@
-name: firstflutter
+name: toto
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -14,20 +14,21 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.2.0
-  google_fonts_arabic: ^0.0.5
-     # git: git://github.com/emadomedher/google-fonts-arabic.git
-    #  version: ^0.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
-  uses-material-design: true
   fonts:
     - family: ElMessiri
       fonts:
+        - asset: fonts/ElMessiri/ElMessiri-Bold.ttf
+        - asset: fonts/ElMessiri/ElMessiri-Medium.ttf
+        - asset: fonts/ElMessiri/ElMessiri-Regular.ttf
+        - asset: fonts/ElMessiri/ElMessiri-SemiBold.ttf
+
+  uses-material-design: true
+
   assets:
-    - assets/fonts/ElMessiri-VariableFont_wght.ttf
     - assets/images/housebg.png

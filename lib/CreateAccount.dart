@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
-
 class CreateAccount extends StatefulWidget {
   @override
   _CreateAccountState createState() => _CreateAccountState();
@@ -260,7 +258,28 @@ class _CreateAccountState extends State<CreateAccount> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                   ),
-                  Container(
+                  ElevatedButton(
+                    onPressed: createAccount,
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(280, 40),
+                        backgroundColor: Color(0xFFA03C1B),
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        )),
+                    child: Text(
+                      "تسجيل ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "ElMessiri",
+                          fontSize: 22.0,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  /* Container(
                     //------------------------مربع التسجيل----------------------
                     width: 280.0,
                     height: 40.0,
@@ -281,7 +300,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -290,4 +309,6 @@ class _CreateAccountState extends State<CreateAccount> {
       ),
     );
   }
+
+  void createAccount() {}
 }
