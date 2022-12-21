@@ -44,6 +44,23 @@ class _CreateAccountState extends State<CreateAccount> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      //style: ButtonStyle(alignment: Alignment.centerLeft),
+                      child: Text(
+                        "رجوع",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "ElMessiri",
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 0, 0, 0)),
+                      ),
+                    ),
+                  ),
                   Text(
                     "تسجيل حساب جديد",
                     style: TextStyle(
