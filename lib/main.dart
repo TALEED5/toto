@@ -148,7 +148,7 @@ class _MyAppState extends State<MyApp> {
                 Container(
                   alignment: Alignment.topLeft,
                   width: 280,
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -156,11 +156,11 @@ class _MyAppState extends State<MyApp> {
                             builder: (context) => forgetpass(),
                           ));
                     },
-                    style: ElevatedButton.styleFrom(
+                    style: ButtonStyle(
                       //fixedSize: Size(115, 8),
                       alignment: Alignment.topLeft,
-                      backgroundColor: Colors.transparent,
-                      elevation: 0.0,
+                      // backgroundColor: Colors.transparent,
+                      // elevation: 0.0,
                       /* shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(30),
@@ -205,8 +205,9 @@ class _MyAppState extends State<MyApp> {
                 //----------------------dont have account---------------
                 Container(
                     // alignment: Alignment.centerRight,
-                    child: Row(children: [
-                  ElevatedButton(
+                    child: Center(
+                        child: Row(children: [
+                  TextButton(
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -214,11 +215,11 @@ class _MyAppState extends State<MyApp> {
                             builder: (context) => CreateAccount(),
                           ));
                     },
-                    style: ElevatedButton.styleFrom(
+                    style: ButtonStyle(
                       //fixedSize: Size(20, 15),
-                      //alignment: Alignment.centerLeft,
-                      backgroundColor: Colors.transparent,
-                      elevation: 0.0,
+                      alignment: Alignment.center,
+                      // backgroundColor: Colors.transparent,
+                      // elevation: 0.0,
                       /* shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(30),
@@ -243,7 +244,7 @@ class _MyAppState extends State<MyApp> {
                         color: Color.fromARGB(255, 0, 0, 0)),
                     //textAlign: TextAlign.right,
                   ),
-                ])),
+                ]))),
               ],
             ),
           ),

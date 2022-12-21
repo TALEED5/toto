@@ -23,10 +23,10 @@ flutter:
   fonts:
     - family: ElMessiri
       fonts:
-        - asset: fonts/ElMessiri/ElMessiri-Bold.ttf
-        - asset: fonts/ElMessiri/ElMessiri-Medium.ttf
-        - asset: fonts/ElMessiri/ElMessiri-Regular.ttf
-        - asset: fonts/ElMessiri/ElMessiri-SemiBold.ttf
+        - asset: assets/fonts/ElMessiri/ElMessiri-Bold.ttf
+        - asset: assets/fonts/ElMessiri/ElMessiri-Medium.ttf
+        - asset: assets/fonts/ElMessiri/ElMessiri-Regular.ttf
+        - asset: assets/fonts/ElMessiri/ElMessiri-SemiBold.ttf
 
   uses-material-design: true
 
