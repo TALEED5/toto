@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
-
+/////////////////////////////////////////////////laaaaaaaaassst
   @override
   void initState() {
     dateinput.text = ""; //set the initial value of text field
@@ -54,7 +54,6 @@ class _MyAppState extends State<MyApp> {
                       color: Color.fromARGB(255, 29, 22, 13),
                       fontWeight: FontWeight.bold,
                       fontFamily: "ElMessiri",
-
                     ),
                   ),
                   Padding(
