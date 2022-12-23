@@ -22,6 +22,23 @@ class _forgetpassState extends State<forgetpass> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      //style: ButtonStyle(alignment: Alignment.centerLeft),
+                      child: Text(
+                        "رجوع",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "ElMessiri",
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 0, 0, 0)),
+                      ),
+                    ),
+                  ),
                   Text(
                     "  نسيت كلمة المرور",
                     style: TextStyle(
@@ -103,10 +120,12 @@ class _forgetpassState extends State<forgetpass> {
       ),
     );
   }
-Widget Space(double px) {
+
+  Widget Space(double px) {
     return SizedBox(
       height: px,
     );
   }
+
   void forgetPass() {}
 }
