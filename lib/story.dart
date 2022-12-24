@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Story {
   late String title;
   //location loc;
@@ -6,6 +8,12 @@ class Story {
   late int like;
   late DateTime date;
   late String writer;
+
+  Story(
+      {required this.title,
+      required this.discreption,
+      required this.date,
+      required this.writer});
 
   void likeStory() {}
   void locateOrigin() {}

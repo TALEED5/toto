@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 // no thing new again
+import 'package:toto/home.dart';
+
 import './forgetpassword.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
+import './home.dart';
 
 //just a comment to test github
 //import './forgetpassword.dart';
@@ -167,7 +170,13 @@ class _MyAppState extends State<MyApp> {
                 ),
                 //-------------------------------------the button--------------------
                 ElevatedButton(
-                  onPressed: login,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => home(),
+                        ));
+                  },
                   style: ElevatedButton.styleFrom(
                       fixedSize: Size(280, 40),
                       backgroundColor: Color(0xFFA03C1B),
