@@ -65,7 +65,9 @@ class _MyAppState extends State<MyApp> {
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       fontFamily: "ElMessiri",
-
+                      fontSize: 16.0,
+                      color: Color.fromARGB(255, 34, 75, 12),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -95,6 +97,20 @@ class _MyAppState extends State<MyApp> {
                 ),
                 SizedBox(
                   height: 25.0,
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                  child: Text(
+                    "كلمة المرور",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontFamily: "ElMessiri",
+                      fontSize: 16.0,
+                      color: Color.fromARGB(255, 34, 75, 12),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 Container(
                   height: 50.0,
