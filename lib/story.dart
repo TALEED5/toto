@@ -13,7 +13,8 @@ class Story {
       {required this.title,
       required this.discreption,
       required this.date,
-      required this.writer});
+      required this.writer,
+      required this.like});
 
   void likeStory() {}
   void locateOrigin() {}
