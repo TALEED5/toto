@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
-
+/////////////////////////////////////////////////laaaaaaaaassst
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +65,7 @@ class _MyAppState extends State<MyApp> {
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       fontFamily: "ElMessiri",
-                      fontSize: 21.0,
-                      color: Color.fromARGB(255, 34, 75, 12),
-                      fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ),
