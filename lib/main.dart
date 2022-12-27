@@ -27,14 +27,26 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
+//////////////ray is here 
 class _MyAppState extends State<MyApp> {
   bool obscure_text = true;
   Icon iconfirst = Icon(
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
+<<<<<<< HEAD
 /////////////////////////////////////////////////laaaaaaaaassst
+=======
+
+  /////////////////////last 
+
+  @override
+  void initState() {
+    dateinput.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
+>>>>>>> ee40fff769cfa117cd076738ec0af3bcd4f73d40
   @override
   Widget build(BuildContext context) {
     return Scaffold(
