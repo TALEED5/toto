@@ -24,19 +24,11 @@ class _forgetpassState extends State<forgetpass> {
                 children: [
                   Container(
                     alignment: Alignment.topLeft,
-                    child: TextButton(
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      //style: ButtonStyle(alignment: Alignment.centerLeft),
-                      child: Text(
-                        "رجوع",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "ElMessiri",
-                            fontSize: 16.0,
-                            color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
                     ),
                   ),
                   Text(
