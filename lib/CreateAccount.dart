@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -10,25 +8,16 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   bool obscure_text = true;
-  TextEditingController dateinput = TextEditingController();
+
   Icon iconfirst = Icon(
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
 
   @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        //backgroundColor: Color.fromARGB(33, 0, 0, 0),
-        //Color.fromARGB(255, 255, 253, 244),
-        //backgroundColor: Color.fromARGB(255, 146, 130, 63),
         body:
             //SafeArea(
             Container(
@@ -44,10 +33,19 @@ class _CreateAccountState extends State<CreateAccount> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                   Text(
                     "تسجيل حساب جديد",
                     style: TextStyle(
-                        fontSize: 37.0,
+                        fontSize: 33.0,
                         color: Color.fromARGB(255, 29, 22, 13),
                         fontWeight: FontWeight.bold,
                         fontFamily: "ElMessiri"),
@@ -56,10 +54,26 @@ class _CreateAccountState extends State<CreateAccount> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 45, 0, 0),
                   ),
+
                   //------------------------------الاسم---------------------------------------
                   SizedBox(
-                    height: 15.0,
+                    height: 3.0,
                   ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                    child: Text(
+                      "الاسم",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 34, 75, 12),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
                   Container(
                     //مربع الاسم
                     height: 50.0,
@@ -86,70 +100,65 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                   ),
                   //------------------------
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  SizedBox(
+                    height: 9.0,
                   ),
                   Container(
-                    //SizedBox(
-                    //      height: 15.0,
-                    //   ),
-                    //  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                    child: Text(
+                      "العمر",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 34, 75, 12),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
                     height: 50.0,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
                     ),
-
                     margin:
                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
                     child: TextField(
-                      controller:
-                          dateinput, //editing controller of this TextField
                       textAlign: TextAlign.right,
-                      //cursorColor: Color(0xFF90B28D),
+                      cursorColor: Color(0xFF90B28D),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         suffixIcon: Icon(
-                          Icons.calendar_today,
+                          Icons.calendar_month,
                           color: Color(0xFF90B28D),
                         ),
-                        hintText: "تاريخ الميلاد",
+                        hintText: "العمر",
                         hintStyle: TextStyle(
                           color: Color(0xFF909A99),
-                        ), //label text of field
+                        ),
                       ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(
-                                2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101));
-
-                        if (pickedDate != null) {
-                          print(
-                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2021-03-16
-                          //you can implement different kind of Date Format here according to your requirement
-
-                          setState(() {
-                            dateinput.text =
-                                formattedDate; //set output date to TextField value.
-                          });
-                        } else {
-                          print("Date is not selected");
-                        }
-                      },
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   //--------------------اسم المستخدم-----------------------------
                   SizedBox(
                     height: 15.0,
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                    child: Text(
+                      "اسم المستخدم",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 34, 75, 12),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Container(
                     height: 50.0,
@@ -179,6 +188,20 @@ class _CreateAccountState extends State<CreateAccount> {
                     height: 15.0,
                   ),
                   Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                    child: Text(
+                      "رقم الجوال",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 34, 75, 12),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
                     height: 50.0,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -206,6 +229,20 @@ class _CreateAccountState extends State<CreateAccount> {
                   //-------------------------------كلمة المرور------------------------------
                   SizedBox(
                     height: 15.0,
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                    child: Text(
+                      "كلمة المرور",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 34, 75, 12),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Container(
                     height: 50.0,
@@ -256,7 +293,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   ),
                   ElevatedButton(
                     onPressed: createAccount,
@@ -279,28 +316,44 @@ class _CreateAccountState extends State<CreateAccount> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  /* Container(
-                    //------------------------مربع التسجيل----------------------
-                    width: 280.0,
-                    height: 40.0,
-
-                    decoration: BoxDecoration(
-                      color: Color(0xFFA03C1B),
-                      borderRadius: BorderRadius.circular(30),
+                  //////////////////////////////////////// have an account
+                  Container(
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CreateAccount(),
+                                  ));
+                            },
+                            style: ButtonStyle(
+                              alignment: Alignment.center,
+                            ),
+                            child: Text(
+                              "تسجيل دخول",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "ElMessiri",
+                                  fontSize: 16.0,
+                                  color: Color.fromARGB(255, 0, 0, 0)),
+                            ),
+                          ),
+                          Text(
+                            "لديك حساب؟",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "ElMessiri",
+                                fontSize: 16.0,
+                                color: Color.fromARGB(255, 0, 0, 0)),
+                          ),
+                        ],
+                      ),
                     ),
-
-                    margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: Text(
-                      "تسجيل",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "ElMessiri",
-                          fontSize: 22.0,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),*/
+                  ),
                 ],
               ),
             ),

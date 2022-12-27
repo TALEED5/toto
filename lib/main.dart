@@ -1,12 +1,23 @@
 // ignore_for_file: prefer_const_constructors
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
+=======
+// no thing new again
+import 'package:toto/home.dart';
+
+>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 import './forgetpassword.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-//import 'package:google_fonts_arabic/fonts.dart';
+
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
+<<<<<<< HEAD
 // tttte
+=======
+import './home.dart';
+
+//just a comment to test github
+>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 //import './forgetpassword.dart';
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -19,18 +30,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool obscure_text = true;
-  TextEditingController dateinput = TextEditingController();
   Icon iconfirst = Icon(
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
-
-  @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    super.initState();
-  }
-
+/////////////////////////////////////////////////laaaaaaaaassst
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       fontFamily: "ElMessiri",
-                      fontSize: 21.0,
+                      fontSize: 16.0,
                       color: Color.fromARGB(255, 34, 75, 12),
                       fontWeight: FontWeight.bold,
                     ),
@@ -101,6 +105,20 @@ class _MyAppState extends State<MyApp> {
                 ),
                 SizedBox(
                   height: 25.0,
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
+                  child: Text(
+                    "كلمة المرور",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontFamily: "ElMessiri",
+                      fontSize: 16.0,
+                      color: Color.fromARGB(255, 34, 75, 12),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 Container(
                   height: 50.0,
@@ -157,15 +175,7 @@ class _MyAppState extends State<MyApp> {
                           ));
                     },
                     style: ButtonStyle(
-                      //fixedSize: Size(115, 8),
                       alignment: Alignment.topLeft,
-                      // backgroundColor: Colors.transparent,
-                      // elevation: 0.0,
-                      /* shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        )*/
                     ),
                     child: Text(
                       " نسيت كلمة المرور",
@@ -182,7 +192,13 @@ class _MyAppState extends State<MyApp> {
                 ),
                 //-------------------------------------the button--------------------
                 ElevatedButton(
-                  onPressed: login,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => home(),
+                        ));
+                  },
                   style: ElevatedButton.styleFrom(
                       fixedSize: Size(280, 40),
                       backgroundColor: Color(0xFFA03C1B),
@@ -204,47 +220,39 @@ class _MyAppState extends State<MyApp> {
                 ),
                 //----------------------dont have account---------------
                 Container(
-                    // alignment: Alignment.centerRight,
                     child: Center(
-                        child: Row(children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CreateAccount(),
-                          ));
-                    },
-                    style: ButtonStyle(
-                      //fixedSize: Size(20, 15),
-                      alignment: Alignment.center,
-                      // backgroundColor: Colors.transparent,
-                      // elevation: 0.0,
-                      /* shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        )*/
-                    ),
-                    child: Text(
-                      "تسجيل جديد",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "ElMessiri",
-                          fontSize: 16.0,
-                          color: Color.fromARGB(255, 0, 0, 0)),
-                    ),
-                  ),
-                  Text(
-                    "ليس لديك حساب؟",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "ElMessiri",
-                        fontSize: 16.0,
-                        color: Color.fromARGB(255, 0, 0, 0)),
-                    //textAlign: TextAlign.right,
-                  ),
-                ]))),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreateAccount(),
+                              ));
+                        },
+                        style: ButtonStyle(
+                          alignment: Alignment.center,
+                        ),
+                        child: Text(
+                          "تسجيل جديد",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "ElMessiri",
+                              fontSize: 16.0,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ),
+                      Text(
+                        "ليس لديك حساب؟",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "ElMessiri",
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 0, 0, 0)),
+                      ),
+                    ]))),
               ],
             ),
           ),

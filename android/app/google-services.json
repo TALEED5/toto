@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "946888657458",
+    "project_id": "taleed-e9e83",
+    "storage_bucket": "taleed-e9e83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946888657458:android:db0f4decb2f52d327bca2b",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjU713bVwpVuTvqCaWiPM2jjVNnMa-Jys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946888657458:android:f021e3b386c879937bca2b",
+        "android_client_info": {
+          "package_name": "com.example.tedtdb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjU713bVwpVuTvqCaWiPM2jjVNnMa-Jys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946888657458:android:4b3f6bb707be243e7bca2b",
+        "android_client_info": {
+          "package_name": "com.example.toto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjU713bVwpVuTvqCaWiPM2jjVNnMa-Jys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946888657458-bvaujalnbi2hldt6nsjs3sbg8ttkciv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
