@@ -1,15 +1,23 @@
 // ignore_for_file: prefer_const_constructors
+<<<<<<< HEAD
+import 'package:flutter/material.dart';
+=======
 // no thing new again
 import 'package:toto/home.dart';
 
+>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 import './forgetpassword.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
+<<<<<<< HEAD
+// tttte
+=======
 import './home.dart';
 
 //just a comment to test github
+>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 //import './forgetpassword.dart';
 void main() {
   runApp(MaterialApp(
@@ -17,19 +25,31 @@ void main() {
     debugShowCheckedModeBanner: false,
   ));
 }
-
+///hi my rty
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
+//////////////ray is here 
 class _MyAppState extends State<MyApp> {
   bool obscure_text = true;
   Icon iconfirst = Icon(
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
+<<<<<<< HEAD
 /////////////////////////////////////////////////laaaaaaaaassst
+=======
+
+  /////////////////////last 
+
+  @override
+  void initState() {
+    dateinput.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
+>>>>>>> ee40fff769cfa117cd076738ec0af3bcd4f73d40
   @override
   Widget build(BuildContext context) {
     return Scaffold(
