@@ -33,7 +33,7 @@ class _CreateAccountState extends State<CreateAccount> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  /*Container(
                     alignment: Alignment.topLeft,
                     child: IconButton(
                       icon: Icon(Icons.arrow_back),
@@ -41,7 +41,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         Navigator.pop(context);
                       },
                     ),
-                  ),
+                  ),*/
                   Text(
                     "تسجيل حساب جديد",
                     style: TextStyle(
@@ -324,11 +324,9 @@ class _CreateAccountState extends State<CreateAccount> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CreateAccount(),
-                                  ));
+                              Navigator.pop(
+                                context,
+                              );
                             },
                             style: ButtonStyle(
                               alignment: Alignment.center,
