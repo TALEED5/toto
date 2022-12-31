@@ -4,13 +4,18 @@ import 'package:flutter/material.dart';
 import 'storyInfo.dart';
 
 class writeStory1 extends StatefulWidget {
+  final Function fun;
+  const writeStory1({required this.fun});
   @override
-  _writeStory1 createState() => _writeStory1();
+  _writeStory1 createState() => _writeStory1(func: fun);
 }
 
 class _writeStory1 extends State<writeStory1> {
+  _writeStory1({required this.func});
+  final Function func;
   final storyController = TextEditingController();
   bool btnActive = false;
+  //late String sconinput;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class _writeStory1 extends State<writeStory1> {
       floatingActionButtonLocation: FloatingActionButtonLocation
           .endDocked, /////howwwwww to minimize the button and put it on the right!!!
 
-      //--------------app bar--------------------------------------------------------------
+      //------------------app bar----------------------------------------------
       appBar: AppBar(
         backgroundColor: const Color(0xff5F7858),
         title: const Text(
@@ -157,14 +162,12 @@ class _writeStory1 extends State<writeStory1> {
     //navigate to story information page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const StoryInfo()),
+      MaterialPageRoute(
+          builder: (context) => StoryInfo(
+                scontent: storyController.text,
+                funct: func,
+              )),
     );
   } //infopage method
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    storyController.dispose();
-    super.dispose();
-  }
 }

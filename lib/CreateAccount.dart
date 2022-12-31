@@ -16,13 +16,15 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       home: Scaffold(
         body:
             //SafeArea(
             Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
+          //padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/images/housebg.png'),
@@ -42,6 +44,10 @@ class _CreateAccountState extends State<CreateAccount> {
                       },
                     ),
                   ),*/
+                  SizedBox(
+                    height: height * .08,
+                  ),
+
                   Text(
                     "تسجيل حساب جديد",
                     style: TextStyle(
