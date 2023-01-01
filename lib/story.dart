@@ -3,7 +3,7 @@
 class Story {
   late String title;
   //location loc;
-  late List<String> comments;
+  late List<String> comments = ['wow', 'amazing'];
   late String discreption;
   late int like = 9;
   late DateTime date;
@@ -17,7 +17,14 @@ class Story {
       required this.writer,
       required this.content});
 
-  void likeStory() {}
+  void likeStory() {
+    like++;
+  }
+
+  void removeLike() {
+    like--;
+  }
+
   void locateOrigin() {}
   void readStory() {}
   void viewLoc() {}

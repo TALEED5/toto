@@ -53,7 +53,6 @@ class _StoryInfo extends State<StoryInfo> {
         _selectedDate = pickedDate;
       });
     });
-    print('...');
   }
 
   @override

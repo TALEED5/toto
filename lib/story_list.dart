@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './readStory.dart';
 import './story.dart';
 
 class StoryList extends StatelessWidget {
@@ -28,8 +29,8 @@ class StoryList extends StatelessWidget {
                       IconButton(
                         alignment: Alignment.centerLeft,
                         onPressed: null,
-                        disabledColor:
-                            Colors.grey[600], //عجبني لكن مدري كيف استخدمه
+                        // disabledColor:
+                        //     Colors.grey[600], //عجبني لكن مدري كيف استخدمه
                         icon: Icon(Icons.api_rounded,
                             color: Color.fromARGB(255, 184, 178, 110)),
                       ),
@@ -96,17 +97,27 @@ class StoryList extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.arrow_back_rounded,
-                          color: Color.fromRGBO(154, 61, 33, 1),
-                        ),
-                        Text(
-                          "المزيد",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "ElMessiri",
+                        TextButton.icon(
+                          icon: Icon(
+                            Icons.arrow_back_rounded,
                             color: Color.fromRGBO(154, 61, 33, 1),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ReadStory(stories[index]),
+                                ));
+                          },
+                          label: Text(
+                            "المزيد",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "ElMessiri",
+                              color: Color.fromRGBO(154, 61, 33, 1),
+                            ),
                           ),
                         )
                       ],
