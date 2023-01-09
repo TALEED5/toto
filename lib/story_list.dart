@@ -92,12 +92,16 @@ class StoryList extends StatelessWidget {
                   ),
                 ),
                 //-------------------------------icons---------------------
-                Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        TextButton.icon(
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: TextButton.icon(
                           icon: Icon(
                             Icons.arrow_back_rounded,
                             color: Color.fromRGBO(154, 61, 33, 1),
@@ -119,50 +123,51 @@ class StoryList extends StatelessWidget {
                               color: Color.fromRGBO(154, 61, 33, 1),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    IntrinsicHeight(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(stories[index].like.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Icon(
-                              Icons.favorite_rounded,
-                              color: Color.fromRGBO(154, 61, 33, 1),
-                            ),
-                            VerticalDivider(
-                              color: Color.fromRGBO(231, 226, 214, 1),
-                            ),
-                            Icon(
-                              Icons.align_vertical_bottom_rounded,
-                              color: Color.fromRGBO(154, 61, 33, 1),
-                            ),
-                            VerticalDivider(
-                              color: Color.fromRGBO(231, 226, 214, 1),
-                            ),
-                            Text(
-                              DateFormat.yMMMd().format(stories[index].date),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Icon(
-                              Icons.calendar_month_outlined,
-                              color: Color.fromRGBO(95, 120, 88, 1),
-                            ),
-                            VerticalDivider(
-                              color: Color.fromRGBO(231, 226, 214, 1),
-                            ),
-                            // Text(st.loc),
-                            Icon(
-                              Icons.location_on_outlined,
-                              color: Color.fromRGBO(154, 61, 33, 1),
-                            ),
-                          ]),
-                    )
-                  ],
+                        ),
+                      ),
+                      IntrinsicHeight(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(stories[index].like.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Icon(
+                                Icons.favorite_rounded,
+                                color: Color.fromRGBO(154, 61, 33, 1),
+                              ),
+                              VerticalDivider(
+                                color: Color.fromRGBO(231, 226, 214, 1),
+                              ),
+                              Icon(
+                                Icons.align_vertical_bottom_rounded,
+                                color: Color.fromRGBO(154, 61, 33, 1),
+                              ),
+                              VerticalDivider(
+                                color: Color.fromRGBO(231, 226, 214, 1),
+                              ),
+                              Text(
+                                DateFormat.yMMMd().format(stories[index].date),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.calendar_month_outlined,
+                                color: Color.fromRGBO(95, 120, 88, 1),
+                              ),
+                              VerticalDivider(
+                                color: Color.fromRGBO(231, 226, 214, 1),
+                              ),
+                              // Text(st.loc),
+                              IconButton(
+                                icon: Icon(Icons.location_on_outlined),
+                                onPressed: () {},
+                                color: Color.fromRGBO(154, 61, 33, 1),
+                              ),
+                            ]),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),

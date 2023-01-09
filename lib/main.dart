@@ -22,10 +22,6 @@ class _MyAppState extends State<MyApp> {
     Icons.visibility_off,
     color: Color.fromARGB(255, 255, 255, 255),
   );
-  // void initState() {
-  //   dateinput.text = ""; //set the initial value of text field
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
