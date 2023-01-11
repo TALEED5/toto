@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './story.dart';
 import './writerWriteStory.dart';
 import './story_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class home extends StatefulWidget {
   @override
@@ -27,25 +29,6 @@ class _home extends State<home> {
         // like: 5
         ),
   ];
-
-  void _addStory(String title, String disc, DateTime dd, String content) {
-    final newStory = Story(
-        title: title,
-        discreption: disc,
-        date: dd,
-        writer: "the writer username",
-        content: content);
-
-    setState(() {
-      _stories.add(newStory);
-    });
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => home(),
-        ));
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import './story.dart';
 import './writerWriteStory.dart';
@@ -28,7 +29,7 @@ class _Writerhome extends State<writerHome> {
         ),
   ];
 
-  void _addStory(String title, String disc, DateTime dd, String content) {
+  void _addStory(String title, String disc, DateTime dd, String content) async {
     final newStory = Story(
         title: title,
         discreption: disc,
@@ -36,9 +37,20 @@ class _Writerhome extends State<writerHome> {
         writer: "the writer username",
         content: content);
 
-    setState(() {
-      _stories.add(newStory);
+    await FirebaseFirestore.instance
+        .collection("stories")
+        .doc(/*user?.uid*/)
+        .set({
+      // 'userID': user?.uid,
+      // 'username': user?.uname,
+      'title': title,
+      'discreption': disc,
+      'date': dd,
     });
+
+    // setState(() {
+    //   _stories.add(newStory);
+    // });
 
     Navigator.push(
         context,
@@ -50,32 +62,7 @@ class _Writerhome extends State<writerHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xffE7E2D6),
-          elevation: 0,
-          title: Text(
-            "قصصي",
-            style: TextStyle(
-                color: Color.fromRGBO(86, 63, 2, 1),
-                fontFamily: "ElMessiri",
-                fontSize: 24,
-                fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(right: 20),
-              icon: Icon(Icons.arrow_forward),
-              iconSize: 30,
-              onPressed: (() {
-                Navigator.pop(context);
-              }),
-              color: Color.fromRGBO(67, 60, 49, 1),
-            ),
-          ],
-        ),
+
         //---------------------add story button-------------------------
         floatingActionButton: FloatingActionButton(
           child: Icon(

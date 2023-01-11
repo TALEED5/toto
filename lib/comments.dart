@@ -10,7 +10,7 @@ class comments extends StatefulWidget {
 }
 
 class _commentsState extends State<comments> {
-  bool cont = false;
+  bool contentEmpty = true;
   String comment = '';
   final formKey = GlobalKey<FormState>();
 
@@ -27,6 +27,8 @@ class _commentsState extends State<comments> {
     final commentController = TextEditingController();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       ///----------------------------navigation bar-----------------
       // bottomNavigationBar: Container(
       //   height: height * .09,
@@ -208,11 +210,12 @@ class _commentsState extends State<comments> {
             title: TextFormField(
               controller: commentController,
               decoration: InputDecoration(hintText: "إضافة تعليق..."),
+              validator: (value) {
+                if (value!=null&&value.isNotEmpty) contentEmpty = false;
+              },
             ),
             trailing: ElevatedButton(
-              onPressed: () {
-                // final isValid = formKey.currentState.validate();
-              },
+              onPressed: contentEmpty ? null : (() => addComment()),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(193, 115, 89, 1),
                   disabledBackgroundColor: Colors.grey),

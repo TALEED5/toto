@@ -1,14 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './forgetpassword.dart';
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
 import './home.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: MyApp(),
-    debugShowCheckedModeBanner: false,
-  ));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MediaQuery(
+      data: new MediaQueryData(),
+      child: new MaterialApp(
+        home: MyApp(),
+        debugShowCheckedModeBanner: false,
+      )));
 }
 
 class MyApp extends StatefulWidget {
