@@ -2,10 +2,12 @@
 
 //import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/writerHome.dart';
 import './home.dart';
 import 'dart:ui' as ui;
 import './story.dart';
 import './writerWriteStory.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoryInfo extends StatefulWidget {
   final String scontent;
@@ -78,7 +80,15 @@ class _StoryInfo extends State<StoryInfo> {
             )),
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.clear), color: Colors.white)
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => writerHome(),
+                    ));
+              },
+              icon: Icon(Icons.clear),
+              color: Colors.white)
         ],
       ),
 
@@ -346,17 +356,28 @@ class _StoryInfo extends State<StoryInfo> {
     Navigator.pop(context);
   }
 
-  void publishStory() {
-    final enteredTitle = titleController.text;
-    final entereddiscreprion = discreptionController.text;
+  void publishStory() async {
+    // final enteredTitle = titleController.text;
+    // final entereddiscreprion = discreptionController.text;
     //final entered = dateinput.DateTime ;
-
-    widget.funct(
-      title: enteredTitle,
-      discreption: entereddiscreprion,
-      date: _selectedDate,
-      content: scontent,
-    );
+    await FirebaseFirestore.instance.collection("Stories").add({
+      "Title": titleController.text,
+      "Discreption": discreptionController.text,
+      "Date": _selectedDate,
+      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
+      "Like": 0,
+      "Content": scontent
+    }).then((_) {
+      print("collection created");
+    }).catchError((_) {
+      print("an error occured");
+    });
+    // widget.funct(
+    //   title: enteredTitle,
+    //   discreption: entereddiscreprion,
+    //   date: _selectedDate,
+    //   content: scontent,
+    // );
 
     Navigator.push(
         context,
