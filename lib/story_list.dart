@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +17,8 @@ class StoryList extends StatelessWidget {
         body: StreamBuilder<QuerySnapshot>(
             stream: storyRef.snapshots(),
             builder: (context, AsyncSnapshot snapshot) {
+              Future<List<DocumentSnapshot>> documents =
+                  getStoriesFromFirebase();
               if (snapshot.hasError) {
                 return Text('Something went wrong');
               } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -195,7 +195,8 @@ class StoryList extends StatelessWidget {
                 //final docs = snapshot.data!.docs;
                 return snapshot.hasData
                     ? ListView.builder(
-                        itemCount: snapshot.data.documents.length,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
                         itemBuilder: (ctx, index) {
                           // children: snapshot.data.document.map[(document) {
                           return Card(
@@ -230,8 +231,7 @@ class StoryList extends StatelessWidget {
                                         //margin: EdgeInsets.only(left: 200),
                                         padding: EdgeInsets.only(right: 7),
                                         child: Text(
-                                          snapshot.data.documents[index]
-                                              ['Writer'],
+                                          snapshot.data.docs[index]['Writer'],
                                           style: TextStyle(
                                             color: Color.fromRGBO(86, 63, 2, 1),
                                             fontFamily: "ElMessiri",
@@ -268,7 +268,7 @@ class StoryList extends StatelessWidget {
                                     children: <Widget>[
                                       //--------------------------title--------------------
                                       Text(
-                                        snapshot.data.documents['Title'],
+                                        snapshot.data.docs['Title'],
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -277,7 +277,7 @@ class StoryList extends StatelessWidget {
                                       ),
                                       //---------------------------discreption-------------
                                       Text(
-                                        snapshot.data.documents['Discreption'],
+                                        snapshot.data.docs['Discreption'],
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -318,7 +318,7 @@ class StoryList extends StatelessWidget {
                                               MainAxisAlignment.end,
                                           children: [
                                             Text(
-                                                snapshot.data.documents['Like']
+                                                snapshot.data.docs['Like']
                                                     .toString(),
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -347,8 +347,8 @@ class StoryList extends StatelessWidget {
                                               //endIndent: 15,
                                             ),
                                             Text(
-                                              DateFormat.yMMMd().format(snapshot
-                                                  .data.documents['Date']),
+                                              DateFormat.yMMMd().format(
+                                                  snapshot.data.docs['Date']),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -380,5 +380,17 @@ class StoryList extends StatelessWidget {
                     : Center(child: CircularProgressIndicator());
               }
             }));
+  }
+
+  Future<List<DocumentSnapshot>> getStoriesFromFirebase() async {
+    final QuerySnapshot result = await storyRef.get();
+    final List<DocumentSnapshot> documents = result.docs;
+    print(documents);
+    // List<String> myList = [];
+    // for (var snapshot in documents) {
+    //   myList.add(snapshot.get("Title"));
+    //   print(snapshot.get("Title"));
+    // }
+    return documents;
   }
 }
