@@ -73,7 +73,7 @@ class _ReadStoryState extends State<ReadStory> {
                       )),
                   Container(
                     alignment: Alignment.centerRight,
-                    width: width * .3,
+                    // width: width * .3,
                     margin: EdgeInsets.only(right: 20),
                     child: IntrinsicHeight(
                       child: Row(

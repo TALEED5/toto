@@ -1,4 +1,5 @@
 //import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Story {
   late String title;
@@ -17,8 +18,23 @@ class Story {
       required this.writer,
       required this.content});
 
-  void likeStory() {
-    like++;
+  factory Story.fromJson(DocumentSnapshot snapshot) {
+    return Story(
+        title: snapshot["Title"],
+        discreption: snapshot["Discreption"],
+        date: snapshot["Date"].toDate(),
+        writer: snapshot["Writer"],
+        content: snapshot["Content"]);
+  }
+
+  Future likeStory() async {
+try{
+
+
+}catch(e){
+  print("Catch like story");
+}
+    // like++;
   }
 
   void removeLike() {
@@ -28,5 +44,6 @@ class Story {
   void locateOrigin() {}
   void readStory() {}
   void viewLoc() {}
+
   //ARrepresentation interactiveWAR(){}
 }
