@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_nav_bar: ^5.0.6 
   intl: ^0.17.0
 
   cupertino_icons: ^1.0.2
@@ -35,9 +36,13 @@ flutter:
         - asset: assets/fonts/Tajawal/Tajawal-Regular.ttf
         - asset: assets/fonts/Tajawal/Tajawal-Bold.ttf
         - asset: assets/Tajawal/Tajawal-ExtraBold.ttf
-        
+
+    - family: MyFlutterApp
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf   
 
   uses-material-design: true
 
   assets:
     - assets/images/housebg.png
+    - assets/images/background.png

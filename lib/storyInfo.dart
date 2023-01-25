@@ -1,30 +1,60 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+//import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/src/widgets/form.dart';
-import 'package:intl/intl.dart';
+import 'package:toto/writerHome.dart';
+import './home.dart';
 import 'dart:ui' as ui;
-
+import './story.dart';
 import './writerWriteStory.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoryInfo extends StatefulWidget {
-  const StoryInfo({Key? key}) : super(key: key);
+  final String scontent;
+  final Function funct;
+  const StoryInfo({required this.scontent, required this.funct});
 
   @override
-  State<StoryInfo> createState() => _StoryInfo();
+  State<StoryInfo> createState() =>
+      _StoryInfo(scontent: scontent, funct: funct);
 }
 
 class _StoryInfo extends State<StoryInfo> {
+  _StoryInfo({required this.scontent, required this.funct});
+  String scontent;
+  Function funct;
   final formKey = GlobalKey<FormState>(); //key for form
   bool? agree = false;
   bool field1 = false;
   bool field2 = false;
-  TextEditingController dateinput = TextEditingController();
+  late DateTime _selectedDate;
 
-  @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    super.initState();
+  //TextEditingController dateinput = TextEditingController();
+  final titleController = TextEditingController();
+  final discreptionController = TextEditingController();
+  //final Controller = TextEditingController();
+
+  // @override
+  // void initState() {
+  //   dateinput.text = ""; //set the initial value of text field
+  //   super.initState();
+  // }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -50,7 +80,15 @@ class _StoryInfo extends State<StoryInfo> {
             )),
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.clear), color: Colors.white)
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => writerHome(),
+                    ));
+              },
+              icon: Icon(Icons.clear),
+              color: Colors.white)
         ],
       ),
 
@@ -81,6 +119,7 @@ class _StoryInfo extends State<StoryInfo> {
                     maxLength: 30, //max number of characters for the text field
                     textAlign: TextAlign.right,
                     textDirection: ui.TextDirection.rtl,
+                    controller: titleController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
@@ -141,6 +180,7 @@ class _StoryInfo extends State<StoryInfo> {
                   child: Directionality(
                     textDirection: ui.TextDirection.rtl,
                     child: TextFormField(
+                      controller: discreptionController,
                       maxLength: 120,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
@@ -210,8 +250,7 @@ class _StoryInfo extends State<StoryInfo> {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: TextField(
-                      controller:
-                          dateinput, //editing controller of this TextField
+                      //editing controller of this TextField
                       textAlign: TextAlign.right,
                       //cursorColor: Color(0xFF90B28D),
                       decoration: InputDecoration(
@@ -227,31 +266,12 @@ class _StoryInfo extends State<StoryInfo> {
                       ),
                       readOnly:
                           true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(
-                                2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101));
-
-                        if (pickedDate != null) {
-                          print(
-                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2021-03-16
-                          //you can implement different kind of Date Format here according to your requirement
-
-                          setState(() {
-                            dateinput.text =
-                                formattedDate; //set output date to TextField value.
-                          });
-                        } else {
-                          print("Date is not selected");
-                        }
-                      },
+                      onTap: _presentDatePicker,
+                      //   onChanged: (){Text(
+                      //   _selectedDate == null
+                      //       ? 'No Date Chosen!'
+                      //       : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                      // ),},
                     ),
                   ),
                 ),
@@ -306,14 +326,14 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.022),
                 FloatingActionButton.extended(
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      if (agree == true) {
-                        //method that publish the story and navigate to home page
-                      }
+                    // if (formKey.currentState!.validate()) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Processing Data')),
+                    //   );
+                    if (agree == true) {
+                      publishStory();
                     }
+                    //}
                   },
                   heroTag: 'publish',
                   elevation: 4,
@@ -336,5 +356,49 @@ class _StoryInfo extends State<StoryInfo> {
     Navigator.pop(context);
   }
 
-  void publishStory() {}
+  void publishStory() async {
+    // final enteredTitle = titleController.text;
+    // final entereddiscreprion = discreptionController.text;
+    //final entered = dateinput.DateTime ;
+    await FirebaseFirestore.instance.collection("Stories").add({
+      "Title": titleController.text,
+      "Discreption": discreptionController.text,
+      "Date": _selectedDate,
+      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
+      "Like": 0,
+      "Content": scontent
+    }).then((_) {
+      print("collection created");
+    }).catchError((_) {
+      print("an error occured");
+    });
+    // widget.funct(
+    //   title: enteredTitle,
+    //   discreption: entereddiscreprion,
+    //   date: _selectedDate,
+    //   content: scontent,
+    // );
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => home(),
+        ));
+  }
 }
+// if (pickedDate != null) {
+//                           print(
+//                               pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+//                           String formattedDate =
+//                               DateFormat('yyyy-MM-dd').format(pickedDate);
+//                           print(
+//                               formattedDate); //formatted date output using intl package =>  2021-03-16
+//                           //you can implement different kind of Date Format here according to your requirement
+//                           setState(() {
+//                             dateinput.text =
+//                                 formattedDate; //set output date to TextField value.
+//                           });
+//                         } else {
+//                           print("Date is not selected");
+//                         }
+//                       },
