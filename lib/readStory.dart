@@ -160,9 +160,11 @@ class _ReadStoryState extends State<ReadStory> {
                               setState(() {
                                 like = !like;
                                 if (like)
-                                  widget.st.likeStory();
+                                  widget.st
+                                      .likeStory(widget.st.id, widget.st.like);
                                 else
-                                  widget.st.removeLike();
+                                  widget.st
+                                      .removeLike(widget.st.id, widget.st.like);
                               });
                             },
                             icon: Icon(

@@ -39,37 +39,35 @@ class Story {
     //WriterName:snapshot["WriterName"]);
   }
 
-  void likeStory() {
-    like++;
-  }
-
-  void removeLike() {
-    like--;
-  }
-
-  // Future likeStory(Story s) async {
-  //   int l = s.like;
-  //   try {
-  //     await FirebaseFirestore.instance.collection("Stories").doc().update({
-  //       "Like": l++,
-  //     });
-  //   } catch (e) {
-  //     print("Catch like story");
-  //   }
-  //   // like++;
+  // void likeStory() {
+  //   like++;
   // }
 
-  // Future removeLike(Story s) async {
-  //   int l = s.like;
-  //   try {
-  //     await FirebaseFirestore.instance.collection("Stories").doc().update({
-  //       "Like": l--,
-  //     });
-  //   } catch (e) {
-  //     print("Catch like story");
-  //   }
-  //   // like++;
+  // void removeLike() {
+  //   like--;
   // }
+
+  Future likeStory(String docId, int l) async {
+    try {
+      await FirebaseFirestore.instance.collection("Stories").doc(docId).update({
+        "Like": ++l,
+      });
+    } catch (e) {
+      print("Catch like story");
+    }
+    // like++;
+  }
+
+  Future removeLike(String docId, int l) async {
+    try {
+      await FirebaseFirestore.instance.collection("Stories").doc(docId).update({
+        "Like": --l,
+      });
+    } catch (e) {
+      print("Catch remove story");
+    }
+    // like++;
+  }
 
   void locateOrigin() {}
   void readStory() {}
