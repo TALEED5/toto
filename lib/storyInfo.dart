@@ -368,8 +368,9 @@ class _StoryInfo extends State<StoryInfo> {
       "Title": titleController.text,
       "Discreption": discreptionController.text,
       "Date": _selectedDate,
-      "WriterId": user?.uid, //ادور طريقة اوصل بها المستخدم الحالي
-      "WriterName": usrename,
+      "Writer": "writer name",
+      //"WriterId": user?.uid, //ادور طريقة اوصل بها المستخدم الحالي
+      //"WriterName": usrename,
       "Like": 0,
       "Content": scontent
     }).then((_) {
