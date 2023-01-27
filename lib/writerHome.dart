@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import './story.dart';
+//import './story.dart';
 import './writerWriteStory.dart';
 import './story_list.dart';
 
@@ -10,54 +10,54 @@ class writerHome extends StatefulWidget {
 }
 
 class _Writerhome extends State<writerHome> {
-  final List<Story> _stories = [
-    Story(
-        title: 'toto',
-        discreption: "taleed life",
-        date: DateTime.now(),
-        writer: "ثريا",
-        content: ""
-        // like: 30
-        ),
-    Story(
-        title: 'story2',
-        discreption: "taleed s2 dis",
-        date: DateTime.now(),
-        writer: "writer2",
-        content: ""
-        // like: 5
-        ),
-  ];
+  // final List<Story> _stories = [
+  //   Story(
+  //       title: 'toto',
+  //       discreption: "taleed life",
+  //       date: DateTime.now(),
+  //       writer: "ثريا",
+  //       content: ""
+  //       // like: 30
+  //       ),
+  //   Story(
+  //       title: 'story2',
+  //       discreption: "taleed s2 dis",
+  //       date: DateTime.now(),
+  //       writer: "writer2",
+  //       content: ""
+  //       // like: 5
+  //       ),
+  // ];
 
-  void _addStory(String title, String disc, DateTime dd, String content) async {
-    final newStory = Story(
-        title: title,
-        discreption: disc,
-        date: dd,
-        writer: "the writer username",
-        content: content);
+  // void _addStory(String title, String disc, DateTime dd, String content) async {
+  //   final newStory = Story(
+  //       title: title,
+  //       discreption: disc,
+  //       date: dd,
+  //       writer: "the writer username",
+  //       content: content);
 
-    await FirebaseFirestore.instance
-        .collection("stories")
-        .doc(/*user?.uid*/)
-        .set({
-      // 'userID': user?.uid,
-      // 'username': user?.uname,
-      'title': title,
-      'discreption': disc,
-      'date': dd,
-    });
+  //   await FirebaseFirestore.instance
+  //       .collection("stories")
+  //       .doc(/*user?.uid*/)
+  //       .set({
+  //     // 'userID': user?.uid,
+  //     // 'username': user?.uname,
+  //     'title': title,
+  //     'discreption': disc,
+  //     'date': dd,
+  //   });
 
-    // setState(() {
-    //   _stories.add(newStory);
-    // });
+  //   // setState(() {
+  //   //   _stories.add(newStory);
+  //   // });
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => writerHome(),
-        ));
-  }
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => writerHome(),
+  //       ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _Writerhome extends State<writerHome> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => writeStory1(fun: _addStory),
+                  builder: (context) => writeStory1(),
                 ));
           },
         ),
@@ -105,7 +105,7 @@ class _Writerhome extends State<writerHome> {
                           fontWeight: FontWeight.bold,
                         ),),*/
 
-                    StoryList(_stories),
+                    Expanded(child: StoryList()), 
                     //  ],
                     // ),
 

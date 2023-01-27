@@ -1,28 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 //import 'package:flutter/gestures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toto/writerHome.dart';
 import './home.dart';
 import 'dart:ui' as ui;
-import './story.dart';
-import './writerWriteStory.dart';
+
+//import './story.dart';
+//import './writerWriteStory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoryInfo extends StatefulWidget {
   final String scontent;
-  final Function funct;
-  const StoryInfo({required this.scontent, required this.funct});
+
+  const StoryInfo({required this.scontent});
 
   @override
-  State<StoryInfo> createState() =>
-      _StoryInfo(scontent: scontent, funct: funct);
+  State<StoryInfo> createState() => _StoryInfo(scontent: scontent);
 }
 
 class _StoryInfo extends State<StoryInfo> {
-  _StoryInfo({required this.scontent, required this.funct});
+  _StoryInfo({required this.scontent});
+
+  final _auth = FirebaseAuth.instance;
+
   String scontent;
-  Function funct;
   final formKey = GlobalKey<FormState>(); //key for form
   bool? agree = false;
   bool field1 = false;
@@ -357,14 +360,16 @@ class _StoryInfo extends State<StoryInfo> {
   }
 
   void publishStory() async {
-    // final enteredTitle = titleController.text;
-    // final entereddiscreprion = discreptionController.text;
-    //final entered = dateinput.DateTime ;
+    User? user = _auth.currentUser;
+
+    String? usrename = user?.displayName;
+
     await FirebaseFirestore.instance.collection("Stories").add({
       "Title": titleController.text,
       "Discreption": discreptionController.text,
       "Date": _selectedDate,
-      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
+      "WriterId": user?.uid, //ادور طريقة اوصل بها المستخدم الحالي
+      "WriterName": usrename,
       "Like": 0,
       "Content": scontent
     }).then((_) {
@@ -372,12 +377,6 @@ class _StoryInfo extends State<StoryInfo> {
     }).catchError((_) {
       print("an error occured");
     });
-    // widget.funct(
-    //   title: enteredTitle,
-    //   discreption: entereddiscreprion,
-    //   date: _selectedDate,
-    //   content: scontent,
-    // );
 
     Navigator.push(
         context,

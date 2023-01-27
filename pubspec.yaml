@@ -31,15 +31,15 @@ flutter:
         - asset: assets/fonts/ElMessiri/ElMessiri-Medium.ttf
         - asset: assets/fonts/ElMessiri/ElMessiri-Regular.ttf
         - asset: assets/fonts/ElMessiri/ElMessiri-SemiBold.ttf
+        
     - family: Tajawal
       fonts:
         - asset: assets/fonts/Tajawal/Tajawal-Regular.ttf
         - asset: assets/fonts/Tajawal/Tajawal-Bold.ttf
-        - asset: assets/Tajawal/Tajawal-ExtraBold.ttf
 
     - family: MyFlutterApp
       fonts:
-        - asset: fonts/MyFlutterApp.ttf   
+        - asset: assets/fonts/MyFlutterApp.ttf   
 
   uses-material-design: true
 
