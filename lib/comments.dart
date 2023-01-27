@@ -23,7 +23,7 @@ class _commentsState extends State<comments> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    //final double width = MediaQuery.of(context).size.width;
     final commentController = TextEditingController();
 
     return Scaffold(
@@ -156,7 +156,7 @@ class _commentsState extends State<comments> {
           ),
           Container(
             alignment: Alignment.centerRight,
-            width: width * .4,
+            //width: width * .4,
             margin: EdgeInsets.only(right: 20),
             child: IntrinsicHeight(
               child: Row(
@@ -211,7 +211,7 @@ class _commentsState extends State<comments> {
               controller: commentController,
               decoration: InputDecoration(hintText: "إضافة تعليق..."),
               validator: (value) {
-                if (value!=null&&value.isNotEmpty) contentEmpty = false;
+                if (value != null && value.isNotEmpty) contentEmpty = false;
               },
             ),
             trailing: ElevatedButton(

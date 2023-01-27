@@ -9,24 +9,24 @@ class writerHome extends StatefulWidget {
 }
 
 class _Writerhome extends State<writerHome> {
-  final List<Story> _stories = [
-    Story(
-        title: 'toto',
-        discreption: "taleed life",
-        date: DateTime.now(),
-        writer: "ثريا",
-        content: ""
-        // like: 30
-        ),
-    Story(
-        title: 'story2',
-        discreption: "taleed s2 dis",
-        date: DateTime.now(),
-        writer: "writer2",
-        content: ""
-        // like: 5
-        ),
-  ];
+  // final List<Story> _stories = [
+  //   Story(
+  //       title: 'toto',
+  //       discreption: "taleed life",
+  //       date: DateTime.now(),
+  //       WriterName: "ثريا",
+  //       content: ""
+  //       // like: 30
+  //       ),
+  //   Story(
+  //       title: 'story2',
+  //       discreption: "taleed s2 dis",
+  //       date: DateTime.now(),
+  //       writer: "writer2",
+  //       content: ""
+  //       // like: 5
+  //       ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _Writerhome extends State<writerHome> {
                   //for the whole page
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    StoryList(_stories),
+                   StoryList(),
                   ]),
             ),
           ),

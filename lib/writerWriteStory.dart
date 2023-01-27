@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 import 'storyInfo.dart';
 
 class writeStory1 extends StatefulWidget {
-  final Function fun;
-  const writeStory1({required this.fun});
   @override
-  _writeStory1 createState() => _writeStory1(func: fun);
+  _writeStory1 createState() => _writeStory1();
 }
 
 class _writeStory1 extends State<writeStory1> {
-  _writeStory1({required this.func});
-  final Function func;
   final storyController = TextEditingController();
   bool btnActive = false;
   //late String sconinput;
@@ -165,7 +161,6 @@ class _writeStory1 extends State<writeStory1> {
       MaterialPageRoute(
           builder: (context) => StoryInfo(
                 scontent: storyController.text,
-                funct: func,
               )),
     );
   } //infopage method

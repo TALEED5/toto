@@ -120,13 +120,21 @@ class _ReadStoryState extends State<ReadStory> {
                 child: Stack(children: [
                   Container(
                     height: height * .62,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      widget.st.content,
-                      style: TextStyle(
-                        color: Color.fromRGBO(67, 60, 49, 1),
-                        fontFamily: "ElMessiri",
-                        fontSize: 18,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(
+                          widget.st.content,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: Color.fromRGBO(67, 60, 49, 1),
+                            fontFamily: "ElMessiri",
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
                     ),
                   ),

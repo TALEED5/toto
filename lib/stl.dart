@@ -5,6 +5,9 @@ import './readStory.dart';
 import './story.dart';
 
 class StoryList extends StatelessWidget {
+  final List<Story> stories;
+
+  StoryList(this.stories);
   CollectionReference storyRef =
       FirebaseFirestore.instance.collection('Stories');
 
@@ -187,7 +190,8 @@ class StoryList extends StatelessWidget {
                   ///shrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (ctx, index) {
-                    Story storylist = Story.fromJson(snapshot.data.docs[index]);
+                    Story stort = snapshot.data.docs[index];
+                    // Story storylist = Story.fromJson(snapshot.data.docs[index]);
                     // children: snapshot.data.document.map[(document) {
                     return Card(
                       margin: EdgeInsets.only(
@@ -221,7 +225,7 @@ class StoryList extends StatelessWidget {
                                   //margin: EdgeInsets.only(left: 200),
                                   padding: EdgeInsets.only(right: 7),
                                   child: Text(
-                                    storylist.writer,
+                                    snapshot.data.docs[index]["Writer"],
                                     style: TextStyle(
                                       color: Color.fromRGBO(86, 63, 2, 1),
                                       fontFamily: "ElMessiri",
@@ -258,7 +262,7 @@ class StoryList extends StatelessWidget {
                               children: <Widget>[
                                 //--------------------------title--------------------
                                 Text(
-                                  storylist.title,
+                                  snapshot.data.docs[index]["Title"],
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -267,7 +271,7 @@ class StoryList extends StatelessWidget {
                                 ),
                                 //---------------------------discreption-------------
                                 Text(
-                                  storylist.discreption,
+                                  snapshot.data.docs[index]["Discreption"],
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -289,7 +293,7 @@ class StoryList extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ReadStory(storylist),
+                                                ReadStory(stort),
                                           ));
                                     },
                                     icon: Icon(Icons.arrow_back_rounded),
@@ -301,7 +305,7 @@ class StoryList extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ReadStory(storylist),
+                                                  ReadStory(stort),
                                             ));
                                       },
                                       child: Text(
@@ -319,7 +323,9 @@ class StoryList extends StatelessWidget {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text(storylist.like.toString(),
+                                      Text(
+                                          snapshot.data.docs[index]["Like"]
+                                              .toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -342,8 +348,9 @@ class StoryList extends StatelessWidget {
                                         //endIndent: 15,
                                       ),
                                       Text(
-                                        DateFormat.yMMMd()
-                                            .format(storylist.date),
+                                        DateFormat.yMMMd().format(snapshot
+                                            .data.docs[index]["Date"]
+                                            .toDate()),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),

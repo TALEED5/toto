@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:toto/Rprofile.dart';
+//import 'package:toto/stl.dart';
 import './story.dart';
 //import './writerWriteStory.dart';
 import './story_list.dart';
@@ -12,24 +13,24 @@ class home extends StatefulWidget {
 }
 
 class _home extends State<home> {
-  final List<Story> _stories = [
-    Story(
-        title: 'toto',
-        discreption: "taleed life",
-        date: DateTime.now(),
-        writer: "ثريا",
-        content: ""
-        // like: 30
-        ),
-    Story(
-        title: 'story2',
-        discreption: "taleed s2 dis",
-        date: DateTime.now(),
-        writer: "writer2",
-        content: ""
-        // like: 5
-        ),
-  ];
+  // final List<Story> _stories = [
+  //   Story(
+  //       title: 'toto',
+  //       discreption: "taleed life",
+  //       date: DateTime.now(),
+  //       writer: "ثريا",
+  //       content: ""
+  //       // like: 30
+  //       ),
+  //   Story(
+  //       title: 'story2',
+  //       discreption: "taleed s2 dis",
+  //       date: DateTime.now(),
+  //       writer: "writer2",
+  //       content: ""
+  //       // like: 5
+  //       ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _home extends State<home> {
                         color: Color.fromARGB(255, 34, 75, 12),
                         fontWeight: FontWeight.bold,
                       ),),*/
-                  Expanded(child: StoryList(_stories)),
+                  Expanded(child: StoryList()),
                   //  ],
                   // ),
 
