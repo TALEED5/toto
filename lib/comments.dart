@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './story.dart';
+import 'comment_list.dart';
 
 class comments extends StatefulWidget {
   final Story st;
@@ -10,21 +13,41 @@ class comments extends StatefulWidget {
 }
 
 class _commentsState extends State<comments> {
-  bool contentEmpty = true;
+  //bool contentEmpty = true;
   String comment = '';
   final formKey = GlobalKey<FormState>();
+  final commentController = TextEditingController();
 
-  BuildComments() {
-    return Text("data");
+  // BuildComments() {
+  //   return Text("data");
+  // }
+
+  void addComment() async {
+    final _auth = FirebaseAuth.instance;
+
+    User? user = _auth.currentUser;
+
+    String? usrename = user?.displayName;
+
+    await FirebaseFirestore.instance
+        .collection("Stories")
+        .doc(widget.st.id)
+        .collection("Comments")
+        .add({
+      "Comment": commentController.text,
+      "Username": "اسم المستخدم",
+      "Name": "الاسم"
+    }).then((_) {
+      print("collection created");
+    }).catchError((_) {
+      print("an error occured");
+    });
   }
-
-  addComment() {}
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     //final double width = MediaQuery.of(context).size.width;
-    final commentController = TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -148,17 +171,19 @@ class _commentsState extends State<comments> {
       ),
       backgroundColor: Color.fromRGBO(231, 226, 216, 1), //temporarly
       //----------------------------body-------------------------------
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: height * .05,
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            //width: width * .4,
-            margin: EdgeInsets.only(right: 20),
-            child: IntrinsicHeight(
+      body: Container(
+        alignment: Alignment.centerRight,
+        height: double.infinity,
+        width: double.infinity,
+        //width: width * .4,
+        margin: EdgeInsets.only(right: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: height * .05,
+            ),
+            IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -169,14 +194,13 @@ class _commentsState extends State<comments> {
                   VerticalDivider(
                     color: Color.fromRGBO(67, 60, 49, 1),
                   ),
-                  Text(
-                    widget.st.writer,
-                    style: TextStyle(
-                      color: Color.fromRGBO(67, 60, 49, 1),
-                      fontFamily: "ElMessiri",
-                      fontSize: 20,
-                    ),
-                  ),
+                  Text(widget.st.writer,
+                      style: TextStyle(
+                        color: Color.fromRGBO(67, 60, 49, 1),
+                        fontFamily: "ElMessiri",
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.end),
                   Icon(
                     Icons.account_circle,
                     color: Color.fromRGBO(95, 120, 88, 1),
@@ -185,44 +209,43 @@ class _commentsState extends State<comments> {
                 ],
               ),
             ),
-          ),
-          Container(
-            height: height * .33,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              widget.st.content,
-              maxLines: 12,
-              style: TextStyle(
-                color: Color.fromRGBO(67, 60, 49, 1),
-                fontFamily: "ElMessiri",
-                fontSize: 18,
+            Container(
+              height: height * .33,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(widget.st.content,
+                  maxLines: 12,
+                  style: TextStyle(
+                    color: Color.fromRGBO(67, 60, 49, 1),
+                    fontFamily: "ElMessiri",
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.end),
+            ),
+            Divider(
+              color: Color.fromARGB(255, 174, 169, 157),
+              thickness: 1.5,
+              indent: 15,
+              endIndent: 15,
+            ),
+            Expanded(flex: 1, child: comment_list(widget.st.id)),
+            ListTile(
+              title: TextFormField(
+                controller: commentController,
+                textAlign: TextAlign.right,
+                decoration: InputDecoration(hintText: "...إضافة تعليق"),
+              ),
+              trailing: ElevatedButton(
+                onPressed: () {
+                  if (commentController.text != '') addComment();
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(193, 115, 89, 1),
+                    disabledBackgroundColor: Colors.grey),
+                child: Text("إضافة"),
               ),
             ),
-          ),
-          Divider(
-            color: Color.fromARGB(255, 174, 169, 157),
-            thickness: 1.5,
-            indent: 15,
-            endIndent: 15,
-          ),
-          Expanded(child: BuildComments()),
-          ListTile(
-            title: TextFormField(
-              controller: commentController,
-              decoration: InputDecoration(hintText: "إضافة تعليق..."),
-              validator: (value) {
-                if (value != null && value.isNotEmpty) contentEmpty = false;
-              },
-            ),
-            trailing: ElevatedButton(
-              onPressed: contentEmpty ? null : (() => addComment()),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(193, 115, 89, 1),
-                  disabledBackgroundColor: Colors.grey),
-              child: Text("إضافة"),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -256,4 +279,5 @@ class Comment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container();
   }
+
 }

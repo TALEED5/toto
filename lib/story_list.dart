@@ -184,7 +184,7 @@ class StoryList extends StatelessWidget {
               //final docs = snapshot.data!.docs;
               return ListView.builder(
 
-                  ///shrinkWrap: true,
+                  ///s hrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (ctx, index) {
                     Story storylist = Story.fromJson(snapshot.data.docs[index]);

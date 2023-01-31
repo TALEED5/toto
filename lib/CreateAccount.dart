@@ -2,8 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/BottomNavBar.dart';
 import 'package:toto/main.dart';
-import 'package:toto/myStories.dart';
+import 'package:toto/readerNavBar.dart';
 import 'home.dart';
 //import 'package:email_validator/email_validator.dart';
 
@@ -560,11 +561,13 @@ class _CreateAccountState extends State<CreateAccount> {
       if (age >= 60) {
         Navigator.pushAndRemoveUntil(
             (context),
-            MaterialPageRoute(builder: (context) => writerHome()),
+            MaterialPageRoute(builder: (context) => navBar()),
             (route) => false);
       } else if (age < 60) {
-        Navigator.pushAndRemoveUntil((context),
-            MaterialPageRoute(builder: (context) => home()), (route) => false);
+        Navigator.pushAndRemoveUntil(
+            (context),
+            MaterialPageRoute(builder: (context) => readerNavBar()),
+            (route) => false);
       }
     } on FirebaseAuthException catch (error) {
       errorMessage = error.message!;

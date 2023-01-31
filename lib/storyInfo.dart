@@ -6,14 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:toto/writerHome.dart';
 import './home.dart';
 import 'dart:ui' as ui;
-
-//import './story.dart';
-//import './writerWriteStory.dart';
+import './story.dart';
+import './writerWriteStory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:toto/firebase_operations.dart';
+import 'package:toto/add_pin_map_view.dart';
+
+import 'BottomNavBar.dart';
 
 class StoryInfo extends StatefulWidget {
   final String scontent;
-
   const StoryInfo({required this.scontent});
 
   @override
@@ -22,7 +29,8 @@ class StoryInfo extends StatefulWidget {
 
 class _StoryInfo extends State<StoryInfo> {
   _StoryInfo({required this.scontent});
-
+  String address = "";
+  LatLng? coordinates;
   final _auth = FirebaseAuth.instance;
 
   String scontent;
@@ -42,6 +50,16 @@ class _StoryInfo extends State<StoryInfo> {
   //   dateinput.text = ""; //set the initial value of text field
   //   super.initState();
   // }
+  void saveAddressToLocal() {
+    //GetStorage box = GetStorage();
+    saveLocationToFire("${coordinates?.latitude}-${coordinates?.longitude}");
+  }
+
+  @override
+  void initState() {
+    // implement initState
+    super.initState();
+  }
 
   void _presentDatePicker() {
     showDatePicker(
@@ -84,11 +102,10 @@ class _StoryInfo extends State<StoryInfo> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => writerHome(),
-                    ));
+                Navigator.pushAndRemoveUntil(
+                    (context),
+                    MaterialPageRoute(builder: (context) => navBar()),
+                    (route) => false);
               },
               icon: Icon(Icons.clear),
               color: Colors.white)
@@ -283,7 +300,17 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.04),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const AddPinMapView())?.then((value) {
+                        //كلاس اد بن ماب
+
+                        setState(() {
+                          address = value[0] ?? "";
+                          coordinates = value[1];
+                          //print(coordinates);
+                        });
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                         primary: Color(0xff5F7858),
                         side: BorderSide(
@@ -293,9 +320,13 @@ class _StoryInfo extends State<StoryInfo> {
                             borderRadius: BorderRadius.circular(30))),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text("تحديد القصة على الخريطة"),
+                      children: [
+                        const Text("تحديد القصة على الخريطة"),
                         Icon(Icons.location_pin),
+                        Text(
+                          address != "" ? "($address)" : "",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
                       ],
                     ),
                   ),
@@ -329,6 +360,11 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.022),
                 FloatingActionButton.extended(
                   onPressed: () {
+                    if (address == "") {
+                      Fluttertoast.showToast(msg: "الرجاء اختيار العنوان");
+                    } else {
+                      saveAddressToLocal();
+                    }
                     // if (formKey.currentState!.validate()) {
                     //   ScaffoldMessenger.of(context).showSnackBar(
                     //     const SnackBar(content: Text('Processing Data')),
@@ -363,12 +399,11 @@ class _StoryInfo extends State<StoryInfo> {
     User? user = _auth.currentUser;
 
     String? usrename = user?.displayName;
-
     await FirebaseFirestore.instance.collection("Stories").add({
       "Title": titleController.text,
       "Discreption": discreptionController.text,
       "Date": _selectedDate,
-      "Writer": "writer name",
+      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
       //"WriterId": user?.uid, //ادور طريقة اوصل بها المستخدم الحالي
       //"WriterName": usrename,
       "Like": 0,
@@ -378,6 +413,12 @@ class _StoryInfo extends State<StoryInfo> {
     }).catchError((_) {
       print("an error occured");
     });
+    // widget.funct(
+    //   title: enteredTitle,
+    //   discreption: entereddiscreprion,
+    //   date: _selectedDate,
+    //   content: scontent,
+    // );
 
     Navigator.push(
         context,

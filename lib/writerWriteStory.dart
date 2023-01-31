@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'BottomNavBar.dart';
 import 'storyInfo.dart';
 
 class writeStory1 extends StatefulWidget {
@@ -30,7 +31,10 @@ class _writeStory1 extends State<writeStory1> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.clear), color: Colors.white)
+              onPressed: () {Navigator.pushAndRemoveUntil(
+            (context),
+            MaterialPageRoute(builder: (context) => navBar()),
+            (route) => false);}, icon: Icon(Icons.clear), color: Colors.white)
         ],
       ),
 
