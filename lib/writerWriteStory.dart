@@ -1,16 +1,29 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/BottomNavBar.dart';
+import 'package:toto/home.dart';
+import 'package:toto/main.dart';
 import 'storyInfo.dart';
+import 'writerHome.dart';
 
 class writeStory1 extends StatefulWidget {
+  final Function fun;
+  const writeStory1({required this.fun});
   @override
-  _writeStory1 createState() => _writeStory1();
+  _writeStory1 createState() => _writeStory1(func: fun);
 }
 
 class _writeStory1 extends State<writeStory1> {
+  _writeStory1({required this.func});
+  final Function func;
   final storyController = TextEditingController();
   bool btnActive = false;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String myname = '';
+  String myUsername = '@';
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +40,7 @@ class _writeStory1 extends State<writeStory1> {
           style: TextStyle(fontFamily: 'tajawal', fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: Icon(Icons.clear), color: Colors.white)
-        ],
+      
       ),
 
       //---------------------navigation bar-----------------------------
@@ -74,15 +84,15 @@ class _writeStory1 extends State<writeStory1> {
               children: [
                 Column(
                   children: [
-                    const Text(
-                      'اسم المستخدم',
+                    Text(
+                      getname(),
                       style: TextStyle(
                           fontFamily: 'Tajawal',
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '@userName',
+                      getusername(),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -157,7 +167,11 @@ class _writeStory1 extends State<writeStory1> {
     //navigate to story information page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const StoryInfo()),
+      MaterialPageRoute(
+          builder: (context) => StoryInfo(
+                scontent: storyController.text,
+                funct: func,
+              )),
     );
   } //infopage method
 
@@ -166,5 +180,26 @@ class _writeStory1 extends State<writeStory1> {
     // Clean up the controller when the widget is disposed.
     storyController.dispose();
     super.dispose();
+  }
+
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    firestore.collection('users').doc(user.uid).snapshots().listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+      setState(() {
+        myname = userData.data()!['name'];
+        myUsername = userData.data()!['username'];
+      });
+    });
+  }
+
+  String getname() {
+    _getdata();
+    return myname;
+  }
+
+  String getusername() {
+    _getdata();
+    return myUsername;
   }
 }

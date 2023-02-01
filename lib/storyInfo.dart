@@ -1,30 +1,72 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:flutter/src/widgets/form.dart';
 import 'package:intl/intl.dart';
+import 'package:toto/BottomNavBar.dart';
 import 'dart:ui' as ui;
 
 import './writerWriteStory.dart';
+import 'add_pin_map_view.dart';
+import 'firebase_operations.dart';
+import 'writerHome.dart';
 
 class StoryInfo extends StatefulWidget {
-  const StoryInfo({Key? key}) : super(key: key);
+  final String scontent;
+  final Function funct;
+  const StoryInfo({required this.scontent, required this.funct});
+  //const StoryInfo({Key? key}) : super(key: key);
 
   @override
-  State<StoryInfo> createState() => _StoryInfo();
+  State<StoryInfo> createState() => _StoryInfo(scontent: scontent, funct: funct);
 }
 
 class _StoryInfo extends State<StoryInfo> {
+  _StoryInfo({required this.scontent, required this.funct});
+  String address = "";
+  LatLng? coordinates;
+  String scontent;
+  Function funct;
   final formKey = GlobalKey<FormState>(); //key for form
   bool? agree = false;
   bool field1 = false;
   bool field2 = false;
+  late DateTime _selectedDate;
+  final titleController = TextEditingController();
+  final discreptionController = TextEditingController();
   TextEditingController dateinput = TextEditingController();
+
+
+  void saveAddressToLocal() {
+    //GetStorage box = GetStorage();
+    saveLocationToFire("${coordinates?.latitude}-${coordinates?.longitude}");
+  }
 
   @override
   void initState() {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -50,7 +92,12 @@ class _StoryInfo extends State<StoryInfo> {
             )),
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.clear), color: Colors.white)
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => writerHome()),
+                );
+              }, icon: Icon(Icons.clear), color: Colors.white)
         ],
       ),
 
@@ -227,31 +274,32 @@ class _StoryInfo extends State<StoryInfo> {
                       ),
                       readOnly:
                           true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(
-                                2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101));
+                          onTap: _presentDatePicker,
+                      // onTap: () async {
+                      //   DateTime? pickedDate = await showDatePicker(
+                      //       context: context,
+                      //       initialDate: DateTime.now(),
+                      //       firstDate: DateTime(
+                      //           2000), //DateTime.now() - not to allow to choose before today.
+                      //       lastDate: DateTime(2101));
 
-                        if (pickedDate != null) {
-                          print(
-                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2021-03-16
-                          //you can implement different kind of Date Format here according to your requirement
+                      //   if (pickedDate != null) {
+                      //     print(
+                      //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      //     String formattedDate =
+                      //         DateFormat('yyyy-MM-dd').format(pickedDate);
+                      //     print(
+                      //         formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //     //you can implement different kind of Date Format here according to your requirement
 
-                          setState(() {
-                            dateinput.text =
-                                formattedDate; //set output date to TextField value.
-                          });
-                        } else {
-                          print("Date is not selected");
-                        }
-                      },
+                      //     setState(() {
+                      //       dateinput.text =
+                      //           formattedDate; //set output date to TextField value.
+                      //     });
+                      //   } else {
+                      //     print("Date is not selected");
+                      //   }
+                      // },
                     ),
                   ),
                 ),
@@ -260,7 +308,17 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.04),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const AddPinMapView())?.then((value) {
+                        //كلاس اد بن ماب
+
+                        setState(() {
+                          address = value[0] ?? "";
+                          coordinates = value[1];
+                          //print(coordinates);
+                        });
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                         primary: Color(0xff5F7858),
                         side: BorderSide(
@@ -270,9 +328,13 @@ class _StoryInfo extends State<StoryInfo> {
                             borderRadius: BorderRadius.circular(30))),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text("تحديد القصة على الخريطة"),
+                      children: [
+                        const Text("تحديد القصة على الخريطة"),
                         Icon(Icons.location_pin),
+                        Text(
+                          address != "" ? "($address)" : "",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
                       ],
                     ),
                   ),
@@ -306,14 +368,20 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.022),
                 FloatingActionButton.extended(
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      if (agree == true) {
+                    if (address == "") {
+                      Fluttertoast.showToast(msg: "الرجاء اختيار العنوان");
+                    } else {
+                      saveAddressToLocal();
+                    }
+                    if (agree == true) {
+                      publishStory();
                         //method that publish the story and navigate to home page
                       }
-                    }
+                    // if (formKey.currentState!.validate()) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Processing Data')),
+                    //   ); 
+                    // }
                   },
                   heroTag: 'publish',
                   elevation: 4,
@@ -336,5 +404,30 @@ class _StoryInfo extends State<StoryInfo> {
     Navigator.pop(context);
   }
 
-  void publishStory() {}
+  void publishStory() async {
+    await FirebaseFirestore.instance.collection("Stories").add({
+      "Title": titleController.text,
+      "Discreption": discreptionController.text,
+      "Date": _selectedDate,
+      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
+      "Like": 0,
+      "Content": scontent
+    }).then((_) {
+      print("collection created");
+    }).catchError((_) {
+      print("an error occured");
+    });
+    // widget.funct(
+    //   title: enteredTitle,
+    //   discreption: entereddiscreprion,
+    //   date: _selectedDate,
+    //   content: scontent,
+    // );
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => navBar(),
+        ));
+  }
 }

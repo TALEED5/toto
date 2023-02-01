@@ -1,21 +1,28 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:toto/home.dart';
 import 'welcomePage.dart';
 import '../my_flutter_app_icons.dart';
 
 class Wprofile extends StatefulWidget {
   const Wprofile({Key? key}) : super(key: key);
+  
 
   @override
   State<Wprofile> createState() => _Wprofile();
 }
 
 class _Wprofile extends State<Wprofile> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String myname = '';
+  String myUsername = '@';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,28 +32,7 @@ class _Wprofile extends State<Wprofile> {
         elevation: 0,
       ),
       backgroundColor: Color(0xffE7E2D6),
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-         child: GNav(
-        backgroundColor: Colors.white,
-        tabBackgroundColor: Color(0xffe5e5e5),
-        padding: EdgeInsets.all(16),
-        gap: 8,
-        tabs: const[
-          GButton(icon: Icons.home, text: '   ',
-          ),
-           GButton(icon: Icons.location_pin,text: '   ',
-          ),
-           GButton(icon: Icons.chat_outlined, text:'   ',
-          ),
-           GButton(icon: Icons.person,text: '   ',
-          ),
-        ],
-      )
-      ),
-      ),
+     
 
       endDrawer: Drawer(
         child: ListView(
@@ -57,7 +43,7 @@ class _Wprofile extends State<Wprofile> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color(0xffE7E2D6),
-                image: DecorationImage(image: AssetImage("Assets/stripes.png"),
+                image: DecorationImage(image: AssetImage("assets/images/stripes.png"),
                 fit: BoxFit.scaleDown),
                 
               ), 
@@ -85,7 +71,7 @@ class _Wprofile extends State<Wprofile> {
           constraints: BoxConstraints.expand(),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("Assets/b1_bg.PNG"),
+                  image: AssetImage("assets/images/b1_bg.PNG"),
                   fit: BoxFit.cover),
   ),
         child: Column(
@@ -98,14 +84,16 @@ class _Wprofile extends State<Wprofile> {
               child: Column(
                 children: [
                   //----------here user name and name should  be retrieved from data base--------
+                  
                   Text(
-                    "اسم المستخدم",
+                    getname(),
                     style:  Theme.of(context)
                         .textTheme
                         .headline6
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  Text("@userName"),
+                  Text(getusername()),
+                  //_getdata(),
                   //const SizedBox(height: 90),
                   //-------------------------------------------------------------------------------
 
@@ -123,6 +111,35 @@ class _Wprofile extends State<Wprofile> {
     );
     
   }
+  void homePage() {
+    //navigate to story information page
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => home()),
+    );
+  } //infopage m
+
+  void _getdata() async {
+  final user = await FirebaseAuth.instance.currentUser!;
+  firestore
+    .collection('users')
+    .doc(user.uid)
+    .snapshots()
+    .listen((userData) {
+      setState(() {
+        myname = userData.data()!['name'];
+        myUsername = userData.data()!['username'];});
+
+    });
+    }
+    String getname(){
+      _getdata();
+      return myname;
+    }
+    String getusername(){
+      _getdata();
+      return myUsername;
+    }
 }
 
 
@@ -245,4 +262,6 @@ class _TopPortion extends StatelessWidget {
       ],
     );
   }
+
+   
 } 
