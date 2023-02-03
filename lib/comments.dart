@@ -17,17 +17,47 @@ class _commentsState extends State<comments> {
   String comment = '';
   final formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
+  late String myname;
+  late String myusername;
+  late String myid;
 
-  // BuildComments() {
-  //   return Text("data");
-  // }
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+      setState(() {
+        myname = userData.data()!['name'];
+        myusername = userData.data()!['username'];
+        myid = userData.id;
+      });
+    });
+  }
+
+  String getname() {
+    _getdata();
+    return myname;
+  }
+
+  String getusername() {
+    _getdata();
+    return myusername;
+  }
+
+  String getid() {
+    _getdata();
+    return myid;
+  }
 
   void addComment() async {
-    final _auth = FirebaseAuth.instance;
+    //print(" print for asma");
 
-    User? user = _auth.currentUser;
-
-    String? usrename = user?.displayName;
+    String id = getid();
+    String name = getname();
+    String username = getusername();
 
     await FirebaseFirestore.instance
         .collection("Stories")
@@ -35,13 +65,19 @@ class _commentsState extends State<comments> {
         .collection("Comments")
         .add({
       "Comment": commentController.text,
-      "Username": "اسم المستخدم",
-      "Name": "الاسم"
+      "Userid": id,
+      "Username": username,
+      "Name": name,
     }).then((_) {
       print("collection created");
     }).catchError((_) {
       print("an error occured");
     });
+    commentController.clear();
+    FirebaseFirestore.instance
+        .collection("Stories")
+        .doc(widget.st.id)
+        .update({'CommentCount': widget.st.commentCount + 1});
   }
 
   @override
@@ -52,99 +88,6 @@ class _commentsState extends State<comments> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
 
-      ///----------------------------navigation bar-----------------
-      // bottomNavigationBar: Container(
-      //   height: height * .09,
-      //   decoration: BoxDecoration(
-      //     borderRadius: BorderRadius.only(
-      //         topRight: Radius.circular(15), topLeft: Radius.circular(20)),
-      //     color: Colors.white,
-      //   ),
-      //   padding: EdgeInsets.symmetric(horizontal: 10),
-      //   child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //       children: [
-      //         ElevatedButton(
-      //           onPressed: () {
-      //             // final isValid = formKey.currentState.validate();
-      //           },
-      //           style: ElevatedButton.styleFrom(
-      //               backgroundColor: Color.fromRGBO(193, 115, 89, 1),
-      //               disabledBackgroundColor: Colors.grey),
-      //           child: Text("إضافة"),
-      //         ),
-      //         Container(
-      //           child: Expanded(
-      //             child: Form(
-      //               key: formKey,
-      //               child: TextFormField(
-      //                 onChanged: (value) => setState(() {
-      //                   comment = value;
-      //                 }),
-      //                 controller: commentController,
-      //                 decoration: InputDecoration(
-      //                   hintTextDirection: TextDirection.rtl,
-      //                   floatingLabelAlignment:
-      //                       FloatingLabelAlignment.start,
-      //                   hintText: "إضافة تعليق..",
-      //                   fillColor: Color.fromRGBO(245, 245, 245, .93),
-      //                 ),
-      //                 validator: ((value) {
-      //                   if (value != null && value.isNotEmpty) cont = true;
-      //                 }),
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //       ]),
-      // ),
-
-      // Container(
-      //   height: height * .09,
-      //   decoration: BoxDecoration(
-      //     borderRadius: BorderRadius.only(
-      //         topRight: Radius.circular(15), topLeft: Radius.circular(20)),
-      //     color: Colors.white,
-      //   ),
-      //   padding: EdgeInsets.symmetric(horizontal: 10),
-      //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         //if (cont)
-      //       },
-      //       style: ElevatedButton.styleFrom(
-      //           backgroundColor: Color.fromRGBO(193, 115, 89, 1),
-      //           disabledBackgroundColor: Colors.grey),
-      //       child: Text("إضافة"),
-      //     ),
-
-      //     // TextFormField(
-      //     //     controller: commentController,
-      //     //     style: TextStyle(
-      //     //       fontSize: 24,
-      //     //       color: Colors.blue,
-      //     //       fontWeight: FontWeight.w600,
-      //     //     ),
-      //     //     decoration: InputDecoration(
-      //     //       hintText: "Email/Mobile",
-      //     //       labelText: 'Email/Mobile',
-      //     //       fillColor: Colors.grey,
-      //     //     )),
-
-      //     // Container(
-      //     //   child: TextFormField(
-      //     //     controller: commentController,
-      //     //     decoration: InputDecoration(
-      //     //       labelText: "إضافة تعليق..",
-      //     //       fillColor: Color.fromRGBO(245, 245, 245, .93),
-      //     //     ),
-      //     //     validator: ((value) {
-      //     //       if (value != null && value.isNotEmpty) cont = true;
-      //     //     }),
-      //     //   ),
-      //     // ),
-      //   ]),
-      // ),
       //-----------------------------app bar-----------------------
       appBar: AppBar(
         centerTitle: true,
@@ -194,7 +137,7 @@ class _commentsState extends State<comments> {
                   VerticalDivider(
                     color: Color.fromRGBO(67, 60, 49, 1),
                   ),
-                  Text(widget.st.writer,
+                  Text(widget.st.writername,
                       style: TextStyle(
                         color: Color.fromRGBO(67, 60, 49, 1),
                         fontFamily: "ElMessiri",
@@ -232,6 +175,7 @@ class _commentsState extends State<comments> {
               title: TextFormField(
                 controller: commentController,
                 textAlign: TextAlign.right,
+                onTap: () => _getdata(),
                 decoration: InputDecoration(hintText: "...إضافة تعليق"),
               ),
               trailing: ElevatedButton(
@@ -249,35 +193,4 @@ class _commentsState extends State<comments> {
       ),
     );
   }
-}
-
-class Comment extends StatelessWidget {
-  final String username;
-  final String comment;
-  final String userId;
-  //final Timestamp timestamp;
-
-  List colors = [
-    Colors.deepOrangeAccent[300],
-    Colors.blueGrey[800],
-    Colors.teal[200],
-    Colors.deepPurple[200]
-  ];
-
-  Comment(
-      {required this.username, required this.comment, required this.userId});
-
-//factory Comment.fromDocument( DocumentSnapshot doc){
-// return Comment(
-// username:doc['username'],
-// userId: doc ['userId'],
-// comment: doc ['comment']
-// )
-//}
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-
 }

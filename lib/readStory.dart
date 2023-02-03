@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import './comments.dart';
@@ -14,21 +15,38 @@ class ReadStory extends StatefulWidget {
 }
 
 class _ReadStoryState extends State<ReadStory> {
+  String myid = '';
   bool like = false;
+  int numlikes = 0;
+  bool isliked = false;
+  @override
+  void initState() {
+    _getdata();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    //final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('Stories')
-                .where('id', isEqualTo: widget.st.id)
+                .doc(widget.st.id)
                 .snapshots(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
+                //if (snapshot.data.docs.length > 0) {
+                // return ListView.builder(
+                // itemCount: snapshot.data.docs.length,
+                // itemBuilder: (ctx, index) {
+                Story storylist = Story.fromJson(snapshot.data);
+                numlikes = storylist.likecount;
+
                 return Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -98,7 +116,7 @@ class _ReadStoryState extends State<ReadStory> {
                                     color: Color.fromRGBO(231, 226, 214, 1),
                                   ),
                                   Text(
-                                    widget.st.writer,
+                                    widget.st.writername,
                                     style: TextStyle(
                                       color: Color.fromRGBO(67, 60, 49, 1),
                                       fontFamily: "ElMessiri",
@@ -163,26 +181,25 @@ class _ReadStoryState extends State<ReadStory> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   TextButton.icon(
-                                    label: Text(widget.st.like.toString(),
+                                    label: Text(numlikes.toString(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Color.fromRGBO(67, 60, 49, 1),
                                         )),
                                     onPressed: () {
                                       setState(() {
-                                        like = !like;
-                                        if (like)
-                                          widget.st.likeStory(
-                                              widget.st.id, widget.st.like);
-                                        else
-                                          widget.st.removeLike(
-                                              widget.st.id, widget.st.like);
+                                        //like = !like;
+                                        // if (like)
+                                        handleLikeStory();
+                                        // else
+                                        //  handleLikeStory();
                                       });
                                     },
                                     icon: Icon(
-                                      (like)
-                                          ? Icons.favorite_rounded
-                                          : Icons.favorite_outline_rounded,
+                                      (storylist.likes[getid()] == false ||
+                                              storylist.likes[getid()] == null)
+                                          ? Icons.favorite_outline_rounded
+                                          : Icons.favorite_rounded,
                                       color: Color.fromRGBO(154, 61, 33, 1),
                                     ),
                                   ),
@@ -200,7 +217,7 @@ class _ReadStoryState extends State<ReadStory> {
                                         color: Color.fromRGBO(67, 60, 49, 1),
                                       ),
                                       label: Text(
-                                          widget.st.comments.length.toString(),
+                                          widget.st.commentCount.toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Color.fromRGBO(83, 63, 2, 1),
@@ -229,8 +246,62 @@ class _ReadStoryState extends State<ReadStory> {
                     ),
                   ]),
                 );
+
+                // } else {
+                //   return Center(
+                //     child: Text('nothing available'),
+                //   );
+                // }
               }
               return Center(child: CircularProgressIndicator());
             }));
+  }
+
+  handleLikeStory() {
+    if (widget.st.likes[getid()] != null) {
+      isliked = widget.st.likes[getid()] == true;
+
+      if (isliked) {
+        setState(() {
+          widget.st
+              .updateLike(widget.st.likecount - 1, widget.st, getid(), false);
+          isliked = false;
+          numlikes -= 1;
+          //widget.st.likes[getid()] = false;
+        });
+      } else if (!isliked) {
+        setState(() {
+          widget.st
+              .updateLike(widget.st.likecount + 1, widget.st, getid(), true);
+          isliked = true;
+          numlikes += 1;
+          //widget.st.likes[getid()] = false;
+        });
+      }
+    } else
+      setState(() {
+        widget.st.updateLike(widget.st.likecount + 1, widget.st, getid(), true);
+        isliked = true;
+        numlikes += 1;
+        //widget.st.likes[getid()] = false;
+      });
+  }
+
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+
+      myid = userData.id;
+    });
+  }
+
+  String getid() {
+    _getdata();
+    return myid;
   }
 }

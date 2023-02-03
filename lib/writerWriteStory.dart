@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'BottomNavBar.dart';
 import 'storyInfo.dart';
@@ -12,6 +14,9 @@ class writeStory1 extends StatefulWidget {
 class _writeStory1 extends State<writeStory1> {
   final storyController = TextEditingController();
   bool btnActive = false;
+  String myname = '';
+  String myusername = '';
+  String myid = '';
   //late String sconinput;
 
   @override
@@ -31,10 +36,14 @@ class _writeStory1 extends State<writeStory1> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {Navigator.pushAndRemoveUntil(
-            (context),
-            MaterialPageRoute(builder: (context) => navBar()),
-            (route) => false);}, icon: Icon(Icons.clear), color: Colors.white)
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    (context),
+                    MaterialPageRoute(builder: (context) => navBar()),
+                    (route) => false);
+              },
+              icon: Icon(Icons.clear),
+              color: Colors.white)
         ],
       ),
 
@@ -79,15 +88,15 @@ class _writeStory1 extends State<writeStory1> {
               children: [
                 Column(
                   children: [
-                    const Text(
-                      'اسم المستخدم',
+                    Text(
+                      getname(),
                       style: TextStyle(
                           fontFamily: 'Tajawal',
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '@userName',
+                      getusername(),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -156,6 +165,32 @@ class _writeStory1 extends State<writeStory1> {
         ),
       ),
     );
+  }
+
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+      setState(() {
+        myname = userData.data()!['name'];
+        myusername = userData.data()!['username'];
+        myid = userData.id;
+      });
+    });
+  }
+
+  String getname() {
+    _getdata();
+    return myname;
+  }
+
+  String getusername() {
+    _getdata();
+    return myusername;
   }
 
   void infoPage() {

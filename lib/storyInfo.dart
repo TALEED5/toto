@@ -32,6 +32,10 @@ class _StoryInfo extends State<StoryInfo> {
   String address = "";
   LatLng? coordinates;
   final _auth = FirebaseAuth.instance;
+  String myname = '';
+  String myusername = '';
+  String myid = '';
+  String selectedValue = "الرياض";
 
   String scontent;
   final formKey = GlobalKey<FormState>(); //key for form
@@ -43,13 +47,8 @@ class _StoryInfo extends State<StoryInfo> {
   //TextEditingController dateinput = TextEditingController();
   final titleController = TextEditingController();
   final discreptionController = TextEditingController();
-  //final Controller = TextEditingController();
+  final reigonController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   dateinput.text = ""; //set the initial value of text field
-  //   super.initState();
-  // }
   void saveAddressToLocal() {
     //GetStorage box = GetStorage();
     saveLocationToFire("${coordinates?.latitude}-${coordinates?.longitude}");
@@ -58,6 +57,7 @@ class _StoryInfo extends State<StoryInfo> {
   @override
   void initState() {
     // implement initState
+    _getdata();
     super.initState();
   }
 
@@ -125,7 +125,7 @@ class _StoryInfo extends State<StoryInfo> {
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+          //physics: const NeverScrollableScrollPhysics(),
           child: Form(
             key: formKey,
             child: Column(
@@ -187,16 +187,6 @@ class _StoryInfo extends State<StoryInfo> {
 
                 SizedBox(height: height * 0.04),
                 SingleChildScrollView(
-                  ///child: Container(
-                  ///height: 100,
-                  //padding:const EdgeInsets.all(10.0),
-                  ///padding:const EdgeInsets.only(top: 3, right: 11, left: 11, bottom: 3),
-                  ///decoration: BoxDecoration(
-                  //color: Color(0xffF6F6F6),
-                  ///color: Colors.white,
-                  //border: Border.all(color: Color(0xff5F7858)),
-                  ///borderRadius: BorderRadius.circular(30),),
-
                   child: Directionality(
                     textDirection: ui.TextDirection.rtl,
                     child: TextFormField(
@@ -298,7 +288,26 @@ class _StoryInfo extends State<StoryInfo> {
 
                 //-----------------------------تحديد القصة على الخريطة-------------------------
                 SizedBox(height: height * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    DropdownButton(
+                        alignment: AlignmentDirectional.center,
+                        value: selectedValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedValue = newValue!;
+                          });
+                        },
+                        items: dropdownItems),
+                    Text("    :الرجاء اختيار المنطقة التي حدثت فيها القصة")
+                  ],
+                ),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Text(
+                    address != "" ? "($address)" : "",
+                    style: const TextStyle(color: Colors.grey),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Get.to(() => const AddPinMapView())?.then((value) {
@@ -323,10 +332,6 @@ class _StoryInfo extends State<StoryInfo> {
                       children: [
                         const Text("تحديد القصة على الخريطة"),
                         Icon(Icons.location_pin),
-                        Text(
-                          address != "" ? "($address)" : "",
-                          style: const TextStyle(color: Colors.grey),
-                        ),
                       ],
                     ),
                   ),
@@ -391,55 +396,88 @@ class _StoryInfo extends State<StoryInfo> {
     );
   }
 
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("الرياض"), value: "الرياض"),
+      DropdownMenuItem(child: Text("مكة المكرمة"), value: "مكة المكرمة"),
+      DropdownMenuItem(
+          child: Text("المدينة المنورة"), value: "المدينة المنورة"),
+      DropdownMenuItem(child: Text("الشرقية"), value: "الشرقية"),
+      DropdownMenuItem(child: Text("عسير"), value: "عسير"),
+      DropdownMenuItem(child: Text("تبوك"), value: "تبوك"),
+      DropdownMenuItem(child: Text("حائل"), value: "حائل"),
+      DropdownMenuItem(
+          child: Text("الحدود الشمالية"), value: "الحدود الشمالية"),
+      DropdownMenuItem(child: Text("جازان"), value: "جازان"),
+      DropdownMenuItem(child: Text("نجران"), value: "نجران"),
+      DropdownMenuItem(child: Text("الباحة"), value: "الباحة"),
+      DropdownMenuItem(child: Text("الجوف"), value: "الجوف"),
+    ];
+    return menuItems;
+  }
+
   void writePage() {
     Navigator.pop(context);
   }
 
   void publishStory() async {
-    User? user = _auth.currentUser;
+    // User? user = _auth.currentUser;
 
-    String? usrename = user?.displayName;
+    // String? usrename = user?.displayName;
     await FirebaseFirestore.instance.collection("Stories").add({
       "Title": titleController.text,
       "Discreption": discreptionController.text,
       "Date": _selectedDate,
-      "Writer": "the wtiter name", //ادور طريقة اوصل بها المستخدم الحالي
-      //"WriterId": user?.uid, //ادور طريقة اوصل بها المستخدم الحالي
-      //"WriterName": usrename,
-      "Like": 0,
-      "Content": scontent
+      "WriterUsername": getusername(),
+      "WriterId": getid(),
+      "WriterName": getname(),
+      "Like": <String, bool>{}, //??
+      "LikeCount": 0,
+      "CommentCount": 0,
+      "Content": scontent,
+      "Region": selectedValue,
+      "ARlink": "", //always empty its entered manually from firebase
     }).then((_) {
       print("collection created");
     }).catchError((_) {
       print("an error occured");
     });
-    // widget.funct(
-    //   title: enteredTitle,
-    //   discreption: entereddiscreprion,
-    //   date: _selectedDate,
-    //   content: scontent,
-    // );
 
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => home(),
+          builder: (context) => navBar(),
         ));
   }
+
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+      setState(() {
+        myname = userData.data()!['name'];
+        myusername = userData.data()!['username'];
+        myid = userData.id;
+      });
+    });
+  }
+
+  String getname() {
+    _getdata();
+    return myname;
+  }
+
+  String getusername() {
+    _getdata();
+    return myusername;
+  }
+
+  String getid() {
+    _getdata();
+    return myid;
+  }
 }
-// if (pickedDate != null) {
-//                           print(
-//                               pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-//                           String formattedDate =
-//                               DateFormat('yyyy-MM-dd').format(pickedDate);
-//                           print(
-//                               formattedDate); //formatted date output using intl package =>  2021-03-16
-//                           //you can implement different kind of Date Format here according to your requirement
-//                           setState(() {
-//                             dateinput.text =
-//                                 formattedDate; //set output date to TextField value.
-//                           });
-//                         } else {
-//                           print("Date is not selected");
-//                         }
-//                       },

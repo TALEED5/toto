@@ -15,173 +15,6 @@ class StoryList extends StatelessWidget {
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.docs.length > 0) {
-              // return ListView.builder(
-              //   itemBuilder: (ctx, index) {
-              //     return Card(
-              //       margin:
-              //           EdgeInsets.only(left: 20, top: 5, right: 20, bottom: 5),
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(20)),
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.stretch,
-              //         children: <Widget>[
-              //           Container(
-              //             width: double.infinity,
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.end,
-              //               children: [
-              //                 IconButton(
-              //                   alignment: Alignment.centerLeft,
-              //                   onPressed: null,
-              //                   // disabledColor:
-              //                   //     Colors.grey[600], //عجبني لكن مدري كيف استخدمه
-              //                   icon: Icon(Icons.api_rounded,
-              //                       color: Color.fromARGB(255, 184, 178, 110)),
-              //                 ),
-              //                 Container(
-              //                   padding: EdgeInsets.only(right: 7),
-              //                   child: Text(
-              //                     stories[index].writer,
-              //                     style: TextStyle(
-              //                       color: Color.fromRGBO(86, 63, 2, 1),
-              //                       fontFamily: "ElMessiri",
-              //                       fontSize: 18,
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 Container(
-              //                   padding: EdgeInsets.only(
-              //                     right: 20,
-              //                     left: 5,
-              //                     top: 7,
-              //                   ),
-              //                   child: Icon(
-              //                     Icons.account_circle,
-              //                     color: Color.fromRGBO(95, 120, 88, 1),
-              //                     size: 30,
-              //                   ),
-              //                 )
-              //               ],
-              //             ),
-              //           ),
-              //           Divider(
-              //             color: Color.fromRGBO(231, 226, 214, 1),
-              //             indent: 15,
-              //             endIndent: 15,
-              //           ),
-              //           Padding(
-              //             padding: EdgeInsets.symmetric(horizontal: 20),
-              //             child: Column(
-              //               crossAxisAlignment: CrossAxisAlignment.end,
-              //               children: <Widget>[
-              //                 //--------------------------title--------------------
-              //                 Text(
-              //                   stories[index].title,
-              //                   style: TextStyle(
-              //                     fontSize: 16,
-              //                     fontWeight: FontWeight.bold,
-              //                     fontFamily: "ElMessiri",
-              //                   ),
-              //                 ),
-              //                 //---------------------------discreption-------------
-              //                 Text(
-              //                   stories[index].discreption,
-              //                   style: TextStyle(
-              //                     fontSize: 16,
-              //                     fontWeight: FontWeight.bold,
-              //                     fontFamily: "ElMessiri",
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //           //-------------------------------icons---------------------
-              //           Padding(
-              //             padding: const EdgeInsets.only(
-              //               right: 10,
-              //             ),
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.end,
-              //               children: [
-              //                 Flexible(
-              //                   fit: FlexFit.tight,
-              //                   child: TextButton.icon(
-              //                     icon: Icon(
-              //                       Icons.arrow_back_rounded,
-              //                       color: Color.fromRGBO(154, 61, 33, 1),
-              //                     ),
-              //                     onPressed: () {
-              //                       Navigator.push(
-              //                           context,
-              //                           MaterialPageRoute(
-              //                             builder: (context) =>
-              //                                 ReadStory(stories[index]),
-              //                           ));
-              //                     },
-              //                     label: Text(
-              //                       "المزيد",
-              //                       style: TextStyle(
-              //                         fontSize: 14,
-              //                         fontWeight: FontWeight.bold,
-              //                         fontFamily: "ElMessiri",
-              //                         color: Color.fromRGBO(154, 61, 33, 1),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 IntrinsicHeight(
-              //                   child: Row(
-              //                       mainAxisAlignment: MainAxisAlignment.end,
-              //                       children: [
-              //                         Text(stories[index].like.toString(),
-              //                             style: TextStyle(
-              //                               fontWeight: FontWeight.bold,
-              //                             )),
-              //                         Icon(
-              //                           Icons.favorite_rounded,
-              //                           color: Color.fromRGBO(154, 61, 33, 1),
-              //                         ),
-              //                         VerticalDivider(
-              //                           color: Color.fromRGBO(231, 226, 214, 1),
-              //                         ),
-              //                         Icon(
-              //                           Icons.align_vertical_bottom_rounded,
-              //                           color: Color.fromRGBO(154, 61, 33, 1),
-              //                         ),
-              //                         VerticalDivider(
-              //                           color: Color.fromRGBO(231, 226, 214, 1),
-              //                         ),
-              //                         Text(
-              //                           DateFormat.yMMMd()
-              //                               .format(stories[index].date),
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Icon(
-              //                           Icons.calendar_month_outlined,
-              //                           color: Color.fromRGBO(95, 120, 88, 1),
-              //                         ),
-              //                         VerticalDivider(
-              //                           color: Color.fromRGBO(231, 226, 214, 1),
-              //                         ),
-              //                         // Text(st.loc),
-              //                         IconButton(
-              //                           icon: Icon(Icons.location_on_outlined),
-              //                           onPressed: () {},
-              //                           color: Color.fromRGBO(154, 61, 33, 1),
-              //                         ),
-              //                       ]),
-              //                 )
-              //               ],
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //     );
-              //   },
-              //   itemCount: stories.length,
-              // );
-              //final docs = snapshot.data!.docs;
               return ListView.builder(
 
                   ///s hrinkWrap: true,
@@ -190,16 +23,12 @@ class StoryList extends StatelessWidget {
                     Story storylist = Story.fromJson(snapshot.data.docs[index]);
                     // children: snapshot.data.document.map[(document) {
                     return Card(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                           left: 20, top: 5, right: 20, bottom: 5),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      //icon: Icon(Icons.account_circle) for profile
-                      //Icon(Icons.add_a_photo) api_rounded
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-
                         children: <Widget>[
                           Container(
                             width: double.infinity,
@@ -208,35 +37,32 @@ class StoryList extends StatelessWidget {
                               children: [
                                 IconButton(
                                   alignment: Alignment.centerLeft,
-                                  onPressed: null,
-                                  disabledColor: Colors
-                                      .grey[600], //عجبني لكن مدري كيف استخدمه
+                                  onPressed: /*storylist.ARlink==''?:هنا حطي رابط الويب */ null,
+                                  disabledColor: Colors.grey[600],
                                   icon: Icon(Icons.api_rounded,
-                                      color:
-                                          Color.fromARGB(255, 184, 178, 110)),
-                                  // color: Color.fromRGBO(95, 120, 88, 1)
-                                  // padding: EdgeInsets.only(right:20,left:5,top:7,bottom: 7),
+                                      color: storylist.ARlink == ''
+                                          ? Colors.grey[600]
+                                          : const Color.fromARGB(
+                                              255, 184, 178, 110)),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.only(left: 200),
-                                  padding: EdgeInsets.only(right: 7),
+                                  padding: const EdgeInsets.only(right: 7),
                                   child: Text(
-                                    storylist.writer,
-                                    style: TextStyle(
+                                    storylist.writername,
+                                    style: const TextStyle(
                                       color: Color.fromRGBO(86, 63, 2, 1),
                                       fontFamily: "ElMessiri",
                                       fontSize: 18,
-                                      // fontWeight: FontWeight.bold
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     right: 20,
                                     left: 5,
                                     top: 7,
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.account_circle,
                                     color: Color.fromRGBO(95, 120, 88, 1),
                                     size: 30,
@@ -246,20 +72,20 @@ class StoryList extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Divider(
+                          const Divider(
                             color: Color.fromRGBO(231, 226, 214, 1),
                             indent: 15,
                             endIndent: 15,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 //--------------------------title--------------------
                                 Text(
                                   storylist.title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "ElMessiri",
@@ -268,7 +94,7 @@ class StoryList extends StatelessWidget {
                                 //---------------------------discreption-------------
                                 Text(
                                   storylist.discreption,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "ElMessiri",
@@ -292,8 +118,8 @@ class StoryList extends StatelessWidget {
                                                 ReadStory(storylist),
                                           ));
                                     },
-                                    icon: Icon(Icons.arrow_back_rounded),
-                                    color: Color.fromRGBO(154, 61, 33, 1),
+                                    icon: const Icon(Icons.arrow_back_rounded),
+                                    color: const Color.fromRGBO(154, 61, 33, 1),
                                   ),
                                   TextButton(
                                       onPressed: () {
@@ -304,7 +130,7 @@ class StoryList extends StatelessWidget {
                                                   ReadStory(storylist),
                                             ));
                                       },
-                                      child: Text(
+                                      child: const Text(
                                         "المزيد",
                                         style: TextStyle(
                                           fontSize: 14,
@@ -319,45 +145,38 @@ class StoryList extends StatelessWidget {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text(storylist.like.toString(),
-                                          style: TextStyle(
+                                      Text(storylist.likecount.toString(),
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
-                                      Icon(
+                                      const Icon(
                                         Icons.favorite_rounded,
                                         color: Color.fromRGBO(154, 61, 33, 1),
                                       ),
-                                      VerticalDivider(
+                                      const VerticalDivider(
                                         color: Color.fromRGBO(231, 226, 214, 1),
-                                        //indent: 15,
-                                        //endIndent: 15,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.align_vertical_bottom_rounded,
                                         color: Color.fromRGBO(154, 61, 33, 1),
                                       ),
-                                      VerticalDivider(
+                                      const VerticalDivider(
                                         color: Color.fromRGBO(231, 226, 214, 1),
-                                        //indent: 15,
-                                        //endIndent: 15,
                                       ),
                                       Text(
-                                        DateFormat.yMMMd()
-                                            .format(storylist.date),
-                                        style: TextStyle(
+                                        DateFormat.y().format(storylist.date),
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.calendar_month_outlined,
                                         color: Color.fromRGBO(95, 120, 88, 1),
                                       ),
-                                      VerticalDivider(
+                                      const VerticalDivider(
                                         color: Color.fromRGBO(231, 226, 214, 1),
-                                        //indent: 15,
-                                        //endIndent: 15,
                                       ),
-                                      /* Text(st.loc), */
-                                      Icon(
+                                      Text(storylist.region),
+                                      const Icon(
                                         Icons.location_on_outlined,
                                         color: Color.fromRGBO(154, 61, 33, 1),
                                       ),
@@ -370,24 +189,12 @@ class StoryList extends StatelessWidget {
                     );
                   });
             } else {
-              return Center(
+              return const Center(
                 child: Text('nothing available'),
               );
             }
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
   }
-
-  // Future<List<DocumentSnapshot>> getStoriesFromFirebase() async {
-  //   final QuerySnapshot result = await storyRef.get();
-  //   final List<DocumentSnapshot> documents = result.docs;
-  //   print(documents);
-  //   // List<String> myList = [];
-  //   // for (var snapshot in documents) {
-  //   //   myList.add(snapshot.get("Title"));
-  //   //   print(snapshot.get("Title"));
-  //   // }
-  //   return documents;
-  // }
 }

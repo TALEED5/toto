@@ -23,36 +23,36 @@ class _Wprofile extends State<Wprofile> {
           elevation: 0,
         ),
         backgroundColor: Color(0xffE7E2D6),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-              child: GNav(
-                backgroundColor: Colors.white,
-                tabBackgroundColor: Color(0xffe5e5e5),
-                padding: EdgeInsets.all(16),
-                gap: 8,
-                tabs: const [
-                  GButton(
-                    icon: Icons.home,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.location_pin,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.chat_outlined,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.person,
-                    text: '   ',
-                  ),
-                ],
-              )),
-        ),
+        // bottomNavigationBar: Container(
+        //   color: Colors.white,
+        //   child: Padding(
+        //       padding:
+        //           const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        //       child: GNav(
+        //         backgroundColor: Colors.white,
+        //         tabBackgroundColor: Color(0xffe5e5e5),
+        //         padding: EdgeInsets.all(16),
+        //         gap: 8,
+        //         tabs: const [
+        //           GButton(
+        //             icon: Icons.home,
+        //             text: '   ',
+        //           ),
+        //           GButton(
+        //             icon: Icons.location_pin,
+        //             text: '   ',
+        //           ),
+        //           GButton(
+        //             icon: Icons.chat_outlined,
+        //             text: '   ',
+        //           ),
+        //           GButton(
+        //             icon: Icons.person,
+        //             text: '   ',
+        //           ),
+        //         ],
+        //       )),
+        // ),
         endDrawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,

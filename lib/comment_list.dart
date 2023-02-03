@@ -6,6 +6,16 @@ class comment_list extends StatelessWidget {
   String storyid;
 
   comment_list(this.storyid);
+  late String username;
+  late String name;
+
+//   void getuserinfo (String userid) async{
+// var document=await FirebaseFirestore.instance.doc('Users/'+userid);
+// document.get => then((document) {
+//     name=document("name");
+//     username=doocument("username");
+// });
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +25,7 @@ class comment_list extends StatelessWidget {
       Colors.teal[200],
       Colors.deepPurple[200]
     ];
-    
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("Stories")
@@ -32,8 +42,9 @@ class comment_list extends StatelessWidget {
                         Comment.fromJson(snapshot.data.docs[index]);
 
                     return Card(
-                      // color: Color.fromRGBO(231, 226, 216, 1),
-                      color: Color.fromARGB(255, 167, 132, 62),
+                      elevation: 0,
+                      color: Color.fromRGBO(231, 226, 216, 1),
+                      //color: Color.fromARGB(255, 167, 132, 62),
 
                       margin: EdgeInsets.only(
                           left: 20, top: 5, right: 20, bottom: 5),
@@ -49,21 +60,21 @@ class comment_list extends StatelessWidget {
                                 Row(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text("اسم المستخدم",
+                                    child: Text(commentlist.username,
                                         style: TextStyle(
                                           color: Colors.blueGrey[200],
                                           fontFamily: "ElMessiri",
                                           fontSize: 14,
                                         )),
                                   ),
-                                  Text("الاسم",
+                                  Text(commentlist.name,
                                       style: TextStyle(
                                         fontFamily: "ElMessiri",
                                         fontSize: 15,
                                       )),
                                 ]),
                                 Text(
-                                  "روعتييين",
+                                  commentlist.comnt,
                                   style: TextStyle(
                                     color: Colors.blueGrey[200],
                                     fontFamily: "ElMessiri",

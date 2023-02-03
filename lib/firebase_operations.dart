@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
+
 Future<void> saveLocationToFire(String latLng) async {
   try {
     db.collection("locations").doc().set({
@@ -32,3 +33,5 @@ Future<List<String>> getLocationsFromFire() async {
 
   return myListString;
 }
+
+
