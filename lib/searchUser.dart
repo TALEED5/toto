@@ -1,6 +1,6 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:ui';
+//import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,14 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:toto/User.dart';
-import 'package:toto/chat_screen.dart';
-
+import 'TaleedApp.dart';
+import 'chatProvider.dart';
+import 'chatRoomModel.dart';
+import 'chatView.dart';
+import 'messages_model.dart';
 import 'new_message.dart';
 
 class search extends StatefulWidget {
   const search({Key? key}) : super(key: key);
+  static var searchedUser;
   
-  static late var searchedUser;
 
   @override
   State<search> createState() => _search();
@@ -26,8 +29,14 @@ class _search extends State<search> {
   late QuerySnapshot searchResult;
   bool isLoading = false;
   bool haveUserSearched = false;
-  static late var searchedUser;
+  //static late var searchedUser;
   var usersList = [];
+  //var searchedUser;
+
+  String name = "";
+  String username = "";
+  String uid = '';
+
   
 
   initiateSearch() async {
@@ -39,9 +48,9 @@ class _search extends State<search> {
         searchResult = snapshot;
 
         searchResult.docs.forEach((element) {
-          searchedUser = {"name": element["name"], "username": element["username"],"userID": element["userID"]};
+          search.searchedUser = {"name": element["name"], "username": element["username"],"userID": element["userID"]};
 
-          usersList.add(searchedUser);
+          usersList.add(search.searchedUser);
         });
         setState(() {
           isLoading = false;
@@ -55,7 +64,7 @@ class _search extends State<search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("search for user"),
+        title: Text("البحث عن مستخدم"),
         centerTitle: true,
       ),
       body: Column(
@@ -171,13 +180,48 @@ class _search extends State<search> {
           ),
           const Spacer(),
           GestureDetector(
-            onTap: () {
-              existOrNot();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(user["name"]),//call chat screen and pass the other persons username as an argument
-                ));
+            onTap: () async{
+              await ChatProvider()
+                      .createChatRoom(
+                    chatType: "NormalChat",
+                    chatRoom: ChatRoomModel(
+                      senderId: TaleedApp.loggedInUser.userID,
+                      senderName: TaleedApp.loggedInUser.name,
+                      isDonation: false,
+                      donationUserName: user["name"],
+                      donationUserId: user["userID"],
+                      message: MessageModel(
+                        message: '',
+                        readed: false,
+                      ),
+                    ),
+                  )
+                      .then((v) async {
+                    ChatRoomModel room;
+
+                    room = ChatRoomModel(
+                      senderId: TaleedApp.loggedInUser.userID,
+                      senderName: TaleedApp.loggedInUser.name,
+                      isDonation: false,
+                      donationUserName: user["name"],
+                      donationUserId: user["userID"],
+                      message: MessageModel(
+                        message: '',
+                        readed: false,
+                      ),
+                    );
+
+                    String fcmToken = await TaleedApp().getFCMUser(id: user["userID"]);
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => ChatScreen(
+                                  room: room,
+                                  isFromDonation: false,
+                                  fcmToken: fcmToken,
+                                )));
+                  });
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -209,13 +253,11 @@ class _search extends State<search> {
   // }
 
   Widget userList() {
-    print("before condition statement");
     return haveUserSearched
         ? ListView.builder(
             //shrinkWrap: true,
-            itemCount: 2, //searchResult.docs.length,
+            itemCount: searchResult.docs.length,//2,
             itemBuilder: (BuildContext context, int index) {
-              print("after condition statement");
               String namee = searchResult.docs[index]["name"].toString();
               return userTile(namee
                   //searchResult.docs[index]["name"],
@@ -226,38 +268,5 @@ class _search extends State<search> {
             child: Text('test test'),
           );
   }
-  var docid = 'filwah';
-  var docid2 = 'document1';
-  late var testdoc = {"degree":"bachelors", 'gradYear':2023, 'docid': docid2, 'name':'filly'};
-
-   testdb() async {
-    //DocumentReference<Map<String, dynamic>> obj = FirebaseFirestore.instance.collection('Chat').doc(docid2);
-    var fbref = FirebaseFirestore.instance.collection('Chat');
-    var document = await fbref.doc(docid2).get();
-    if (document.exists) {
-      print('dou name filwah match');
-    }
-    else{
-      print('doc with that naame dosnt exist');
-    }
-    //obj.set(testdoc);
-   // obj.collection('messages').add({'text':'hello2','timeStamp': Timestamp.now(), 'worked':'يارب'});
-    
-  }
-
-  void existOrNot() async{
-    final user = FirebaseAuth.instance.currentUser!;
-    var dbRef = FirebaseFirestore.instance.collection('Chat');
-    newMessage mesgobj = new newMessage();
-    var document = await dbRef.doc(createRoomId(user.uid, search.searchedUser['userID'])).get();
-    newMessage.roomExist = document.exists;
-  }
-
-  String createRoomId(String a, String b) {
-    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-      return "$b\_$a";
-    } else {
-      return "$a\_$b";
-    }
-  }
+ 
 }

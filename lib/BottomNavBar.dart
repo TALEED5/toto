@@ -1,18 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:toto/chat_screen.dart';
-import 'package:toto/home.dart';
-import 'package:toto/searchUser.dart';
 import 'package:toto/writerHome.dart';
 import 'package:toto/writerProfile.dart';
-import 'package:toto/writerWriteStory.dart';
-
-import 'Rprofile.dart';
-import 'forgetpassword.dart';
+import 'mainChatRooms.dart';
 import 'map_view.dart';
 
 class navBar extends StatefulWidget {
@@ -24,7 +16,7 @@ class navBar extends StatefulWidget {
 
 class _navBar extends State<navBar> {
   int currentIndex =0;
-  List <Widget> wpages = [writerHome(), MapView(),search(), Wprofile(),]; //[writerHome(), MapView(),search(), Wprofile(),];
+  List <Widget> wpages = [writerHome(), MapView(),MainChatRooms(), Wprofile(),]; //[writerHome(), MapView(),search(), Wprofile(),];
 
   void navigateTo(int index){
     setState(() {

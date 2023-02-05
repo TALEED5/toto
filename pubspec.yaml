@@ -28,7 +28,9 @@ dependencies:
   fluttertoast: ^8.1.2
   flutter_localizations:
     sdk: flutter
-
+  shared_preferences: ^2.0.17
+  firebase_messaging: ^14.2.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

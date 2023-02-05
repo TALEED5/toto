@@ -1,280 +1,150 @@
 // ignore_for_file: prefer_const_constructors
-<<<<<<< HEAD
+//<<<<<<< HEAD
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-=======
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:toto/BottomNavBar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:toto/chat_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+//=======
 // no thing new again
 import 'package:toto/home.dart';
+import 'package:toto/searchUser.dart';
+import 'package:toto/help.dart';
+import 'package:toto/utils/utils/assets.dart';
 
->>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
+
+
+//>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 import './forgetpassword.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
-<<<<<<< HEAD
+//<<<<<<< HEAD
 // tttte
-=======
+//=======
 import './home.dart';
+import 'TaleedApp.dart';
+import 'utils/utils/custom_loader.dart';
+import 'utils/utils/loader.dart';
 
 //just a comment to test github
->>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
+//>>>>>>> c6fb5ddc85d7be78f665ff694e30f29d178d71ca
 //import './forgetpassword.dart';
-void main() {
-  runApp(MaterialApp(
-    home: MyApp(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-///hi my rty
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-//////////////ray is here 
-class _MyAppState extends State<MyApp> {
-  bool obscure_text = true;
-  Icon iconfirst = Icon(
-    Icons.visibility_off,
-    color: Color.fromARGB(255, 255, 255, 255),
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MaterialApp(
+//     home: CreateAccount(),//ChatScreen(),//CreateAccount(),
+//     debugShowCheckedModeBanner: false,
+//   ));
+// }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await GetStorage.init();
+
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
   );
-<<<<<<< HEAD
-/////////////////////////////////////////////////laaaaaaaaassst
-=======
+  String fcmToken;
 
-  /////////////////////last 
+  FirebaseMessaging.onMessage.listen((message) {
+    // Handle your message here
+    log("fcmToken: ${message.data}");
+  });
 
-  @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    super.initState();
-  }
+  FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
->>>>>>> ee40fff769cfa117cd076738ec0af3bcd4f73d40
+  _fcm.getToken().then((token) async {
+    log("fcmToken: ${token}");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('fcmToken', token!);
+    fcmToken = token;
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      await TaleedApp().updateFCMUser(id: FirebaseAuth.instance.currentUser!.uid);
+    }
+    //
+  });
+
+  runApp(const MyApp());
+}
+
+Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+  print("sssss_myBackgroundMessageHandler ");
+  // Or do other work.
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/housebg.png'),
-              fit: BoxFit.cover),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "تسجيل دخول",
-                  style: TextStyle(
-                    fontSize: 37.0,
-                    color: Color.fromARGB(255, 29, 22, 13),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "ElMessiri",
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context, _) {
+          return Stack(
+            children: [
+              GetMaterialApp(
+                locale: const Locale("ar"),
+                //fallbackLocale: Get.deviceLocale,
+                localizationsDelegates: const [
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('ar', 'AE'),
+                ],
+                //initialBinding: Binding(),
+                debugShowCheckedModeBanner: false,
+                title: "قصتي",
+                theme: ThemeData(
+                  primaryColor: Assets.shared.primaryColor,
+                  scaffoldBackgroundColor:
+                      Assets.shared.scaffoldBackgroundColor,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  colorScheme: ColorScheme.fromSwatch().copyWith(
+                    secondary: Assets.shared.secondaryColor,
+                  ),
+                  appBarTheme: AppBarTheme(
+                    color: Assets.shared.primaryColor,
+                  ),
+                  fontFamily: Assets.shared.primaryFont,
+                  textSelectionTheme: TextSelectionThemeData(
+                    cursorColor: Assets.shared.primaryColor,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 45, 0, 0),
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
-                  child: Text(
-                    "رقم الجوال",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontFamily: "ElMessiri",
-                      fontSize: 16.0,
-                      color: Color.fromARGB(255, 34, 75, 12),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                  child: TextField(
-                    textAlign: TextAlign.right,
-                    cursorColor: Color(0xFF90B28D),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      suffixIcon: Icon(
-                        Icons.phone_android,
-                        color: Color(0xFF90B28D),
-                      ),
-                      hintText: "رقم الجوال",
-                      hintStyle: TextStyle(
-                        color: Color(0xFF909A99),
-                      ),
-                    ),
-                    keyboardType: TextInputType.phone,
-                  ),
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
-                  child: Text(
-                    "كلمة المرور",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontFamily: "ElMessiri",
-                      fontSize: 16.0,
-                      color: Color.fromARGB(255, 34, 75, 12),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                  child: TextField(
-                    textAlign: TextAlign.right,
-                    obscureText: obscure_text,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      suffixIcon: Icon(
-                        Icons.lock,
-                        color: Color(0xFF90B28D),
-                      ),
-                      prefixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (obscure_text == true) {
-                              obscure_text = false;
-                              iconfirst = Icon(
-                                Icons.visibility,
-                                color: Color(0xFF90B28D),
-                              );
-                            } else {
-                              obscure_text = true;
-                              iconfirst = Icon(
-                                Icons.visibility_off,
-                                color: Colors.grey.shade300,
-                              );
-                            }
-                          });
-                        },
-                        child: iconfirst,
-                      ),
-                      hintText: "كلمة المرور",
-                      hintStyle: TextStyle(
-                        color: Color(0xFF909A99),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  width: 280,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => forgetpass(),
-                          ));
-                    },
-                    style: ButtonStyle(
-                      alignment: Alignment.topLeft,
-                    ),
-                    child: Text(
-                      " نسيت كلمة المرور",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "ElMessiri",
-                          fontSize: 12.0,
-                          color: Color.fromARGB(255, 0, 0, 0)),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 170,
-                ),
-                //-------------------------------------the button--------------------
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => home(),
-                        ));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size(280, 40),
-                      backgroundColor: Color(0xFFA03C1B),
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      )),
-                  child: Text(
-                    "تسجيل دخول",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "ElMessiri",
-                        fontSize: 22.0,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                //----------------------dont have account---------------
-                Container(
-                    child: Center(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CreateAccount(),
-                              ));
-                        },
-                        style: ButtonStyle(
-                          alignment: Alignment.center,
-                        ),
-                        child: Text(
-                          "تسجيل جديد",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "ElMessiri",
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                        ),
-                      ),
-                      Text(
-                        "ليس لديك حساب؟",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "ElMessiri",
-                            fontSize: 16.0,
-                            color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
-                    ]))),
-              ],
-            ),
-          ),
-        ),
+                home: CreateAccount(),
+              ),
+              GetBuilder<LoaderViewModel>(
+                init: LoaderViewModel(),
+                builder: (controller) {
+                  return Visibility(
+                    visible: controller.isActiveLoader,
+                    child: const CustomLoader(),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
-
-  void login() {}
 }
