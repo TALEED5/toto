@@ -2,32 +2,9 @@ import 'package:flutter/material.dart';
 import './story.dart';
 import './writerWriteStory.dart';
 import './story_list.dart';
+import 'myStoryList.dart';
 
-class writerHome extends StatefulWidget {
-  @override
-  State<writerHome> createState() => _Writerhome();
-}
-
-class _Writerhome extends State<writerHome> {
-  // final List<Story> _stories = [
-  //   Story(
-  //       title: 'toto',
-  //       discreption: "taleed life",
-  //       date: DateTime.now(),
-  //       WriterName: "ثريا",
-  //       content: ""
-  //       // like: 30
-  //       ),
-  //   Story(
-  //       title: 'story2',
-  //       discreption: "taleed s2 dis",
-  //       date: DateTime.now(),
-  //       writer: "writer2",
-  //       content: ""
-  //       // like: 5
-  //       ),
-  // ];
-
+class myStories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,14 +45,12 @@ class _Writerhome extends State<writerHome> {
           child: Container(
             height: double.infinity,
             width: double.infinity,
-            child: SingleChildScrollView(
-              child: Column(
-                  //for the whole page
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                   StoryList(),
-                  ]),
-            ),
+            child: Column(
+                //for the whole page
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: myStoryList()),
+                ]),
           ),
         ));
   }

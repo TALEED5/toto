@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:toto/myStories.dart';
 import 'welcomePage.dart';
 import '../my_flutter_app_icons.dart';
 
@@ -149,13 +150,23 @@ class _ProfileInfoRow extends StatelessWidget {
 
   Widget _singleItem1(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        // ignore: prefer_const_literals_to_create_immutables
         children: [
           Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.auto_stories_rounded,
-                color: Color(0xff8E5541),
-                size: 40,
+              child: IconButton(
+                icon: Icon(
+                  Icons.auto_stories_rounded,
+                  color: Color(0xff8E5541),
+                  size: 40,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => myStories(),
+                      ));
+                },
               )),
           Text(
             "10", //retrieve writers number of stories from db

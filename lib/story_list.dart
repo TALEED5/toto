@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import './readStory.dart';
 import './story.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoryList extends StatelessWidget {
   CollectionReference storyRef =
       FirebaseFirestore.instance.collection('Stories');
+  late String link = '';
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class StoryList extends StatelessWidget {
                     Story storylist = Story.fromJson(snapshot.data.docs[index]);
                     // children: snapshot.data.document.map[(document) {
                     return Card(
+                      //color: Color.fromRGBO(241, 239, 233, 1),
                       margin: const EdgeInsets.only(
                           left: 20, top: 5, right: 20, bottom: 5),
                       shape: RoundedRectangleBorder(
@@ -37,7 +40,11 @@ class StoryList extends StatelessWidget {
                               children: [
                                 IconButton(
                                   alignment: Alignment.centerLeft,
-                                  onPressed: /*storylist.ARlink==''?:هنا حطي رابط الويب */ null,
+                                  onPressed: (() {
+                                    if (storylist.ARlink != '')
+                                      link = storylist.ARlink;
+                                    _launchURL();
+                                  }),
                                   disabledColor: Colors.grey[600],
                                   icon: Icon(Icons.api_rounded,
                                       color: storylist.ARlink == ''
@@ -196,5 +203,15 @@ class StoryList extends StatelessWidget {
           }
           return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  _launchURL() async {
+    // url = link;
+    final uri = Uri.parse(link);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $link';
+    }
   }
 }

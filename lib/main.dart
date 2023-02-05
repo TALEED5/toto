@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:toto/utils/assets.dart';
+import 'package:toto/welcomePage.dart';
 import './forgetpassword.dart';
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
                     cursorColor: Assets.shared.primaryColor,
                   ),
                 ),
-                home: CreateAccount(),
+                home: welcome(),
               ),
               GetBuilder<LoaderViewModel>(
                 init: LoaderViewModel(),
