@@ -5,13 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-
 Future<void> saveLocationToFire(String latLng) async {
   try {
-    db.collection("locations").doc().set({
+    db.collection("Pins").doc().set({
       'latlng': latLng,
     }).then((value) {
-      // print("saved to Firestore");
+      print("saved to Firestore");
       Fluttertoast.showToast(msg: "تم الحفظ بنجاح");
     });
   } catch (e) {
@@ -20,7 +19,7 @@ Future<void> saveLocationToFire(String latLng) async {
 }
 
 Future<List<String>> getLocationsFromFire() async {
-  final QuerySnapshot result = await db.collection('locations').get();
+  final QuerySnapshot result = await db.collection('Pins').get();
   final List<DocumentSnapshot> documents = result.docs;
   print(documents);
 
@@ -33,5 +32,3 @@ Future<List<String>> getLocationsFromFire() async {
 
   return myListString;
 }
-
-

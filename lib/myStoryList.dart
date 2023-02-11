@@ -15,8 +15,10 @@ class _myStoryListState extends State<myStoryList> {
   void initState() {
     _getdata();
   }
+  
 
   String myid = '';
+  int numOfStories = 0;
 
   void _getdata() async {
     final user = await FirebaseAuth.instance.currentUser!;
@@ -37,6 +39,8 @@ class _myStoryListState extends State<myStoryList> {
     return myid;
   }
 
+  
+
   //   var user =  FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,7 @@ class _myStoryListState extends State<myStoryList> {
                   ///s hrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (ctx, index) {
+                    numOfStories++;
                     Story storylist = Story.fromJson(snapshot.data.docs[index]);
                     if (storylist.writerid == getid())
                       return Card(

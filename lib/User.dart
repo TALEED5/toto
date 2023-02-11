@@ -1,31 +1,27 @@
-//import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+class UserModel {
+  late String? name;
+  late String? username;
+  late String? age;
+  late String? userID;
+  late String? fcmToken;
 
-class User {
-  late String name;
-  late String username;
-  late String age;
-  late String userId;
-  late String email;
-
-  User({
-    required this.name,
-    required this.username,
-    required this.age,
-    required this.userId,
-    required this.email
+  UserModel({
+    this.name,
+     this.username,
+     this.age,
+     this.userID,
+     this.fcmToken,
   });
-  factory User.fromJson(DocumentSnapshot snapshot) {
-    return User(
-      name: snapshot["name"],
-      username: snapshot["username"],
-      age: snapshot["age"],
-      userId:snapshot.id,
-      email: snapshot["email"]
 
-
+  factory UserModel.fromMap(map) {
+    return UserModel(
+      name: map['name'],
+      username: map['username'],
+      age: map['age'],
+      userID: map['userID'],
+      fcmToken: map['fcmToken'],
     );
-    //WriterName:snapshot["WriterName"]);
   }
 }

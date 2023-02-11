@@ -2,13 +2,18 @@
 
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:toto/firebase_operations.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:toto/readStory.dart';
+import 'package:toto/story.dart';
 
 class MapView extends StatefulWidget {
   const MapView({Key? key}) : super(key: key);
@@ -18,50 +23,95 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
+  String mapTheme = '';
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  late String stid;
 
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(24.7135517, 46.6752957),
-    zoom: 12,
+    zoom: 5.0,
   );
-
+  DateTime d = DateTime.now();
   List<dynamic> markersList = [];
   Map<MarkerId, Marker> markers = {};
+  late Story st = new Story(
+      id: "id",
+      title: "title",
+      discreption: "discreption",
+      date: d,
+      writername: "writername",
+      writerUsername: "writerUsername",
+      writerid: "writerid",
+      content: "content",
+      ARlink: "ARlink",
+      region: "region",
+      likes: <String, bool>{},
+      likecount: 0,
+      commentCount: 0);
 
   _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
     MarkerId markerId = MarkerId(id);
+
     Marker marker = Marker(
         markerId: markerId,
         position: position,
         onTap: () async {
+          // اذا ضغطت على البين
+
+          FirebaseFirestore.instance
+              .collection("Stories")
+              .where("latlng",
+                  isEqualTo: "${position.latitude}-${position.longitude}")
+              .get()
+              .then((snapshot) {
+            for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+                in snapshot.docs) {
+              st = Story.fromJson(doc);
+              //stid = st.id;
+            }
+          });
+
           List<Placemark> placemarks = await placemarkFromCoordinates(
               position.latitude, position.longitude);
-
+          //انفو ويندو فيه اسم الحي
           _customInfoWindowController.addInfoWindow!(
             Column(
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(4),
+                      color: Color.fromARGB(212, 193, 115, 89),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     width: double.infinity,
                     height: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            placemarks.first.name ?? "",
-                            style: const TextStyle(color: Colors.white),
-                          )
-                        ],
+                    child: GestureDetector(
+                      onTap: (() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReadStory(st)),
+                        );
+                      }),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              st.title,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Color.fromARGB(255, 255, 255, 254),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "ElMessiri"),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -105,7 +155,11 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
-    // getAllAddressFromLocal();
+    DefaultAssetBundle.of(context)
+        .loadString('assets/MapStyle/MapS.json')
+        .then((Value) {
+      mapTheme = Value;
+    });
     getAddresses();
   }
 
@@ -130,15 +184,16 @@ class _MapViewState extends State<MapView> {
               // getLocationData(position);
             },
             onMapCreated: (GoogleMapController controller) {
+              controller.setMapStyle(mapTheme);
               _controller.complete(controller);
               _customInfoWindowController.googleMapController = controller;
             },
           ),
           CustomInfoWindow(
             controller: _customInfoWindowController,
-            height: 50,
-            width: 250.w,
-            offset: 50,
+            height: 45,
+            width: 220.w,
+            offset: 30,
           ),
         ],
       ),

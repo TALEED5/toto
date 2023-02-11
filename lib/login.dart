@@ -3,14 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/BottomNavBar.dart';
+import 'package:toto/readerNavBar.dart';
 //import 'package:toto/loggin.dart';
 import './forgetpassword.dart';
 //import 'package:intl/intl.dart';
 import './CreateAccount.dart';
 import './home.dart';
+//import 'utils/utils/assets.dart';
+import 'TaleedApp.dart';
+import 'User.dart';
+import 'assets.dart';
 import 'writerHome.dart';
-
-
 
 class login extends StatefulWidget {
   @override
@@ -28,10 +32,38 @@ class _MyAppState extends State<login> {
   final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var user = FirebaseAuth.instance.currentUser!;
+  final numericRegex = RegExp(r'[0-9]');
+  final CharRegex = RegExp(r'[!@#\$&*~]');
+  final LetterRegex = RegExp(r'[a-z A-Z]');
   late QuerySnapshot userr1;
   var myList = [];
   bool test = false;
   bool writer = false;
+  var errorMessage = '';
+
+  String? validateEmail(String? formEmail) {
+    if (formEmail == null || formEmail.isEmpty)
+      return 'البريد الالكتروني مطلوب';
+
+    String pattern = r'\w+@\w+\.\w+';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(formEmail))
+      return 'صيغة البريد الالكتروني غير صحيحة';
+    else
+      return null;
+  }
+
+  String? validatePassword(String? formPassword) {
+    if (formPassword == null || formPassword.isEmpty)
+      return 'كلمة المرور مطلوبة';
+    else if (formPassword.length < 8)
+      return 'يجب ان تحتوي كلمة المرور على 8 خانات أو أكثر';
+    else if (!numericRegex.hasMatch(formPassword) &&
+        !LetterRegex.hasMatch(formPassword))
+      return 'يجب أن تحتوي كلمة المرور على أرقام وحروف';
+    else
+      return null;
+  }
 
   // get snapshot => null;
 
@@ -45,118 +77,133 @@ class _MyAppState extends State<login> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        //padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/housebg.png'),
-              fit: BoxFit.cover),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: height * .05,
-                  ),
-                  Text(
-                    "تسجيل دخول",
-                    style: TextStyle(
-                      fontSize: 37.0,
-                      color: Color.fromARGB(255, 29, 22, 13),
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "ElMessiri",
+    return MaterialApp(
+      home: Scaffold(
+        body:
+
+            //SafeArea(
+            Container(
+          alignment: Alignment.center,
+
+          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 35.0),
+          //padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/housebg.png'),
+                fit: BoxFit.cover),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 45, 0, 0),
-                  ),
-                  SizedBox(height: height * .05),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
-                    child: Text(
-                      "البريد الألكتروني",
-                      textAlign: TextAlign.right,
+                    Text(
+                      "تسجيل دخول",
                       style: TextStyle(
-                        fontFamily: "ElMessiri",
-                        fontSize: 16.0,
-                        color: Color.fromARGB(255, 34, 75, 12),
-                        fontWeight: FontWeight.bold,
+                          fontSize: 35.0,
+                          color: Color.fromARGB(255, 67, 63, 54),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "ElMessiri"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                    ),
+//---------------------------------email-------------------------------------
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                      child: Text(
+                        "البريد الإلكتروني",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontFamily: "ElMessiri",
+                          fontSize: 16.0,
+                          color: Assets.shared.Gcolor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-
-                  Container(
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    margin:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                    child: TextFormField(
+                    TextFormField(
+                      controller: emailController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: validateEmail,
                       textAlign: TextAlign.right,
                       cursorColor: Color(0xFF90B28D),
-                      controller: emailController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        fillColor: Colors.white.withOpacity(0.9),
+                        counterText: "",
+                        filled: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
                         suffixIcon: Icon(
-                          Icons.email_outlined,
-                          color: Color(0xFF90B28D),
+                          Icons.mail,
+                          color: Assets.shared.iconColor,
                         ),
-                        hintText: "البريد الالكتروني",
+                        hintText: 'email@address.com',
                         hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
+                          color: Assets.shared.hintColor,
                         ),
                       ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (email) {
-                        if (email != null && (email.trim()).isEmpty) {
-                          return "رجاءً أدخل بريدك الإكتروني";
-                        }
-                      },
                       keyboardType: TextInputType.emailAddress,
                     ),
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
-                    child: Text(
-                      "كلمة المرور",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontFamily: "ElMessiri",
-                        fontSize: 16.0,
-                        color: Color.fromARGB(255, 34, 75, 12),
-                        fontWeight: FontWeight.bold,
+//---------------------------------password-------------------------------------
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                      child: Text(
+                        "كلمة المرور",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontFamily: "ElMessiri",
+                          fontSize: 16.0,
+                          color: Color.fromARGB(255, 34, 75, 12),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    margin:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                    child: TextFormField(
+
+                    TextFormField(
+                      controller: passwordController,
+                      validator: validatePassword,
                       textAlign: TextAlign.right,
                       obscureText: obscure_text,
-                      controller: passwordController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        fillColor: Colors.white.withOpacity(0.9),
+                        counterText: "",
+                        filled: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(30)),
                         suffixIcon: Icon(
                           Icons.lock,
-                          color: Color(0xFF90B28D),
+                          color: Assets.shared.iconColor,
                         ),
                         prefixIcon: GestureDetector(
                           onTap: () {
@@ -165,7 +212,7 @@ class _MyAppState extends State<login> {
                                 obscure_text = false;
                                 iconfirst = Icon(
                                   Icons.visibility,
-                                  color: Color(0xFF90B28D),
+                                  color: Color.fromARGB(255, 93, 125, 90),
                                 );
                               } else {
                                 obscure_text = true;
@@ -180,138 +227,132 @@ class _MyAppState extends State<login> {
                         ),
                         hintText: "كلمة المرور",
                         hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
+                          color: Assets.shared.hintColor,
                         ),
                       ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (email) {
-                        if (email != null && (email.trim()).isEmpty) {
-                          return "رجاءً أدخل كلمة المرور الخاصة بك";
-                        }
-                      },
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: 280,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => forgetpass(),
-                            ));
-                      },
-                      style: ButtonStyle(
-                        alignment: Alignment.topLeft,
+
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: 280,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => forgetpass(),
+                              ));
+                        },
+                        style: ButtonStyle(
+                          alignment: Alignment.topLeft,
+                        ),
+                        child: Text(
+                          " نسيت كلمة المرور",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "ElMessiri",
+                              fontSize: 12.0,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 170,
+                    ),
+                    //-------------------------------------the button--------------------
+                    ElevatedButton(
+                      onPressed: logIn,
+                      // child: StreamBuilder<User?>(
+                      //   stream: FirebaseAuth.instance.authStateChanges(),
+                      //   builder: (context, snapshot) {
+                      //     // try{
+                      //     print('inside bulder method');
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return const Center(
+                      //           child: CircularProgressIndicator());
+                      //       // } else if (snapshot.hasError) {
+                      //       //   print("dont have acc");
+
+                      //       //   return Text('has error');
+                      //     }
+                      //     if (snapshot.hasData) {
+                      //       print('have account');
+                      //       return home();
+                      //     } else {
+                      //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      //           content: const Text('Invalid email/password'),
+                      //           backgroundColor: Colors.red.shade400,
+                      //           margin: const EdgeInsets.fromLTRB(6, 0, 3, 0),
+                      //           behavior: SnackBarBehavior.floating,
+                      //           action: SnackBarAction(
+                      //             label: 'Dismiss',
+                      //             disabledTextColor: Colors.white,
+                      //             textColor: Colors.white,
+                      //             onPressed: () {},
+                      //           )));
+                      //       return Text('there is something error');
+                      //     }
+                      //     //checkIn(context, snapshot);
+                      //   },
+                      // ),
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(280, 40),
+                          //backgroundColor: Assets.shared.RedColor,
+                          elevation: 0.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          )),
                       child: Text(
-                        " نسيت كلمة المرور",
+                        "تسجيل دخول",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: "ElMessiri",
-                            fontSize: 12.0,
-                            color: Color.fromARGB(255, 0, 0, 0)),
+                            fontSize: 20.0,
+                            color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 170,
-                  ),
-                  //-------------------------------------the button--------------------
-                  ElevatedButton(
-                    onPressed: logIn,
-                    // child: StreamBuilder<User?>(
-                    //   stream: FirebaseAuth.instance.authStateChanges(),
-                    //   builder: (context, snapshot) {
-                    //     // try{
-                    //     print('inside bulder method');
-                    //     if (snapshot.connectionState ==
-                    //         ConnectionState.waiting) {
-                    //       return const Center(
-                    //           child: CircularProgressIndicator());
-                    //       // } else if (snapshot.hasError) {
-                    //       //   print("dont have acc");
 
-                    //       //   return Text('has error');
-                    //     }
-                    //     if (snapshot.hasData) {
-                    //       print('have account');
-                    //       return home();
-                    //     } else {
-                    //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //           content: const Text('Invalid email/password'),
-                    //           backgroundColor: Colors.red.shade400,
-                    //           margin: const EdgeInsets.fromLTRB(6, 0, 3, 0),
-                    //           behavior: SnackBarBehavior.floating,
-                    //           action: SnackBarAction(
-                    //             label: 'Dismiss',
-                    //             disabledTextColor: Colors.white,
-                    //             textColor: Colors.white,
-                    //             onPressed: () {},
-                    //           )));
-                    //       return Text('there is something error');
-                    //     }
-                    //     //checkIn(context, snapshot);
-                    //   },
-                    // ),
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(280, 40),
-                        backgroundColor: Color(0xFFA03C1B),
-                        elevation: 0.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
+                    //----------------------dont have account---------------
+                    Container(
+                        child: Center(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CreateAccount(),
+                                  ));
+                            },
+                            style: ButtonStyle(
+                              alignment: Alignment.center,
+                            ),
+                            child: Text(
+                              "تسجيل جديد",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "ElMessiri",
+                                  fontSize: 16.0,
+                                  color: Color.fromARGB(255, 0, 0, 0)),
+                            ),
                           ),
-                        )),
-
-                    child: Text(
-                      "تسجيل دخول",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "ElMessiri",
-                          fontSize: 22.0,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  //----------------------dont have account---------------
-                  Container(
-                      child: Center(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CreateAccount(),
-                                ));
-                          },
-                          style: ButtonStyle(
-                            alignment: Alignment.center,
-                          ),
-                          child: Text(
-                            "تسجيل جديد",
+                          Text(
+                            "ليس لديك حساب؟",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "ElMessiri",
                                 fontSize: 16.0,
                                 color: Color.fromARGB(255, 0, 0, 0)),
                           ),
-                        ),
-                        Text(
-                          "ليس لديك حساب؟",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "ElMessiri",
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                        ),
-                      ]))),
-                ],
+                        ]))),
+                  ],
+                ),
               ),
             ),
           ),
@@ -349,10 +390,21 @@ class _MyAppState extends State<login> {
           print(userAge);
           double uAge = double.parse(userAge);
 
+////////////retrieves and saves the current users information 
+          FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get()
+          .then((value) {
+        setState(() {
+          TaleedApp.loggedInUser = UserModel.fromMap(value.data());
+        });
+      });
+///////////////////////////////////////////////////////
           if (uAge >= 60) {
             print("in writer");
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => writerHome()));
+                context, MaterialPageRoute(builder: (context) => navBar()));
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -366,7 +418,7 @@ class _MyAppState extends State<login> {
             );
           } else {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => home()));
+                context, MaterialPageRoute(builder: (context) => readerNavBar()));
             showDialog(
               context: context,
               builder: (context) => AlertDialog(

@@ -1,11 +1,18 @@
 // ignore_for_file: prefer_const_constructors, unused_element
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toto/BottomNavBar.dart';
+import 'package:toto/login.dart';
 import 'package:toto/main.dart';
 import 'package:toto/readerNavBar.dart';
+import 'TaleedApp.dart';
+import 'User.dart';
 import 'home.dart';
+import 'login.dart';
+
 //import 'package:email_validator/email_validator.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -14,8 +21,6 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  //FirebaseAuth fireauth = FirebaseAuth.instance;
-  //FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final _auth = FirebaseAuth.instance;
   final _Key = GlobalKey<FormState>();
@@ -422,7 +427,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          backgroundColor: Color(0xFFA03C1B),
+                          //backgroundColor: Color(0xFFA03C1B),
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -447,7 +452,12 @@ class _CreateAccountState extends State<CreateAccount> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                              onPressed: main,
+                              onPressed: (){
+                                Navigator.push(context, 
+                                MaterialPageRoute
+                                (builder: (context)=> login(),
+                                ));
+                              },
                               style: ButtonStyle(
                                 alignment: Alignment.center,
                               ),
@@ -558,6 +568,17 @@ class _CreateAccountState extends State<CreateAccount> {
         'username': usernameController.text,
         'email': emailController.text,
       });
+      ////////////////////////add to log in before going to home page
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        setState(() {
+          TaleedApp.loggedInUser = UserModel.fromMap(value.data());
+        });
+      });
+      ///////////////////////////////////////////////////////////
       if (age >= 60) {
         Navigator.pushAndRemoveUntil(
             (context),

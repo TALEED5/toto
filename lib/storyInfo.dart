@@ -50,7 +50,7 @@ class _StoryInfo extends State<StoryInfo> {
   final reigonController = TextEditingController();
 
   void saveAddressToLocal() {
-    //GetStorage box = GetStorage();
+    GetStorage box = GetStorage();
     saveLocationToFire("${coordinates?.latitude}-${coordinates?.longitude}");
   }
 
@@ -365,19 +365,14 @@ class _StoryInfo extends State<StoryInfo> {
                 SizedBox(height: height * 0.022),
                 FloatingActionButton.extended(
                   onPressed: () {
-                    if (address == "") {
-                      Fluttertoast.showToast(msg: "الرجاء اختيار العنوان");
+                    if (formKey.currentState!.validate() && address == "") {
+                      Fluttertoast.showToast(msg: "الرجاء تحديد الموقع ");
                     } else {
-                      saveAddressToLocal();
+                      if (agree == true) {
+                        publishStory();
+                        saveAddressToLocal();
+                      }
                     }
-                    // if (formKey.currentState!.validate()) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Processing Data')),
-                    //   );
-                    if (agree == true) {
-                      publishStory();
-                    }
-                    //}
                   },
                   heroTag: 'publish',
                   elevation: 4,
@@ -437,6 +432,7 @@ class _StoryInfo extends State<StoryInfo> {
       "Content": scontent,
       "Region": selectedValue,
       "ARlink": "", //always empty its entered manually from firebase
+      'latlng': "${coordinates?.latitude}-${coordinates?.longitude}",
     }).then((_) {
       print("collection created");
     }).catchError((_) {

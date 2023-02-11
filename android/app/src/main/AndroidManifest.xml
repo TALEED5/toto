@@ -1,11 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.toto">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="toto"
+        android:label="تليد"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-    android:value="AIzaSyDotPGFPCIaqWEskOTVEEzEtSsmuKhE_OU" />
+    android:value="AIzaSyD8DswP9CrjsGhiHlEA53xrMOO7NPuCDxQ" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

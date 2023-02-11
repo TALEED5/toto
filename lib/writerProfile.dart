@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/src/foundation/key.dart';
 //import 'package:flutter/src/widgets/framework.dart';
-
+import 'editProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:toto/myStories.dart';
 import 'welcomePage.dart';
@@ -16,6 +18,7 @@ class Wprofile extends StatefulWidget {
 
 class _Wprofile extends State<Wprofile> {
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -24,36 +27,6 @@ class _Wprofile extends State<Wprofile> {
           elevation: 0,
         ),
         backgroundColor: Color(0xffE7E2D6),
-        // bottomNavigationBar: Container(
-        //   color: Colors.white,
-        //   child: Padding(
-        //       padding:
-        //           const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        //       child: GNav(
-        //         backgroundColor: Colors.white,
-        //         tabBackgroundColor: Color(0xffe5e5e5),
-        //         padding: EdgeInsets.all(16),
-        //         gap: 8,
-        //         tabs: const [
-        //           GButton(
-        //             icon: Icons.home,
-        //             text: '   ',
-        //           ),
-        //           GButton(
-        //             icon: Icons.location_pin,
-        //             text: '   ',
-        //           ),
-        //           GButton(
-        //             icon: Icons.chat_outlined,
-        //             text: '   ',
-        //           ),
-        //           GButton(
-        //             icon: Icons.person,
-        //             text: '   ',
-        //           ),
-        //         ],
-        //       )),
-        // ),
         endDrawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
@@ -75,7 +48,10 @@ class _Wprofile extends State<Wprofile> {
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       fontFamily: 'Tajawal', fontWeight: FontWeight.bold)),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditProfile()));
+              },
             ),
             ListTile(
               trailing: Icon(Icons.logout),
@@ -133,11 +109,21 @@ class ProfileInfoItem {
   const ProfileInfoItem(this.title, this.value);
 }
 
-class _ProfileInfoRow extends StatelessWidget {
-  const _ProfileInfoRow({Key? key}) : super(key: key);
+class _ProfileInfoRow extends StatefulWidget {
+  @override
+  State<_ProfileInfoRow> createState() => _ProfileInfoRowState();
+}
+
+class _ProfileInfoRowState extends State<_ProfileInfoRow> {
+  late String myid = '';
+
+
+  int num = 0;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement initState
+
     return Container(
       height: 95,
       constraints: const BoxConstraints(maxWidth: 360),
@@ -169,12 +155,47 @@ class _ProfileInfoRow extends StatelessWidget {
                 },
               )),
           Text(
-            "10", //retrieve writers number of stories from db
+            getnum(), //retrieve writers number of stories from db
             style:
                 TextStyle(fontFamily: 'Tajawal', fontWeight: FontWeight.w600),
           )
         ],
       );
+
+  void _getdata() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      ///no need for setstate ارجعي شوفيه
+      // _numOfStories();
+      setState(() {
+        myid = userData.id;
+      });
+    });
+  }
+
+  String getid() {
+    _getdata();
+    //print(myid);
+    return myid;
+  }
+
+  void _numOfStories() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Stories')
+        .where("WriterId", isEqualTo: getid())
+        .get();
+    num = snapshot.size;
+    //numOfStories = qSnap.docs.length.toString();
+  }
+
+  String getnum() {
+    _numOfStories();
+    return num.toString();
+  }
 }
 
 Widget _singleItem2(BuildContext context) => Column(

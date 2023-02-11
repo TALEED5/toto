@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 //import 'package:reader_profile_dummyversion/welcomePage.dart';
 
 import '../my_flutter_app_icons.dart';
+import 'TaleedApp.dart';
+import 'editProfile.dart';
 import 'welcomePage.dart';
 
 class ReaderProfile extends StatefulWidget {
@@ -15,6 +17,9 @@ class ReaderProfile extends StatefulWidget {
 }
 
 class ReaderProfileState extends State<ReaderProfile> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String? myname = TaleedApp.loggedInUser.name;
+  String? myUsername = TaleedApp.loggedInUser.username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,37 +28,7 @@ class ReaderProfileState extends State<ReaderProfile> {
           backgroundColor: Color(0xffC17359),
           elevation: 0,
         ),
-        backgroundColor: Color(0xffE7E2D6),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-              child: GNav(
-                backgroundColor: Colors.white,
-                tabBackgroundColor: Color(0xffe5e5e5),
-                padding: EdgeInsets.all(16),
-                gap: 8,
-                tabs: const [
-                  GButton(
-                    icon: Icons.home,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.location_pin,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.chat_outlined,
-                    text: '   ',
-                  ),
-                  GButton(
-                    icon: Icons.person,
-                    text: '   ',
-                  ),
-                ],
-              )),
-        ),
+        backgroundColor: Colors.white,
         endDrawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
@@ -64,7 +39,7 @@ class ReaderProfileState extends State<ReaderProfile> {
                 decoration: BoxDecoration(
                   color: Color(0xffE7E2D6),
                   image: DecorationImage(
-                      image: AssetImage("Assets/stripes.png"),
+                      image: AssetImage("assets/images/stripes.png"),
                       fit: BoxFit.scaleDown),
                 ),
                 child: null //Text('الإعدادات'),
@@ -75,7 +50,10 @@ class ReaderProfileState extends State<ReaderProfile> {
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       fontFamily: 'Tajawal', fontWeight: FontWeight.bold)),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditProfile()));
+              },
             ),
             ListTile(
               trailing: Icon(Icons.logout),
@@ -94,7 +72,7 @@ class ReaderProfileState extends State<ReaderProfile> {
           constraints: BoxConstraints.expand(),
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("Assets/b1_bg.PNG"), fit: BoxFit.cover),
+                image: AssetImage("assets/images/bg8.png"), fit: BoxFit.cover),
           ),
           child: Column(children: [
             const Expanded(flex: 2, child: _TopPortion()),
@@ -106,39 +84,20 @@ class ReaderProfileState extends State<ReaderProfile> {
                   children: [
                     //----------here user name and name should  be retrieved from data base--------
                     Text(
-                      "اسم المستخدم",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      myname!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        fontFamily: 'Tajawal',
+                      ),
                     ),
-                    Text("@userName"),
-                    const SizedBox(height: 90),
-                    //-------------------------------------------------------------------------------
-
-                    //-----------------------logout and editAccount as buttons -------------------------
-                    //Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    //children: [
-                    //FloatingActionButton.extended(
-                    //onPressed: () {},
-                    //heroTag: 'editProfile',
-                    //elevation: 0,
-                    //backgroundColor: Color(0xffF8EED7),
-                    //label: const Text("تعديل الحساب",style: TextStyle(color: Colors.brown, fontFamily:'Tajawal')),
-                    //icon: const Icon(Icons.edit, color: Colors.brown),
-                    //),
-                    //const SizedBox(height: 10),
-                    //FloatingActionButton.extended(
-                    //onPressed: () {},
-                    //heroTag: 'logOut',
-                    //elevation: 0,
-                    //backgroundColor: Color(0xffF8EED7),
-                    //label: const Text("تسجيل الخروج",style: TextStyle(color: Colors.brown, fontFamily:'Tajawal')),
-                    //icon: const Icon(Icons.logout, color: Colors.brown),
-                    //),
-                    //],
-                    //),
+                    Text(
+                      myUsername! + '@',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Tajawal',
+                      ),
+                    ),
                     const SizedBox(height: 16),
                   ],
                 ),
@@ -195,23 +154,23 @@ class _TopPortion extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685')),
+                        image: AssetImage("assets/images/userAvatar.png"),
+                            ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   bottom: 0,
+                //   right: 0,
+                //   child: CircleAvatar(
+                //     radius: 20,
+                //     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                //     child: Container(
+                //       margin: const EdgeInsets.all(8.0),
+                //       decoration: const BoxDecoration(
+                //           color: Colors.green, shape: BoxShape.circle),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

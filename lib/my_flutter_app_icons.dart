@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/MyFlutterApp.ttf
 ///
-///
+/// 
 /// * RPG Awesome, Copyright (c) 2014, Daniela Howe
 ///         Author:    Daniela Howe & Ivan Montiel
 ///         License:   SIL (http://scripts.sil.org/OFL)
@@ -25,6 +25,5 @@ class MyFlutterApp {
   static const _kFontFam = 'MyFlutterApp';
   static const String? _kFontPkg = null;
 
-  static const IconData podium =
-      IconData(0xea70, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData podium = IconData(0xea70, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
