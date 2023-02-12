@@ -10,6 +10,7 @@ import 'package:toto/main.dart';
 import 'package:toto/readerNavBar.dart';
 import 'TaleedApp.dart';
 import 'User.dart';
+import 'assets.dart';
 import 'home.dart';
 import 'login.dart';
 
@@ -21,7 +22,6 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-
   final _auth = FirebaseAuth.instance;
   final _Key = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -107,6 +107,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       home: Scaffold(
         body:
@@ -128,13 +130,13 @@ class _CreateAccountState extends State<CreateAccount> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 90,
+                      height: height * .07,
                     ),
                     Text(
                       "تسجيل حساب جديد",
                       style: TextStyle(
                           fontSize: 33.0,
-                          color: Color.fromARGB(255, 29, 22, 13),
+                          color: Color.fromARGB(255, 67, 63, 54),
                           fontWeight: FontWeight.bold,
                           fontFamily: "ElMessiri"),
                     ),
@@ -427,7 +429,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          //backgroundColor: Color(0xFFA03C1B),
+                          backgroundColor: Assets.shared.RedColor,
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -452,11 +454,12 @@ class _CreateAccountState extends State<CreateAccount> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                              onPressed: (){
-                                Navigator.push(context, 
-                                MaterialPageRoute
-                                (builder: (context)=> login(),
-                                ));
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => login(),
+                                    ));
                               },
                               style: ButtonStyle(
                                 alignment: Alignment.center,

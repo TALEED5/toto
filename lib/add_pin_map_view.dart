@@ -46,50 +46,15 @@ class _AddPinMapViewState extends State<AddPinMapView> {
     setState(() {});
   }
 
-  // Future<void> setMarkers() async {
-  //   BitmapDescriptor sourceIcon = await BitmapDescriptor.fromAssetImage(
-  //       const ImageConfiguration(size: Size(30, 30)),
-  //       'assets/images/icons/placeholder-3.png');
-  //
-  //   for (var element in markersList) {
-  //     var vv = element.split("-");
-  //
-  //     print(vv[0]);
-  //     _addMarker(LatLng(double.parse(vv[0]), double.parse(vv[1])),
-  //         "${element}_origin", sourceIcon);
-  //   }
-  //
-  //   setState(() {});
-  // }
-
+  
   Future<void> getLocationData(LatLng position) async {
-    // GeoData data = await Geocoder2.getDataFromCoordinates(
-    //     latitude: position.latitude,
-    //     longitude: position.longitude,
-    //     googleMapApiKey:"AIzaSyC1xTzuJMYp8F4Vs9dxiJZg3iAJkaEwipM");
+   
     _position = position;
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
 
     _address = placemarks.first.name ?? "";
-    //Formated Address
-    //print(placemarks.first.administrativeArea);
-    //City Name
-    //print(placemarks.first.country);
-    //Country Name
-    //print(placemarks.first.isoCountryCode);
-    //Country Code
-    //print(placemarks.first.locality);
-    //Latitude
-    //print(placemarks.first.name);
-    //Longitude
-    //print(placemarks.first.postalCode);
-    //Postal Code
-    //print(placemarks.first.street);
-    //State
-    //print(placemarks.first.thoroughfare);
-    //Street Number
-    //print(placemarks.first.subThoroughfare);
+    
 
     _customInfoWindowController.addInfoWindow!(
       Column(

@@ -1,13 +1,15 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/src/foundation/key.dart';
-//import 'package:flutter/src/widgets/framework.dart';
+import 'package:toto/TaleedApp.dart';
+import 'package:toto/home.dart';
 import 'editProfile.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:toto/myStories.dart';
 import 'welcomePage.dart';
 import '../my_flutter_app_icons.dart';
+import 'package:toto/myStories.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import '';
 
 class Wprofile extends StatefulWidget {
   const Wprofile({Key? key}) : super(key: key);
@@ -17,7 +19,9 @@ class Wprofile extends StatefulWidget {
 }
 
 class _Wprofile extends State<Wprofile> {
-  @override
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String? myname = TaleedApp.loggedInUser.name;
+  String? myUsername = TaleedApp.loggedInUser.username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +30,7 @@ class _Wprofile extends State<Wprofile> {
           backgroundColor: Color(0xffC17359),
           elevation: 0,
         ),
-        backgroundColor: Color(0xffE7E2D6),
+        backgroundColor: Colors.white, //Color(0xffE7E2D6),
         endDrawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
@@ -37,7 +41,7 @@ class _Wprofile extends State<Wprofile> {
                 decoration: BoxDecoration(
                   color: Color(0xffE7E2D6),
                   image: DecorationImage(
-                      image: AssetImage("Assets/stripes.png"),
+                      image: AssetImage("assets/images/stripes.png"),
                       fit: BoxFit.scaleDown),
                 ),
                 child: null //Text('الإعدادات'),
@@ -70,7 +74,7 @@ class _Wprofile extends State<Wprofile> {
           constraints: BoxConstraints.expand(),
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("Assets/b1_bg.PNG"), fit: BoxFit.cover),
+                image: AssetImage("assets/images/bg8.png"), fit: BoxFit.cover),
           ),
           child: Column(children: [
             const Expanded(flex: 2, child: _TopPortion()),
@@ -81,19 +85,25 @@ class _Wprofile extends State<Wprofile> {
                 child: Column(
                   children: [
                     //----------here user name and name should  be retrieved from data base--------
+
                     Text(
-                      "اسم المستخدم",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      myname!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        fontFamily: 'Tajawal',
+                      ),
                     ),
-                    Text("@userName"),
-                    //const SizedBox(height: 90),
-                    //-------------------------------------------------------------------------------
+                    Text(
+                      myUsername! + '@',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Tajawal',
+                      ),
+                    ),
 
                     const SizedBox(height: 16),
-                    _ProfileInfoRow(),
+                    ProfileInfoRow(),
                   ],
                 ),
               ),
@@ -109,21 +119,18 @@ class ProfileInfoItem {
   const ProfileInfoItem(this.title, this.value);
 }
 
-class _ProfileInfoRow extends StatefulWidget {
+class ProfileInfoRow extends StatefulWidget {
   @override
-  State<_ProfileInfoRow> createState() => _ProfileInfoRowState();
+  State<ProfileInfoRow> createState() => ProfileInfoRowState();
 }
 
-class _ProfileInfoRowState extends State<_ProfileInfoRow> {
-  late String myid = '';
-
+class ProfileInfoRowState extends State<ProfileInfoRow> {
+  late String myid = TaleedApp.loggedInUser.userID.toString();
 
   int num = 0;
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement initState
-
     return Container(
       height: 95,
       constraints: const BoxConstraints(maxWidth: 360),
@@ -136,84 +143,123 @@ class _ProfileInfoRowState extends State<_ProfileInfoRow> {
 
   Widget _singleItem1(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        // ignore: prefer_const_literals_to_create_immutables
         children: [
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: Icon(
-                  Icons.auto_stories_rounded,
-                  color: Color(0xff8E5541),
-                  size: 40,
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => myStories(),
+                    ));
+              }, // here it navigates to the writers own story list
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0),
+                child: Container(
+                  //height: 100,
+                  width: 140,
+                  margin: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(15.0),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(55, 187, 187, 187),
+                        offset: Offset.zero,
+                        blurRadius: 20.0,
+                        spreadRadius: 10,
+                        blurStyle: BlurStyle.normal,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.auto_stories_rounded,
+                        color: Color(0xff3D553F),
+                        size: 60,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        getnum()
+                            .toString(), //retrieve writers number of stories from db
+                        style: TextStyle(
+                            fontFamily: 'Tajawal', fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => myStories(),
-                      ));
-                },
               )),
-          Text(
-            getnum(), //retrieve writers number of stories from db
-            style:
-                TextStyle(fontFamily: 'Tajawal', fontWeight: FontWeight.w600),
-          )
         ],
       );
-
-  void _getdata() async {
-    final user = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      ///no need for setstate ارجعي شوفيه
-      // _numOfStories();
-      setState(() {
-        myid = userData.id;
-      });
-    });
-  }
-
-  String getid() {
-    _getdata();
-    //print(myid);
-    return myid;
-  }
 
   void _numOfStories() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('Stories')
-        .where("WriterId", isEqualTo: getid())
+        .where("WriterId", isEqualTo: myid)
         .get();
-    num = snapshot.size;
+    setState(() {
+      num = snapshot.size;
+    });
     //numOfStories = qSnap.docs.length.toString();
   }
 
-  String getnum() {
+  int getnum() {
     _numOfStories();
-    return num.toString();
+    return num;
   }
-}
 
-Widget _singleItem2(BuildContext context) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              MyFlutterApp.podium,
-              color: Color(0xff8E5541),
-              size: 40,
-            )),
-        Text(
-          "نجم سهيل", //retrieve writers rank from db
-          style: TextStyle(fontFamily: 'Tajawal', fontWeight: FontWeight.w600),
-        )
-      ],
-    );
+  String getrank() {
+    int a = getnum();
+    if (a <= 5 && a >= 0)
+      return "نجم ثريا";
+    else if (a > 5 && a <= 10)
+      return "نجم سهيل";
+    else
+      return "المجموعة الشمسية";
+  }
+
+  Widget _singleItem2(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0),
+            child: Container(
+              width: 140,
+              margin: EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(55, 187, 187, 187),
+                    offset: Offset.zero,
+                    blurRadius: 20.0,
+                    spreadRadius: 10,
+                    blurStyle: BlurStyle.normal,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Color(0xffd7ab65),
+                    size: 60,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    getrank(), //retrieve writers rank from db
+                    style: TextStyle(
+                        fontFamily: 'Tajawal', fontWeight: FontWeight.w600),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+}
 
 class _TopPortion extends StatelessWidget {
   const _TopPortion({Key? key}) : super(key: key);
@@ -257,24 +303,11 @@ class _TopPortion extends StatelessWidget {
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                    color: Colors.black,
+                    //color: Colors.black,
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685')),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/userAvatar.png"),
                     ),
                   ),
                 ),

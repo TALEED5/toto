@@ -36,8 +36,32 @@ class StoryList extends StatelessWidget {
                           Container(
                             width: double.infinity,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                    right: 20,
+                                    left: 5,
+                                    top: 7,
+                                  ),
+                                  child: const Icon(
+                                    Icons.account_circle,
+                                    color: Color.fromRGBO(95, 120, 88, 1),
+                                    size: 30,
+                                  ),
+                                  // color: Color.fromRGBO(95, 120, 88, 1)
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(right: 7),
+                                  child: Text(
+                                    storylist.writername,
+                                    style: const TextStyle(
+                                      color: Color.fromRGBO(86, 63, 2, 1),
+                                      fontFamily: "ElMessiri",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
                                 IconButton(
                                   alignment: Alignment.centerLeft,
                                   onPressed: (() {
@@ -52,30 +76,6 @@ class StoryList extends StatelessWidget {
                                           : const Color.fromARGB(
                                               255, 184, 178, 110)),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.only(right: 7),
-                                  child: Text(
-                                    storylist.writername,
-                                    style: const TextStyle(
-                                      color: Color.fromRGBO(86, 63, 2, 1),
-                                      fontFamily: "ElMessiri",
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    right: 20,
-                                    left: 5,
-                                    top: 7,
-                                  ),
-                                  child: const Icon(
-                                    Icons.account_circle,
-                                    color: Color.fromRGBO(95, 120, 88, 1),
-                                    size: 30,
-                                  ),
-                                  // color: Color.fromRGBO(95, 120, 88, 1)
-                                )
                               ],
                             ),
                           ),
@@ -87,7 +87,7 @@ class StoryList extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 //--------------------------title--------------------
                                 Text(
@@ -111,23 +111,64 @@ class StoryList extends StatelessWidget {
                             ),
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
+                              IntrinsicHeight(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          color: Color.fromRGBO(154, 61, 33, 1),
+                                        ),
+                                        Text(
+                                          storylist.region,
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'tajawal'),
+                                        ),
+                                        const VerticalDivider(
+                                          color:
+                                              Color.fromRGBO(231, 226, 214, 1),
+                                        ),
+                                        const Icon(
+                                          Icons.calendar_month_outlined,
+                                          color: Color.fromRGBO(95, 120, 88, 1),
+                                        ),
+                                        Text(
+                                          DateFormat.y().format(storylist.date),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const VerticalDivider(
+                                          color:
+                                              Color.fromRGBO(231, 226, 214, 1),
+                                        ),
+                                        const Icon(
+                                          Icons.align_vertical_bottom_rounded,
+                                          color: Color.fromRGBO(154, 61, 33, 1),
+                                        ),
+                                        const VerticalDivider(
+                                          color:
+                                              Color.fromRGBO(231, 226, 214, 1),
+                                        ),
+                                        const Icon(
+                                          Icons.favorite_rounded,
+                                          color: Color.fromRGBO(154, 61, 33, 1),
+                                        ),
+                                        Text(storylist.likecount.toString(),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ]),
+                                ),
+                              ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ReadStory(storylist),
-                                          ));
-                                    },
-                                    icon: const Icon(Icons.arrow_back_rounded),
-                                    color: const Color.fromRGBO(154, 61, 33, 1),
-                                  ),
                                   TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -145,50 +186,22 @@ class StoryList extends StatelessWidget {
                                           fontFamily: "ElMessiri",
                                           color: Color.fromRGBO(154, 61, 33, 1),
                                         ),
-                                      ))
+                                      )),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReadStory(storylist),
+                                          ));
+                                    },
+                                    icon:
+                                        const Icon(Icons.arrow_forward_rounded),
+                                    color: const Color.fromRGBO(154, 61, 33, 1),
+                                  ),
                                 ],
                               ),
-                              IntrinsicHeight(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(storylist.likecount.toString(),
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      const Icon(
-                                        Icons.favorite_rounded,
-                                        color: Color.fromRGBO(154, 61, 33, 1),
-                                      ),
-                                      const VerticalDivider(
-                                        color: Color.fromRGBO(231, 226, 214, 1),
-                                      ),
-                                      const Icon(
-                                        Icons.align_vertical_bottom_rounded,
-                                        color: Color.fromRGBO(154, 61, 33, 1),
-                                      ),
-                                      const VerticalDivider(
-                                        color: Color.fromRGBO(231, 226, 214, 1),
-                                      ),
-                                      Text(
-                                        DateFormat.y().format(storylist.date),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const Icon(
-                                        Icons.calendar_month_outlined,
-                                        color: Color.fromRGBO(95, 120, 88, 1),
-                                      ),
-                                      const VerticalDivider(
-                                        color: Color.fromRGBO(231, 226, 214, 1),
-                                      ),
-                                      Text(storylist.region),
-                                      const Icon(
-                                        Icons.location_on_outlined,
-                                        color: Color.fromRGBO(154, 61, 33, 1),
-                                      ),
-                                    ]),
-                              )
                             ],
                           ),
                         ],

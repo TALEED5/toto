@@ -22,6 +22,5 @@ class Comment {
 
       
     );
-    //WriterName:snapshot["WriterName"]);
   }
 }

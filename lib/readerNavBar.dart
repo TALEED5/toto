@@ -45,13 +45,13 @@ class _readerNavBar extends State<readerNavBar> {
         padding: EdgeInsets.all(16),
         gap: 8,
         tabs: [
-          GButton(icon: Icons.home, text: '   ',
+          GButton(icon: Icons.home,
           ),
-           GButton(icon: Icons.location_pin,text: '   ',
+           GButton(icon: Icons.location_pin,
           ),
-           GButton(icon: Icons.chat_outlined, text:'   ',
+           GButton(icon: Icons.chat_outlined, 
           ),
-           GButton(icon: Icons.person,text: '   ',
+           GButton(icon: Icons.person,
           ),
         ],
       )

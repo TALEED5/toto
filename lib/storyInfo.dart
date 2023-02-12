@@ -3,6 +3,7 @@
 //import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/TaleedApp.dart';
 import 'package:toto/writerHome.dart';
 import './home.dart';
 import 'dart:ui' as ui;
@@ -32,9 +33,7 @@ class _StoryInfo extends State<StoryInfo> {
   String address = "";
   LatLng? coordinates;
   final _auth = FirebaseAuth.instance;
-  String myname = '';
-  String myusername = '';
-  String myid = '';
+
   String selectedValue = "الرياض";
 
   String scontent;
@@ -44,7 +43,6 @@ class _StoryInfo extends State<StoryInfo> {
   bool field2 = false;
   late DateTime _selectedDate;
 
-  //TextEditingController dateinput = TextEditingController();
   final titleController = TextEditingController();
   final discreptionController = TextEditingController();
   final reigonController = TextEditingController();
@@ -52,13 +50,6 @@ class _StoryInfo extends State<StoryInfo> {
   void saveAddressToLocal() {
     GetStorage box = GetStorage();
     saveLocationToFire("${coordinates?.latitude}-${coordinates?.longitude}");
-  }
-
-  @override
-  void initState() {
-    // implement initState
-    _getdata();
-    super.initState();
   }
 
   void _presentDatePicker() {
@@ -81,8 +72,10 @@ class _StoryInfo extends State<StoryInfo> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       backgroundColor: Color(0xffe5e5e5),
 
       //------------------------------app bar------------------------------------------------
@@ -265,23 +258,20 @@ class _StoryInfo extends State<StoryInfo> {
                       //cursorColor: Color(0xFF90B28D),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        suffixIcon: Icon(
+                        prefixIcon: Icon(
                           Icons.calendar_today,
                           color: Color(0xFF90B28D),
                         ),
                         hintText: "تاريخ وقوع القصة",
                         hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
-                        ), //label text of field
+                            color: Color.fromARGB(175, 48, 44, 39),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'tajawal'),
                       ),
                       readOnly:
                           true, //set it true, so that user will not able to edit text
                       onTap: _presentDatePicker,
-                      //   onChanged: (){Text(
-                      //   _selectedDate == null
-                      //       ? 'No Date Chosen!'
-                      //       : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
-                      // ),},
                     ),
                   ),
                 ),
@@ -289,8 +279,18 @@ class _StoryInfo extends State<StoryInfo> {
                 //-----------------------------تحديد القصة على الخريطة-------------------------
                 SizedBox(height: height * 0.04),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    SizedBox(
+                        width: width * .55,
+                        child: Text(
+                          "  الرجاء اختيار المنطقة التي حدثت فيها القصة:",
+                          style: TextStyle(
+                              color: Color.fromARGB(174, 0, 0, 0),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'tajawal'),
+                        )),
                     DropdownButton(
                         alignment: AlignmentDirectional.center,
                         value: selectedValue,
@@ -300,10 +300,9 @@ class _StoryInfo extends State<StoryInfo> {
                           });
                         },
                         items: dropdownItems),
-                    Text("    :الرجاء اختيار المنطقة التي حدثت فيها القصة")
                   ],
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Row(children: [
                   Text(
                     address != "" ? "($address)" : "",
                     style: const TextStyle(color: Colors.grey),
@@ -330,8 +329,8 @@ class _StoryInfo extends State<StoryInfo> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text("تحديد القصة على الخريطة"),
                         Icon(Icons.location_pin),
+                        const Text("تحديد القصة على الخريطة"),
                       ],
                     ),
                   ),
@@ -340,14 +339,7 @@ class _StoryInfo extends State<StoryInfo> {
                 //-----------------------------------------Terms and conditions checkbox--------------------
                 SizedBox(height: height * 0.03),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                        width: 290,
-                        child: Text(
-                          "أقر وأتعهد بأن جميع محتويات القصة صحيحة من أحداث وشخصيات وتواريخ وأتحمل المسؤولية الكاملة إذا ثبت ما يخالف ذلك",
-                          textAlign: TextAlign.right,
-                        )),
                     Checkbox(
                       value: agree,
                       activeColor: Color(0xffC17359),
@@ -357,6 +349,17 @@ class _StoryInfo extends State<StoryInfo> {
                         });
                       },
                     ),
+                    SizedBox(
+                        width: width * .65,
+                        child: Text(
+                          "أقر وأتعهد بأن جميع محتويات القصة صحيحة من أحداث وشخصيات وتواريخ وأتحمل المسؤولية الكاملة إذا ثبت ما يخالف ذلك",
+                          style: TextStyle(
+                              color: Color.fromARGB(174, 0, 0, 0),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'tajawal'),
+                          textAlign: TextAlign.right,
+                        )),
                   ],
                 ),
 
@@ -423,9 +426,9 @@ class _StoryInfo extends State<StoryInfo> {
       "Title": titleController.text,
       "Discreption": discreptionController.text,
       "Date": _selectedDate,
-      "WriterUsername": getusername(),
-      "WriterId": getid(),
-      "WriterName": getname(),
+      "WriterUsername": TaleedApp.loggedInUser.username,
+      "WriterId": TaleedApp.loggedInUser.userID,
+      "WriterName": TaleedApp.loggedInUser.name,
       "Like": <String, bool>{}, //??
       "LikeCount": 0,
       "CommentCount": 0,
@@ -444,36 +447,5 @@ class _StoryInfo extends State<StoryInfo> {
         MaterialPageRoute(
           builder: (context) => navBar(),
         ));
-  }
-
-  void _getdata() async {
-    final user = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      ///no need for setstate ارجعي شوفيه
-      setState(() {
-        myname = userData.data()!['name'];
-        myusername = userData.data()!['username'];
-        myid = userData.id;
-      });
-    });
-  }
-
-  String getname() {
-    _getdata();
-    return myname;
-  }
-
-  String getusername() {
-    _getdata();
-    return myusername;
-  }
-
-  String getid() {
-    _getdata();
-    return myid;
   }
 }

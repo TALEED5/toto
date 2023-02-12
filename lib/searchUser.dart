@@ -31,9 +31,7 @@ class _search extends State<search> {
   var usersList = [];
   //var searchedUser;
 
-  String name = "";
-  String username = "";
-  String uid = '';
+ 
 
   
 

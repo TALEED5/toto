@@ -29,6 +29,8 @@ class _forgetpassState extends State<forgetpass> {
   }
 
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -43,175 +45,115 @@ class _forgetpassState extends State<forgetpass> {
                 fit: BoxFit.cover),
           ),
           child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _Key2,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Text(
-                      "  نسيت كلمة المرور",
-                      style: TextStyle(
-                          fontSize: 32.0,
-                          color: Color.fromARGB(255, 67, 63, 54),
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "ElMessiri"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                    ),
-                    Space(70.0),
-
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                      child: Text(
-                        "البريد الإلكتروني",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontFamily: "ElMessiri",
-                          fontSize: 16.0,
-                          color: Assets.shared.Gcolor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextFormField(
-                      controller: emailController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validateEmail,
-                      textAlign: TextAlign.right,
-                      cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.mail,
-                          color: Assets.shared.iconColor,
-                        ),
-                        hintText: 'email@address.com',
-                        hintStyle: TextStyle(
-                          color: Assets.shared.hintColor,
-                        ),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-
-                    // Container(
-                    //   alignment: Alignment.centerRight,
-                    //   padding: EdgeInsets.fromLTRB(0, 0, 60, 0),
-                    //   child: Text(
-                    //     "البريد الالكتروني",
-                    //     textAlign: TextAlign.right,
-                    //     style: TextStyle(
-                    //       fontFamily: "ElMessiri",
-                    //       fontSize: 21.0,
-                    //       color: Color.fromARGB(255, 34, 75, 12),
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   height: 50.0,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     borderRadius: BorderRadius.circular(30),
-                    //   ),
-                    //   margin:
-                    //       EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                    //   child: TextField(
-                    //     textAlign: TextAlign.right,
-                    //     cursorColor: Color(0xFF90B28D),
-                    //     decoration: InputDecoration(
-                    //       border: InputBorder.none,
-                    //       suffixIcon: Icon(
-                    //         Icons.phone_android,
-                    //         color: Color(0xFF90B28D),
-                    //       ),
-                    //       hintText: "البريد الالكتروني",
-                    //       hintStyle: TextStyle(
-                    //         color: Color(0xFF909A99),
-                    //       ),
-                    //     ),
-                    //     keyboardType: TextInputType.phone,
-                    //   ),
-                    // ),
-                    // Space(250.0),
-                    // ElevatedButton(
-                    //   onPressed: forgetPass(),
-                    //   style: ElevatedButton.styleFrom(
-                    //       fixedSize: Size(280, 40),
-                    //       backgroundColor: Color(0xFFA03C1B),
-                    //       elevation: 0.0,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.all(
-                    //           Radius.circular(30),
-                    //         ),
-                    //       )),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
-                    ),
-                    Space(250.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        forgetPass(emailController.text.trim());
+            child: Form(
+              key: _Key2,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height * .02,
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward_rounded),
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
-                      style: ElevatedButton.styleFrom(
-                          fixedSize: Size(280, 40),
-                          //backgroundColor: Assets.shared.RedColor,
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
-                            ),
-                          )),
-                      child: Text(
-                        "استمرار ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "ElMessiri",
-                            fontSize: 20.0,
-                            color: Colors.white),
-                        textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * .07,
+                  ),
+                  Text(
+                    "  نسيت كلمة المرور",
+                    style: TextStyle(
+                        fontSize: 32.0,
+                        color: Color.fromARGB(255, 67, 63, 54),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "ElMessiri"),
+                  ),
+
+                  SizedBox(
+                    height: height * .08,
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                    child: Text(
+                      "البريد الإلكتروني",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: "ElMessiri",
+                        fontSize: 16.0,
+                        color: Assets.shared.Gcolor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    //   ),
-                  ],
-                ),
+                  ),
+                  TextFormField(
+                    controller: emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: validateEmail,
+                    textAlign: TextAlign.right,
+                    cursorColor: Color(0xFF90B28D),
+                    decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.9),
+                      counterText: "",
+                      filled: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(30)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(30)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(30)),
+                      suffixIcon: Icon(
+                        Icons.mail,
+                        color: Assets.shared.iconColor,
+                      ),
+                      hintText: 'email@address.com',
+                      hintStyle: TextStyle(
+                        color: Assets.shared.hintColor,
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+
+                  SizedBox(height: height * .45),
+                  ElevatedButton(
+                    onPressed: () async {
+                      forgetPass(emailController.text.trim());
+                    },
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(280, 40),
+                        backgroundColor: Assets.shared.RedColor,
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        )),
+                    child: Text(
+                      "استمرار ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "ElMessiri",
+                          fontSize: 20.0,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  //   ),
+                ],
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget Space(double px) {
-    return SizedBox(
-      height: px,
     );
   }
 
@@ -266,10 +208,6 @@ class _forgetpassState extends State<forgetpass> {
           print(e);
         }
       }
-
-      // else {
-      // print('hh');
-      // }
     }
   }
 }

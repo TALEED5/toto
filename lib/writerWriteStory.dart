@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toto/TaleedApp.dart';
 import 'BottomNavBar.dart';
 import 'storyInfo.dart';
 
@@ -14,9 +15,7 @@ class writeStory1 extends StatefulWidget {
 class _writeStory1 extends State<writeStory1> {
   final storyController = TextEditingController();
   bool btnActive = false;
-  String myname = '';
-  String myusername = '';
-  String myid = '';
+
   //late String sconinput;
 
   @override
@@ -24,18 +23,18 @@ class _writeStory1 extends State<writeStory1> {
     return Scaffold(
       backgroundColor: const Color(0xffE7E2D6),
       floatingActionButtonLocation: FloatingActionButtonLocation
-          .endDocked, /////howwwwww to minimize the button and put it on the right!!!
+          .miniEndDocked, /////howwwwww to minimize the button and put it on the right!!!
 
       //------------------app bar----------------------------------------------
       appBar: AppBar(
-        backgroundColor: const Color(0xff5F7858),
-        title: const Text(
-          "كتابة قصة",
-          style: TextStyle(fontFamily: 'tajawal', fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
+          backgroundColor: const Color(0xff5F7858),
+          title: const Text(
+            "كتابة قصة",
+            style:
+                TextStyle(fontFamily: 'tajawal', fontWeight: FontWeight.w600),
+          ),
+          centerTitle: true,
+          leading: IconButton(
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                     (context),
@@ -43,39 +42,34 @@ class _writeStory1 extends State<writeStory1> {
                     (route) => false);
               },
               icon: Icon(Icons.clear),
-              color: Colors.white)
-        ],
-      ),
+              color: Colors.white)),
 
       //---------------------navigation bar-----------------------------
-      bottomNavigationBar: Container(
-          color: const Color(0xffF6F6F6),
-          height: 56,
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-              ),
-              FloatingActionButton.extended(
-                onPressed: () {
-                  setState(() {
-                    if (btnActive == true) {
-                      infoPage();
-                    }
-                  });
-                },
-                heroTag: 'next',
-                elevation: 0,
-                backgroundColor: Color.fromARGB(255, 201, 167, 139),
-                label: Text("التالي",
-                    style: TextStyle(
-                        color: Colors.brown,
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.bold)),
-                icon: Icon(Icons.arrow_right, color: Colors.brown),
-              ),
-            ],
-          )),
+      floatingActionButton:
+          // color: const Color(0xffF6F6F6),
+          // height: 56,
+
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+          // ),
+          FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            if (btnActive == true) {
+              infoPage();
+            }
+          });
+        },
+        heroTag: 'next',
+        elevation: 0,
+        backgroundColor: Color.fromARGB(255, 201, 167, 139),
+        label: Text("التالي",
+            style: TextStyle(
+                color: Colors.brown,
+                fontFamily: 'Tajawal',
+                fontWeight: FontWeight.bold)),
+        icon: Icon(Icons.arrow_right, color: Colors.brown),
+      ),
 
       //-------------------------------body-----------------------------------------------
       body: Padding(
@@ -84,19 +78,27 @@ class _writeStory1 extends State<writeStory1> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              //mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                const CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: NetworkImage(
+                      'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685'),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Column(
                   children: [
                     Text(
-                      getname(),
+                      TaleedApp.loggedInUser.name.toString(),
                       style: TextStyle(
                           fontFamily: 'Tajawal',
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      getusername(),
+                      TaleedApp.loggedInUser.username.toString(),
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -104,14 +106,6 @@ class _writeStory1 extends State<writeStory1> {
                       textAlign: TextAlign.center,
                     ),
                   ],
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: NetworkImage(
-                      'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685'),
                 ),
               ],
             ),
@@ -165,32 +159,6 @@ class _writeStory1 extends State<writeStory1> {
         ),
       ),
     );
-  }
-
-  void _getdata() async {
-    final user = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      ///no need for setstate ارجعي شوفيه
-      setState(() {
-        myname = userData.data()!['name'];
-        myusername = userData.data()!['username'];
-        myid = userData.id;
-      });
-    });
-  }
-
-  String getname() {
-    _getdata();
-    return myname;
-  }
-
-  String getusername() {
-    _getdata();
-    return myusername;
   }
 
   void infoPage() {

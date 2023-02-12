@@ -18,7 +18,7 @@ class _home extends State<home> {
     return Scaffold(
         body: Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       decoration: const BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/images/housebg.png'), fit: BoxFit.cover),

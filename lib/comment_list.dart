@@ -20,11 +20,12 @@ class comment_list extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List colors = [
-      Colors.deepOrangeAccent[300],
       Colors.blueGrey[800],
-      Colors.teal[200],
-      Colors.deepPurple[200]
+      Colors.deepOrangeAccent[300],
+      Color.fromARGB(255, 86, 134, 129),
+      Color.fromARGB(255, 110, 81, 164)
     ];
+    int i = 0;
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -38,40 +39,46 @@ class comment_list extends StatelessWidget {
               return ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
+                    // if (i > 2)
+                    //   i = 0;
+                    // else
+                    //   i++;
                     Comment commentlist =
                         Comment.fromJson(snapshot.data.docs[index]);
 
                     return Card(
                       elevation: 0,
                       color: Color.fromRGBO(231, 226, 216, 1),
-                      //color: Color.fromARGB(255, 167, 132, 62),
-
                       margin: EdgeInsets.only(
                           left: 20, top: 5, right: 20, bottom: 5),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        // mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Icon(
+                            Icons.account_circle,
+                            color: colors[i], //from my list
+                            size: 44,
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Column(
-                              //crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Row(children: [
+                                  Text(commentlist.name,
+                                      style: TextStyle(
+                                          fontFamily: "ElMessiri",
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Text(commentlist.username,
                                         style: TextStyle(
                                           color: Colors.blueGrey[200],
                                           fontFamily: "ElMessiri",
-                                          fontSize: 14,
+                                          fontSize: 13,
                                         )),
                                   ),
-                                  Text(commentlist.name,
-                                      style: TextStyle(
-                                        fontFamily: "ElMessiri",
-                                        fontSize: 15,
-                                      )),
                                 ]),
                                 Text(
                                   commentlist.comnt,
@@ -83,11 +90,6 @@ class comment_list extends StatelessWidget {
                                 )
                               ],
                             ),
-                          ),
-                          Icon(
-                            Icons.account_circle,
-                            color: colors[1], //from my list
-                            size: 44,
                           ),
                         ],
                       ),

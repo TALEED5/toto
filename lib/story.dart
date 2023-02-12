@@ -50,16 +50,12 @@ class Story {
         commentCount: snapshot["CommentCount"]);
     //WriterName:snapshot["WriterName"]);
   }
-  updateLike(int a, Story st, String id,bool tf) {
+  updateLike(int a, Story st, String? id,bool tf) {
     FirebaseFirestore.instance
         .collection("Stories")
         .doc(st.id)
         .update({'Like.$id': tf, 'LikeCount': a});
   }
 
-  // void locateOrigin() {}
-  // void readStory() {}
-  // void viewLoc() {}
-
-  //ARrepresentation interactiveWAR(){}
+  
 }

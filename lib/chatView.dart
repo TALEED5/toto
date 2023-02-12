@@ -188,18 +188,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           onPressed: () {
                             // sendNotification
                             print("ddddd ${widget.fcmToken}");
-                            // if(widget.fcmToken != null && widget.fcmToken != "null"){
-                            //   String body = "" ;
-                            //   if(widget.isFromDonation){
-                            //     body = "لديك رسالة جديدة بخصوص التبرع" ;
-                            //   } else{
-                            //     body = "لديك رسالة جديدة" ;
-                            //   }
-                            //   YusrApp().sendNotification(
-                            //       body:  body,
-                            //       fcmToken: widget.fcmToken
-                            //   );
-                            // }
+                            
 
                             if (_controller!.text.isNotEmpty) {
                               if (widget.isFromDonation) {
@@ -214,7 +203,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                         widget.room.RecieverUsername,
                                     senderImg: widget.room.senderImg,
                                     senderName: widget.room.senderName,
-                                    // isClient: true,
                                     readed: false,
                                   ),
                                   roomId:
@@ -237,16 +225,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                   roomId:
                                       '${widget.room.senderId}-${widget.room.RecieverUserID}',
-                                  // roomId: '${widget.room.senderId}-${widget.room.donationId}',
                                 );
                               }
 
-                              // ChatProvider().sendNotifcation(
-                              //   id: widget.room.techId,
-                              //   isClient: true,
-                              //   token: authProvider.tokenEntity.accessToken,
-                              //   message: _controller.text,
-                              // );
+                             
                             } else {}
                             _controller!.clear();
                           })),

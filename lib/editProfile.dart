@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:toto/main.dart';
 import 'home.dart';
 import "Rprofile.dart";
-//import "package:fluttertoast/fluttertoast.dart";
-//import 'package:email_validator/email_validator.dart';
+
 
 class EditProfile extends StatefulWidget {
   @override
@@ -14,8 +13,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfile extends State<EditProfile> {
-  //FirebaseAuth fireauth = FirebaseAuth.instance;
-  //FirebaseFirestore firestore = FirebaseFirestore.instance;
+ 
 
   final _auth = FirebaseAuth.instance;
   final _Key = GlobalKey<FormState>();
@@ -197,56 +195,7 @@ class _EditProfile extends State<EditProfile> {
                       ),
                     ),
 
-                    //------------------------age---------------------
-                    // SizedBox(
-                    //   height: 10.0,
-                    // ),
-                    // Container(
-                    //   alignment: Alignment.centerRight,
-                    //   padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                    //   child: Text(
-                    //     "العمر",
-                    //     textAlign: TextAlign.right,
-                    //     style: TextStyle(
-                    //       fontFamily: "ElMessiri",
-                    //       fontSize: 16.0,
-                    //       color: Color.fromARGB(255, 34, 75, 12),
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // TextFormField(
-                    //   controller: ageController,
-                    //   validator: validateAge,
-                    //   textAlign: TextAlign.right,
-                    //   cursorColor: Color(0xFF90B28D),
-                    //   decoration: InputDecoration(
-                    //     fillColor: Colors.white,
-                    //     counterText: "",
-                    //     filled: true,
-                    //     contentPadding: const EdgeInsets.symmetric(
-                    //         vertical: 10.0, horizontal: 10.0),
-                    //     border: OutlineInputBorder(
-                    //         borderSide: BorderSide(color: Colors.white),
-                    //         borderRadius: BorderRadius.circular(30)),
-                    //     enabledBorder: OutlineInputBorder(
-                    //         borderSide: BorderSide(color: Colors.white),
-                    //         borderRadius: BorderRadius.circular(30)),
-                    //     focusedBorder: OutlineInputBorder(
-                    //         borderSide: BorderSide(color: Colors.white),
-                    //         borderRadius: BorderRadius.circular(30)),
-                    //     suffixIcon: Icon(
-                    //       Icons.calendar_month,
-                    //       color: Color(0xFF90B28D),
-                    //     ),
-                    //     hintText: "العمر",
-                    //     hintStyle: TextStyle(
-                    //       color: Color(0xFF909A99),
-                    //     ),
-                    //   ),
-                    //   keyboardType: TextInputType.number,
-                    // ),
+                  
 
                     //------------------------Username-----------------------------
                     SizedBox(
@@ -449,38 +398,7 @@ class _EditProfile extends State<EditProfile> {
                       ),
                     ),
 
-                    //////////////////////////////////////// have an account
-                    // Container(
-                    //   child: Center(
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       children: [
-                    //         TextButton(
-                    //           onPressed: main,
-                    //           style: ButtonStyle(
-                    //             alignment: Alignment.center,
-                    //           ),
-                    //           child: Text(
-                    //             "تسجيل دخول",
-                    //             style: TextStyle(
-                    //                 fontWeight: FontWeight.bold,
-                    //                 fontFamily: "ElMessiri",
-                    //                 fontSize: 16.0,
-                    //                 color: Color.fromARGB(255, 0, 0, 0)),
-                    //           ),
-                    //         ),
-                    //         Text(
-                    //           "لديك حساب؟",
-                    //           style: TextStyle(
-                    //               fontWeight: FontWeight.bold,
-                    //               fontFamily: "ElMessiri",
-                    //               fontSize: 16.0,
-                    //               color: Color.fromARGB(255, 0, 0, 0)),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
+                    
                   ],
                 ),
               ),
@@ -603,42 +521,6 @@ class _EditProfile extends State<EditProfile> {
 
    }
 
-//   postDetailsToFirestore() async {
-//     User? user = _auth.currentUser;
-//     double age = double.parse(ageController.text);
-
-//     try {
-//       await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
-//         'userID': user?.uid,
-//         'name': nameController.text,
-//         'age': ageController.text,
-//         'username': usernameController.text,
-//         'email': emailController.text,
-//       });
-//       if (age >= 60) {
-//         Navigator.pushAndRemoveUntil((context),
-//             MaterialPageRoute(builder: (context) => home()), (route) => false);
-//       } else if (age < 60) {
-//         Navigator.pushAndRemoveUntil((context),
-//             MaterialPageRoute(builder: (context) => home()), (route) => false);
-//       }
-//     } on FirebaseAuthException catch (error) {
-//       errorMessage = error.message!;
-//     }
-//   }
-
-
-
-
-
- /////////// تم التعديل بنجاح
-           ///
-//          Fluttertoast.showToast(
-// msg:"تم تعديل الحساب بنجاح",
-// );
-
-//        Navigator.push(context,
-//                     MaterialPageRoute(builder: (context) => ReaderProfile()));
 
 
 }

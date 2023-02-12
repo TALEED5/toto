@@ -40,6 +40,12 @@ class _MyAppState extends State<login> {
   bool test = false;
   bool writer = false;
   var errorMessage = '';
+  bool donthaveE = false;
+  bool donthaveP = false;
+
+  String? get formEmail => null;
+
+  String? get formPassword => null;
 
   String? validateEmail(String? formEmail) {
     if (formEmail == null || formEmail.isEmpty)
@@ -49,6 +55,9 @@ class _MyAppState extends State<login> {
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(formEmail))
       return 'صيغة البريد الالكتروني غير صحيحة';
+
+    // if (formEmail.isNotEmpty && donthaveE)
+    //   return "البريد الالكتروني خاطئ";
     else
       return null;
   }
@@ -61,6 +70,8 @@ class _MyAppState extends State<login> {
     else if (!numericRegex.hasMatch(formPassword) &&
         !LetterRegex.hasMatch(formPassword))
       return 'يجب أن تحتوي كلمة المرور على أرقام وحروف';
+    // else if (formPassword.isNotEmpty && donthaveP)
+    //   return "كلمة السر خاطئة";
     else
       return null;
   }
@@ -262,43 +273,11 @@ class _MyAppState extends State<login> {
                     //-------------------------------------the button--------------------
                     ElevatedButton(
                       onPressed: logIn,
-                      // child: StreamBuilder<User?>(
-                      //   stream: FirebaseAuth.instance.authStateChanges(),
-                      //   builder: (context, snapshot) {
-                      //     // try{
-                      //     print('inside bulder method');
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const Center(
-                      //           child: CircularProgressIndicator());
-                      //       // } else if (snapshot.hasError) {
-                      //       //   print("dont have acc");
-
-                      //       //   return Text('has error');
-                      //     }
-                      //     if (snapshot.hasData) {
-                      //       print('have account');
-                      //       return home();
-                      //     } else {
-                      //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //           content: const Text('Invalid email/password'),
-                      //           backgroundColor: Colors.red.shade400,
-                      //           margin: const EdgeInsets.fromLTRB(6, 0, 3, 0),
-                      //           behavior: SnackBarBehavior.floating,
-                      //           action: SnackBarAction(
-                      //             label: 'Dismiss',
-                      //             disabledTextColor: Colors.white,
-                      //             textColor: Colors.white,
-                      //             onPressed: () {},
-                      //           )));
-                      //       return Text('there is something error');
-                      //     }
-                      //     //checkIn(context, snapshot);
-                      //   },
-                      // ),
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          //backgroundColor: Assets.shared.RedColor,
+                          backgroundColor: Assets.shared.RedColor,
+                          // backgroundColor: Color(0xFFA03C1B),
+
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -390,16 +369,16 @@ class _MyAppState extends State<login> {
           print(userAge);
           double uAge = double.parse(userAge);
 
-////////////retrieves and saves the current users information 
+////////////retrieves and saves the current users information
           FirebaseFirestore.instance
-          .collection("users")
-          .doc(user.uid)
-          .get()
-          .then((value) {
-        setState(() {
-          TaleedApp.loggedInUser = UserModel.fromMap(value.data());
-        });
-      });
+              .collection("users")
+              .doc(user.uid)
+              .get()
+              .then((value) {
+            setState(() {
+              TaleedApp.loggedInUser = UserModel.fromMap(value.data());
+            });
+          });
 ///////////////////////////////////////////////////////
           if (uAge >= 60) {
             print("in writer");
@@ -417,8 +396,8 @@ class _MyAppState extends State<login> {
               ),
             );
           } else {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => readerNavBar()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => readerNavBar()));
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -437,58 +416,19 @@ class _MyAppState extends State<login> {
       } catch (e) {
         if (emailController.text.isNotEmpty &&
             passwordController.text.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: const Text('البريد الإكتروني/كلمة السر خاطئة'),
-              backgroundColor: Colors.red.shade400,
-              margin: const EdgeInsets.fromLTRB(6, 0, 3, 0),
-              behavior: SnackBarBehavior.floating,
-              action: SnackBarAction(
-                label: 'إخفاء',
-                disabledTextColor: Colors.white,
-                textColor: Colors.white,
-                onPressed: () {},
-              )));
-          print("after check");
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Text("البريد الإلكتروني أو كلمة السر خاطئة"),
+              actions: [
+                TextButton(
+                    child: Text("حسنًا"),
+                    onPressed: () => Navigator.pop(context)),
+              ],
+            ),
+          );
         }
       }
-    } else if (emailController.text.isEmpty &&
-        passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('رجاءًً.. أدخل بياناتك بشكلٍ صحيح'),
-          backgroundColor: Colors.red.shade400,
-          margin: const EdgeInsets.fromLTRB(6, 0, 3, 0),
-          behavior: SnackBarBehavior.floating,
-          action: SnackBarAction(
-            label: 'إخفاء',
-            disabledTextColor: Colors.white,
-            textColor: Colors.white,
-            onPressed: () {},
-          )));
-      print("after check2");
     }
-
-    // Future<void> checkIn(
-    //     BuildContext context, AsyncSnapshot<User?> snapshot) async {
-    //   print('inside bulder method');
-    //   try {
-    //     if (snapshot.hasData) {
-    //       print('have account');
-    //       //return home();
-    //       Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) => home(),
-    //           ));
-    //     }
-    //   } catch (e) {
-    //     print("dont have acc");
-    //     Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: (context) => login(),
-    //         ));
-    //     // return login();
-    //   }
-    // }
   }
 }

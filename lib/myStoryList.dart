@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:toto/TaleedApp.dart';
 import './readStory.dart';
 import './story.dart';
 
@@ -11,35 +12,7 @@ class myStoryList extends StatefulWidget {
 }
 
 class _myStoryListState extends State<myStoryList> {
-  @override
-  void initState() {
-    _getdata();
-  }
-  
-
-  String myid = '';
   int numOfStories = 0;
-
-  void _getdata() async {
-    final user = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      ///no need for setstate ارجعي شوفيه
-      setState(() {
-        myid = userData.id;
-      });
-    });
-  }
-
-  String getid() {
-    _getdata();
-    return myid;
-  }
-
-  
 
   //   var user =  FirebaseAuth.instance.currentUser!;
   @override
@@ -47,7 +20,7 @@ class _myStoryListState extends State<myStoryList> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Stories')
-            .where("WriterId", isEqualTo: getid())
+            .where("WriterId", isEqualTo: TaleedApp.loggedInUser.userID)
             .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
@@ -59,7 +32,7 @@ class _myStoryListState extends State<myStoryList> {
                   itemBuilder: (ctx, index) {
                     numOfStories++;
                     Story storylist = Story.fromJson(snapshot.data.docs[index]);
-                    if (storylist.writerid == getid())
+                    if (storylist.writerid == TaleedApp.loggedInUser.userID)
                       return Card(
                         margin: const EdgeInsets.only(
                             left: 20, top: 5, right: 20, bottom: 5),

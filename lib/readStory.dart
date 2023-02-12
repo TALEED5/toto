@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:toto/TaleedApp.dart';
+import 'package:url_launcher/url_launcher.dart';
 import './comments.dart';
 import './story.dart';
 
@@ -15,21 +17,16 @@ class ReadStory extends StatefulWidget {
 }
 
 class _ReadStoryState extends State<ReadStory> {
-  String myid = '';
+  String? myid = TaleedApp.loggedInUser.userID;
   bool like = false;
   int numlikes = 0;
   bool isliked = false;
-  @override
-  void initState() {
-    _getdata();
-    // TODO: implement initState
-    super.initState();
-  }
+  late String link = '';
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    //final double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -60,7 +57,7 @@ class _ReadStoryState extends State<ReadStory> {
                       child: IconButton(
                         //alignment: Alignment.topRight,
                         padding: EdgeInsets.only(right: 20),
-                        icon: Icon(Icons.arrow_forward),
+                        icon: Icon(Icons.arrow_back_rounded),
                         onPressed: (() {
                           Navigator.pop(context);
                         }),
@@ -68,71 +65,82 @@ class _ReadStoryState extends State<ReadStory> {
                       ),
                     ),
                     SizedBox(
-                      height: height * .05,
+                      height: height * .01,
                     ),
-                    Container(
+                    SizedBox(
+                        height: height * .15,
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    alignment: Alignment.centerLeft,
-                                    onPressed: null,
-                                    disabledColor: Colors
-                                        .grey[600], //عجبني لكن مدري كيف استخدمه
-                                    icon: Icon(Icons.api_rounded,
-                                        color:
-                                            Color.fromARGB(255, 184, 178, 110)),
-                                  ),
-                                  Text(
-                                    widget.st.title,
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(67, 60, 49, 1),
-                                        fontFamily: "ElMessiri",
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w800),
-                                  )
-                                ],
-                              )),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            // width: width * .3,
-                            margin: EdgeInsets.only(right: 20),
-                            child: IntrinsicHeight(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(
-                                    Icons.align_vertical_bottom_rounded,
-                                    color: Color.fromRGBO(154, 61, 33, 1),
-                                  ),
-                                  VerticalDivider(
-                                    color: Color.fromRGBO(231, 226, 214, 1),
-                                  ),
-                                  Text(
-                                    widget.st.writername,
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(67, 60, 49, 1),
-                                      fontFamily: "ElMessiri",
-                                      fontSize: 20,
+                              Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 30),
+                                  child: SingleChildScrollView(
+                                    ///teeeeeest
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          widget.st.title,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(67, 60, 49, 1),
+                                              fontFamily: "ElMessiri",
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        IconButton(
+                                          alignment: Alignment.centerLeft,
+                                          onPressed: (() {
+                                            if (storylist.ARlink != '')
+                                              link = storylist.ARlink;
+                                            _launchURL();
+                                          }),
+                                          disabledColor: Colors.grey[
+                                              600], //عجبني لكن مدري كيف استخدمه
+                                          icon: Icon(Icons.api_rounded,
+                                              color: storylist.ARlink == ''
+                                                  ? Colors.grey[600]
+                                                  : const Color.fromARGB(
+                                                      255, 184, 178, 110)),
+                                        ),
+                                      ],
                                     ),
+                                  )),
+                              SizedBox(
+                                //alignment: Alignment.centerRight,
+                                // width: width * .3,
+                                // margin: EdgeInsets.only(right: 20),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Icon(
+                                        Icons.account_circle,
+                                        color: Color.fromRGBO(95, 120, 88, 1),
+                                        size: 25,
+                                      ),
+                                      Text(
+                                        widget.st.writername,
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(67, 60, 49, 1),
+                                          fontFamily: "ElMessiri",
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      VerticalDivider(
+                                        color: Color.fromRGBO(231, 226, 214, 1),
+                                      ),
+                                      Icon(
+                                        Icons.align_vertical_bottom_rounded,
+                                        color: Color.fromRGBO(154, 61, 33, 1),
+                                      ),
+                                    ],
                                   ),
-                                  Icon(
-                                    Icons.account_circle,
-                                    color: Color.fromRGBO(95, 120, 88, 1),
-                                    size: 20,
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ])),
+                            ])),
                     SizedBox(
                       height: height * .03,
                     ),
@@ -161,7 +169,7 @@ class _ReadStoryState extends State<ReadStory> {
                                   style: TextStyle(
                                     color: Color.fromRGBO(67, 60, 49, 1),
                                     fontFamily: "ElMessiri",
-                                    fontSize: 15,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),
@@ -196,8 +204,8 @@ class _ReadStoryState extends State<ReadStory> {
                                       });
                                     },
                                     icon: Icon(
-                                      (storylist.likes[getid()] == false ||
-                                              storylist.likes[getid()] == null)
+                                      (storylist.likes[myid] == false ||
+                                              storylist.likes[myid] == null)
                                           ? Icons.favorite_outline_rounded
                                           : Icons.favorite_rounded,
                                       color: Color.fromRGBO(154, 61, 33, 1),
@@ -233,10 +241,23 @@ class _ReadStoryState extends State<ReadStory> {
                                           color: Color.fromRGBO(67, 60, 49, 1),
                                         ))
                                   ]),
-                                  Icon(
-                                    Icons.location_on_outlined,
-                                    color: Color.fromRGBO(154, 61, 33, 1),
-                                  )
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_outlined,
+                                        color: Color.fromRGBO(154, 61, 33, 1),
+                                      ),
+                                      Text(
+                                        storylist.region,
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(67, 60, 49, 1),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: 'tajawal'),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               )
                             ],
@@ -258,21 +279,19 @@ class _ReadStoryState extends State<ReadStory> {
   }
 
   handleLikeStory() {
-    if (widget.st.likes[getid()] != null) {
-      isliked = widget.st.likes[getid()] == true;
+    if (widget.st.likes[myid] != null) {
+      isliked = widget.st.likes[myid] == true;
 
       if (isliked) {
         setState(() {
-          widget.st
-              .updateLike(widget.st.likecount - 1, widget.st, getid(), false);
+          widget.st.updateLike(widget.st.likecount - 1, widget.st, myid, false);
           isliked = false;
           numlikes -= 1;
           //widget.st.likes[getid()] = false;
         });
       } else if (!isliked) {
         setState(() {
-          widget.st
-              .updateLike(widget.st.likecount + 1, widget.st, getid(), true);
+          widget.st.updateLike(widget.st.likecount + 1, widget.st, myid, true);
           isliked = true;
           numlikes += 1;
           //widget.st.likes[getid()] = false;
@@ -280,28 +299,20 @@ class _ReadStoryState extends State<ReadStory> {
       }
     } else
       setState(() {
-        widget.st.updateLike(widget.st.likecount + 1, widget.st, getid(), true);
+        widget.st.updateLike(widget.st.likecount + 1, widget.st,
+            TaleedApp.loggedInUser.userID, true);
         isliked = true;
         numlikes += 1;
         //widget.st.likes[getid()] = false;
       });
   }
 
-  void _getdata() async {
-    final user = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      ///no need for setstate ارجعي شوفيه
-
-      myid = userData.id;
-    });
-  }
-
-  String getid() {
-    _getdata();
-    return myid;
+  _launchURL() async {
+    final uri = Uri.parse(link);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $link';
+    }
   }
 }

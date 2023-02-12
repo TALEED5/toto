@@ -15,43 +15,51 @@ class navBar extends StatefulWidget {
 }
 
 class _navBar extends State<navBar> {
-  int currentIndex =0;
-  List <Widget> wpages = [writerHome(), MapView(),MainChatRooms(), Wprofile(),]; //[writerHome(), MapView(),search(), Wprofile(),];
+  int currentIndex = 0;
+  List<Widget> wpages = [
+    writerHome(),
+    MapView(),
+    MainChatRooms(),
+    Wprofile(),
+  ]; //[writerHome(), MapView(),search(), Wprofile(),];
 
-  void navigateTo(int index){
+  void navigateTo(int index) {
     setState(() {
-      currentIndex=index;
+      currentIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: wpages[currentIndex],
-
       bottomNavigationBar: Container(
-
         color: Colors.white,
         child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-         child: GNav(
-          selectedIndex: currentIndex,
-          onTabChange:navigateTo,
-        backgroundColor: Colors.white,
-        tabBackgroundColor: Color(0xffe5e5e5),
-        padding: EdgeInsets.all(16),
-        gap: 8,
-        tabs: [
-          GButton(icon: Icons.home, text: '   ',
-          ),
-           GButton(icon: Icons.location_pin,text: '   ',
-          ),
-           GButton(icon: Icons.chat_outlined, text:'   ',
-          ),
-           GButton(icon: Icons.person,text: '   ',
-          ),
-        ],
-      )
-      ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+            child: GNav(
+              selectedIndex: currentIndex,
+              onTabChange: navigateTo,
+              backgroundColor: Colors.white,
+              tabBackgroundColor: Color(0xffe5e5e5),
+              padding: EdgeInsets.all(16),
+              gap: 8,
+              tabs: [
+                GButton(
+                  icon: Icons.home,
+                ),
+                GButton(
+                  icon: Icons.location_pin,
+                ),
+                GButton(
+                  icon: Icons.chat_outlined,
+                ),
+                GButton(
+                  icon: Icons.person,
+                ),
+              ],
+            )),
       ),
     );
   }

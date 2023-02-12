@@ -12,11 +12,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:toto/utils/utils/assets.dart';
+import 'package:toto/welcomePage.dart';
 import './CreateAccount.dart';
 import 'TaleedApp.dart';
 import 'utils/utils/custom_loader.dart';
 import 'utils/utils/loader.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +45,8 @@ void main() async {
     fcmToken = token;
 
     if (FirebaseAuth.instance.currentUser != null) {
-      await TaleedApp().updateFCMUser(id: FirebaseAuth.instance.currentUser!.uid);
+      await TaleedApp()
+          .updateFCMUser(id: FirebaseAuth.instance.currentUser!.uid);
     }
     //
   });
@@ -100,7 +101,7 @@ class MyApp extends StatelessWidget {
                     cursorColor: Assets.shared.primaryColor,
                   ),
                 ),
-                home: CreateAccount(),
+                home: welcome(),
               ),
               GetBuilder<LoaderViewModel>(
                 init: LoaderViewModel(),
