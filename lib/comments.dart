@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toto/TaleedApp.dart';
 import './story.dart';
+import 'assets.dart';
 import 'comment_list.dart';
 
 class comments extends StatefulWidget {
@@ -56,14 +57,20 @@ class _commentsState extends State<comments> {
 
       //-----------------------------app bar-----------------------
       appBar: AppBar(
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
         centerTitle: true,
         title: Text(
           'التعليقات',
           style: TextStyle(
             fontSize: 22,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontFamily: "ElMessiri",
-            color: Color.fromRGBO(67, 60, 49, 1),
+            color: Color(0xFF433C31),
           ),
         ),
         backgroundColor: Colors.white,
@@ -76,7 +83,7 @@ class _commentsState extends State<comments> {
           color: Color.fromRGBO(67, 60, 49, 1),
         ),
       ),
-      backgroundColor: Color.fromRGBO(231, 226, 216, 1), //temporarly
+      backgroundColor: Assets.shared.background1,//Color(0xFFf1efe9), //, Color.fromRGBO(231, 226, 216, 1), //temporarly
       //----------------------------body-------------------------------
       body: Container(
         alignment: Alignment.centerRight,
@@ -92,13 +99,15 @@ class _commentsState extends State<comments> {
             ),
             IntrinsicHeight(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(width: 10),
                   Icon(
                     Icons.account_circle,
                     color: Color.fromRGBO(95, 120, 88, 1),
                     size: 36,
                   ),
+                  SizedBox(width: 10),
                   Text(widget.st.writername,
                       style: TextStyle(
                         color: Color.fromRGBO(67, 60, 49, 1),
@@ -106,19 +115,19 @@ class _commentsState extends State<comments> {
                         fontSize: 20,
                       ),
                       textAlign: TextAlign.end),
-                  VerticalDivider(
-                    color: Color.fromRGBO(67, 60, 49, 1),
-                  ),
-                  Icon(
-                    Icons.align_vertical_bottom_rounded,
-                    color: Color.fromRGBO(154, 61, 33, 1),
-                  ),
+                  // VerticalDivider(
+                  //   color: Color.fromRGBO(67, 60, 49, 1),
+                  // ),
+                  // Icon(
+                  //   Icons.align_vertical_bottom_rounded,
+                  //   color: Color.fromRGBO(154, 61, 33, 1),
+                  // ),
                 ],
               ),
             ),
             Container(
               height: height * .33,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Text(
                 widget.st.content,
                 maxLines: 12,
@@ -140,18 +149,30 @@ class _commentsState extends State<comments> {
               title: TextFormField(
                 controller: commentController,
                 textAlign: TextAlign.right,
-                decoration: InputDecoration(hintText: "إضافة تعليق..."),
+                decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    hintText: "إضافة تعليق...",
+                    filled: true,
+                    fillColor: Colors.white),
               ),
               trailing: ElevatedButton(
                 onPressed: () {
                   if (commentController.text != '') addComment();
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(193, 115, 89, 1),
-                    disabledBackgroundColor: Colors.grey),
+                    primary: Color.fromRGBO(193, 115, 89, 1),
+                    onSurface: Colors.grey),
                 child: Text("إضافة"),
               ),
             ),
+            SizedBox(height: 13,)
           ],
         ),
       ),

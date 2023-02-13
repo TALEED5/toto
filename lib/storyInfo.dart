@@ -19,6 +19,7 @@ import 'package:toto/firebase_operations.dart';
 import 'package:toto/add_pin_map_view.dart';
 
 import 'BottomNavBar.dart';
+import 'assets.dart';
 
 class StoryInfo extends StatefulWidget {
   final String scontent;
@@ -76,21 +77,31 @@ class _StoryInfo extends State<StoryInfo> {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-      backgroundColor: Color(0xffe5e5e5),
+      backgroundColor: Assets.shared.background1, //Color(0xffe5e5e5),
 
       //------------------------------app bar------------------------------------------------
       appBar: AppBar(
-        backgroundColor: Color(0xff5F7858),
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        //backgroundColor: Color(0xff5F7858),
         title: const Text(
           "معلومات القصة",
-          style: TextStyle(fontFamily: 'tajawal', fontWeight: FontWeight.w600),
+          style: TextStyle(
+              fontFamily: 'tajawal',
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF433F36)),
         ),
         centerTitle: true,
         leading: IconButton(
             onPressed: writePage,
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: Color(0xFF433F36),
             )),
         actions: [
           IconButton(
@@ -106,101 +117,45 @@ class _StoryInfo extends State<StoryInfo> {
       ),
 
       //---------------------navigation bar-----------------------------
-      bottomNavigationBar: Container(
-        color: const Color(0xffF6F6F6),
-        height: 53,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   color: const Color(0xffF6F6F6),
+      //   height: 53,
+      //   child: Padding(
+      //     padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+      //   ),
+      // ),
 
       //-------------------------------Body---------------------------------------
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: SingleChildScrollView(
-          //physics: const NeverScrollableScrollPhysics(),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: height * 0.05),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/loginbg.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: SingleChildScrollView(
+            //physics: const NeverScrollableScrollPhysics(),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
 
-                Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: TextFormField(
-                    maxLength: 30, //max number of characters for the text field
-                    textAlign: TextAlign.right,
-                    textDirection: ui.TextDirection.rtl,
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      isDense: true,
-                      filled: true,
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Color(0xffF6F6F6)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide:
-                              const BorderSide(color: Color(0xFF90B28D))),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 242, 104, 94))),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(color: Colors.red)),
-                      labelText: 'العنوان',
-                      labelStyle: TextStyle(
-                          color: Color.fromARGB(172, 29, 22, 13),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'tajawal'),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "الرجاء كتابة عنوان للقصة";
-                      }
-                      field1 = true;
-                      return null;
-                    },
-
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          field1 = false;
-                        }
-                      });
-                    },
-                  ),
-                ),
-
-                SizedBox(height: height * 0.04),
-                SingleChildScrollView(
-                  child: Directionality(
+                  Directionality(
                     textDirection: ui.TextDirection.rtl,
                     child: TextFormField(
-                      controller: discreptionController,
-                      maxLength: 120,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      minLines: 1,
+                      maxLength:
+                          20, //max number of characters for the text field
                       textAlign: TextAlign.right,
                       textDirection: ui.TextDirection.rtl,
+                      controller: titleController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         isDense: true,
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'نبذة عن القصة',
-                        labelStyle: TextStyle(
-                            color: Color.fromARGB(175, 48, 44, 39),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'tajawal'),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide:
@@ -217,176 +172,277 @@ class _StoryInfo extends State<StoryInfo> {
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30.0),
                             borderSide: const BorderSide(color: Colors.red)),
+                        labelText: 'العنوان',
+                        labelStyle: TextStyle(
+                            color: Color.fromARGB(172, 29, 22, 13),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'tajawal'),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          field2 = false;
-                          return "الرجاء كتابة نبذة عن القصة";
+                          return "الرجاء كتابة عنوان للقصة";
                         }
-                        field2 = true;
+                        field1 = true;
                         return null;
                       },
+
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
-                            field2 = false;
+                            field1 = false;
                           }
                         });
                       },
                     ),
                   ),
-                  //)
-                ),
 
-                //--------------------------------date----------------------
-
-                SizedBox(height: height * 0.04),
-                Container(
-                  height: 49.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  //EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: TextField(
-                      //editing controller of this TextField
-                      textAlign: TextAlign.right,
-                      //cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.calendar_today,
-                          color: Color(0xFF90B28D),
-                        ),
-                        hintText: "تاريخ وقوع القصة",
-                        hintStyle: TextStyle(
-                            color: Color.fromARGB(175, 48, 44, 39),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'tajawal'),
-                      ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: _presentDatePicker,
-                    ),
-                  ),
-                ),
-
-                //-----------------------------تحديد القصة على الخريطة-------------------------
-                SizedBox(height: height * 0.04),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                        width: width * .55,
-                        child: Text(
-                          "  الرجاء اختيار المنطقة التي حدثت فيها القصة:",
-                          style: TextStyle(
-                              color: Color.fromARGB(174, 0, 0, 0),
-                              fontSize: 13,
+                  SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: TextFormField(
+                        controller: discreptionController,
+                        maxLength: 120,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        minLines: 1,
+                        textAlign: TextAlign.right,
+                        textDirection: ui.TextDirection.rtl,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'نبذة عن القصة',
+                          labelStyle: TextStyle(
+                              color: Color.fromARGB(175, 48, 44, 39),
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                               fontFamily: 'tajawal'),
-                        )),
-                    DropdownButton(
-                        alignment: AlignmentDirectional.center,
-                        value: selectedValue,
-                        onChanged: (String? newValue) {
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide:
+                                const BorderSide(color: Color(0xffF6F6F6)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFF90B28D))),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 242, 104, 94))),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(color: Colors.red)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            field2 = false;
+                            return "الرجاء كتابة نبذة عن القصة";
+                          }
+                          field2 = true;
+                          return null;
+                        },
+                        onChanged: (value) {
                           setState(() {
-                            selectedValue = newValue!;
+                            if (value.isEmpty) {
+                              field2 = false;
+                            }
                           });
                         },
-                        items: dropdownItems),
-                  ],
-                ),
-                Row(children: [
-                  Text(
-                    address != "" ? "($address)" : "",
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => const AddPinMapView())?.then((value) {
-                        //كلاس اد بن ماب
-
-                        setState(() {
-                          address = value[0] ?? "";
-                          coordinates = value[1];
-                          //print(coordinates);
-                        });
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Color(0xff5F7858),
-                        side: BorderSide(
-                          color: Color(0xff5F7858),
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.location_pin),
-                        const Text("تحديد القصة على الخريطة"),
-                      ],
+                      ),
                     ),
+                    //)
                   ),
-                ]),
 
-                //-----------------------------------------Terms and conditions checkbox--------------------
-                SizedBox(height: height * 0.03),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: agree,
-                      activeColor: Color(0xffC17359),
-                      onChanged: (value) {
-                        setState(() {
-                          agree = value;
-                        });
-                      },
+                  //--------------------------------date----------------------
+
+                  SizedBox(height: 20),
+                  Container(
+                    height: 49.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    SizedBox(
-                        width: width * .65,
-                        child: Text(
-                          "أقر وأتعهد بأن جميع محتويات القصة صحيحة من أحداث وشخصيات وتواريخ وأتحمل المسؤولية الكاملة إذا ثبت ما يخالف ذلك",
-                          style: TextStyle(
-                              color: Color.fromARGB(174, 0, 0, 0),
-                              fontSize: 13,
+
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    //EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextField(
+                        //editing controller of this TextField
+                        textAlign: TextAlign.right,
+                        //cursorColor: Color(0xFF90B28D),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            color: Color(0xFF90B28D),
+                          ),
+                          hintText: "تاريخ وقوع القصة",
+                          hintStyle: TextStyle(
+                              color: Color.fromARGB(175, 48, 44, 39),
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                               fontFamily: 'tajawal'),
-                          textAlign: TextAlign.right,
-                        )),
-                  ],
-                ),
+                        ),
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
+                        onTap: _presentDatePicker,
+                      ),
+                    ),
+                  ),
+                  //SizedBox(height: 10,),
 
-                //---------------------------publish button-------------------------------
-
-                SizedBox(height: height * 0.022),
-                FloatingActionButton.extended(
-                  onPressed: () {
-                    if (formKey.currentState!.validate() && address == "") {
-                      Fluttertoast.showToast(msg: "الرجاء تحديد الموقع ");
-                    } else {
-                      if (agree == true) {
-                        publishStory();
-                        saveAddressToLocal();
-                      }
-                    }
-                  },
-                  heroTag: 'publish',
-                  elevation: 4,
-                  backgroundColor: Color(0xffC17359),
-                  label: Text("نشر",
-                      style: TextStyle(
+                  //-----------------------------تحديد القصة على الخريطة-------------------------
+                  SizedBox(height: height * 0.06),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
                           color: Colors.white,
-                          fontFamily: 'Tajawal',
-                          fontWeight: FontWeight.bold)),
-                )
-              ], //column children
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                          width: width * .55,
+                          child: Text(
+                            "  الرجاء اختيار منطقة وقوع القصة:",
+                            style: TextStyle(
+                                color: Color.fromARGB(174, 0, 0, 0),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'tajawal'),
+                          )),
+                      DropdownButton(
+                          alignment: AlignmentDirectional.center,
+                          value: selectedValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedValue = newValue!;
+                            });
+                          },
+                          items: dropdownItems),
+                          ],
+
+                        ),
+                      ),
+                      // SizedBox(
+                      //     width: width * .55,
+                      //     child: Text(
+                      //       "  الرجاء اختيار منطقة وقوع القصة:",
+                      //       style: TextStyle(
+                      //           color: Color.fromARGB(174, 0, 0, 0),
+                      //           fontSize: 13,
+                      //           fontWeight: FontWeight.w600,
+                      //           fontFamily: 'tajawal'),
+                      //     )),
+                      // DropdownButton(
+                      //     alignment: AlignmentDirectional.center,
+                      //     value: selectedValue,
+                      //     onChanged: (String? newValue) {
+                      //       setState(() {
+                      //         selectedValue = newValue!;
+                      //       });
+                      //     },
+                      //     items: dropdownItems),
+                    ],
+                   
+                  ),
+                  SizedBox(height: height * 0.04,),
+                  Row(children: [
+                    Text(
+                      address != "" ? "($address)" : "",
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => const AddPinMapView())?.then((value) {
+                          //كلاس اد بن ماب
+
+                          setState(() {
+                            address = value[0] ?? "";
+                            coordinates = value[1];
+                            //print(coordinates);
+                          });
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: Color(0xff5F7858),
+                          side: BorderSide(
+                            color: Color(0xff5F7858),
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30))),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.location_pin),
+                          const Text("تحديد القصة على الخريطة"),
+                        ],
+                      ),
+                    ),
+                  ]),
+
+                  //-----------------------------------------Terms and conditions checkbox--------------------
+                  SizedBox(height: height * 0.04),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: agree,
+                        activeColor: Color(0xffC17359),
+                        onChanged: (value) {
+                          setState(() {
+                            agree = value;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                          width: width * .65,
+                          child: Text(
+                            "أقر وأتعهد بأن جميع محتويات القصة صحيحة من أحداث وشخصيات وتواريخ وأتحمل المسؤولية الكاملة إذا ثبت ما يخالف ذلك",
+                            style: TextStyle(
+                                color: Color.fromARGB(174, 0, 0, 0),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'tajawal'),
+                            textAlign: TextAlign.right,
+                          )),
+                    ],
+                  ),
+
+                  //---------------------------publish button-------------------------------
+
+                  SizedBox(height: height * 0.04),
+                  FloatingActionButton.extended(
+                    onPressed: () {
+                      if (formKey.currentState!.validate() && address == "") {
+                        Fluttertoast.showToast(msg: "الرجاء تحديد الموقع ");
+                      } else {
+                        if (agree != true){
+                          Fluttertoast.showToast(msg: "الرجاء الموافقة على الإقرار");
+                        }
+                      }
+                      if(formKey.currentState!.validate() && address != "" && agree == true){
+                          publishStory();
+                          saveAddressToLocal();
+                      }
+                    },
+                    heroTag: 'publish',
+                    elevation: 4,
+                    backgroundColor: Color(0xffC17359),
+                    label: Text("نشر",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Tajawal',
+                            fontWeight: FontWeight.bold)),
+                  )
+                ], //column children
+              ),
             ),
           ),
         ),

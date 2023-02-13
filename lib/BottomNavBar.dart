@@ -39,6 +39,7 @@ class _navBar extends State<navBar> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
             child: GNav(
+              //curve: Curves.bounceIn,
               selectedIndex: currentIndex,
               onTabChange: navigateTo,
               backgroundColor: Colors.white,

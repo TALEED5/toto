@@ -64,6 +64,7 @@ class _Wprofile extends State<Wprofile> {
                   style: TextStyle(
                       fontFamily: 'Tajawal', fontWeight: FontWeight.bold)),
               onTap: () {
+                FirebaseAuth.instance.signOut();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const welcome()));
               },

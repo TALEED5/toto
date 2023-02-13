@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toto/main.dart';
+import 'assets.dart';
 import 'home.dart';
 import "Rprofile.dart";
-
+//import "package:fluttertoast/fluttertoast.dart";
+//import 'package:email_validator/email_validator.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -13,7 +15,8 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfile extends State<EditProfile> {
- 
+  //FirebaseAuth fireauth = FirebaseAuth.instance;
+  //FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final _auth = FirebaseAuth.instance;
   final _Key = GlobalKey<FormState>();
@@ -51,6 +54,15 @@ class _EditProfile extends State<EditProfile> {
     return await readUsers.docs.isEmpty ? false : true;
   }
 
+    Future<bool> registerEmail(String email) async {
+    var readUsers;
+    readUsers = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: '$email')
+        .get();
+    return await readUsers.docs.isEmpty ? false : true;
+  }
+
   String? validateUserName(String? formUserName) {
     if (formUserName == null || formUserName.isEmpty)
       return 'اسم المستخدم مطلوب';
@@ -84,7 +96,7 @@ class _EditProfile extends State<EditProfile> {
       return 'كلمة المرور مطلوبة';
     else if (formPassword.length < 8)
       return 'يجب ان تحتوي كلمة المرور على 8 خانات أو أكثر';
-    else if (!numericRegex.hasMatch(formPassword) &&
+    else if (!numericRegex.hasMatch(formPassword) ||
         !LetterRegex.hasMatch(formPassword))
       return 'يجب أن تحتوي كلمة المرور على أرقام وحروف';
     else
@@ -166,6 +178,7 @@ class _EditProfile extends State<EditProfile> {
 
                     TextFormField(
                       controller: nameController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: validateName,
                       textAlign: TextAlign.right,
                       cursorColor: Color(0xFF90B28D),
@@ -195,8 +208,7 @@ class _EditProfile extends State<EditProfile> {
                       ),
                     ),
 
-                  
-
+                   
                     //------------------------Username-----------------------------
                     SizedBox(
                       height: 10.0,
@@ -217,6 +229,7 @@ class _EditProfile extends State<EditProfile> {
                     ),
                     TextFormField(
                       controller: usernameController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: validateUserName,
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
@@ -317,6 +330,7 @@ class _EditProfile extends State<EditProfile> {
 
                     TextFormField(
                       controller: passwordController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: validatePassword,
                       textAlign: TextAlign.right,
                       obscureText: obscure_text,
@@ -378,9 +392,9 @@ class _EditProfile extends State<EditProfile> {
                         editAccount(emailController.text.trim(),
                             passwordController.text);
                       },
-                      style: ElevatedButton.styleFrom(
+                      style:  ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          //backgroundColor: Color(0xFFA03C1B),
+                          primary: Assets.shared.RedColor,
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -398,7 +412,38 @@ class _EditProfile extends State<EditProfile> {
                       ),
                     ),
 
-                    
+                    //////////////////////////////////////// have an account
+                    // Container(
+                    //   child: Center(
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         TextButton(
+                    //           onPressed: main,
+                    //           style: ButtonStyle(
+                    //             alignment: Alignment.center,
+                    //           ),
+                    //           child: Text(
+                    //             "تسجيل دخول",
+                    //             style: TextStyle(
+                    //                 fontWeight: FontWeight.bold,
+                    //                 fontFamily: "ElMessiri",
+                    //                 fontSize: 16.0,
+                    //                 color: Color.fromARGB(255, 0, 0, 0)),
+                    //           ),
+                    //         ),
+                    //         Text(
+                    //           "لديك حساب؟",
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.bold,
+                    //               fontFamily: "ElMessiri",
+                    //               fontSize: 16.0,
+                    //               color: Color.fromARGB(255, 0, 0, 0)),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -411,6 +456,7 @@ class _EditProfile extends State<EditProfile> {
 
   void editAccount(String email, String password) async {
     if (_Key.currentState!.validate()) {
+
       bool usernameoo = await registerUsername(usernameController.text);
       if (usernameoo) {
         showDialog(
@@ -431,13 +477,41 @@ class _EditProfile extends State<EditProfile> {
           },
         );
       } else {
+        bool emailo = await registerEmail(emailController.text);
+        if(emailo){
+
+          
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Expanded(
+              child: AlertDialog(
+                content: Text('البريد الالكتروني مستخدم مسبقًا'),
+                actions: [
+                  TextButton(
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                    child: const Text('حسنًا'),
+                  )
+                ],
+              ),
+            );
+          },
+        );
+
+        } else {
+
+
+
+        
         try {
-          await _auth;
+          // await _auth;
           User? user = _auth.currentUser;
-          user?.updatePassword(passwordController.text);
           user?.updateEmail(emailController.text);
+          user?.updatePassword(passwordController.text);
+          
               
-              try {
+            try {
       await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
         'name': nameController.text,
         'username': usernameController.text,
@@ -450,8 +524,8 @@ class _EditProfile extends State<EditProfile> {
          
    
     } on FirebaseAuthException catch (error) {
-      errorMessage = error.message!;
-    }
+       errorMessage = error.message!;
+     }
         } on FirebaseAuthException catch (error) {
           print(error);
           errorMessage = error.message!;
@@ -493,11 +567,11 @@ class _EditProfile extends State<EditProfile> {
       }
     }
   }
+  }
 
    void done(){
     
-               Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReaderProfile()));
+              //  Navigator.pop(context);
  
     showDialog(
           context: context,
@@ -521,6 +595,42 @@ class _EditProfile extends State<EditProfile> {
 
    }
 
+//   postDetailsToFirestore() async {
+//     User? user = _auth.currentUser;
+//     double age = double.parse(ageController.text);
+
+//     try {
+//       await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
+//         'userID': user?.uid,
+//         'name': nameController.text,
+//         'age': ageController.text,
+//         'username': usernameController.text,
+//         'email': emailController.text,
+//       });
+//       if (age >= 60) {
+//         Navigator.pushAndRemoveUntil((context),
+//             MaterialPageRoute(builder: (context) => home()), (route) => false);
+//       } else if (age < 60) {
+//         Navigator.pushAndRemoveUntil((context),
+//             MaterialPageRoute(builder: (context) => home()), (route) => false);
+//       }
+//     } on FirebaseAuthException catch (error) {
+//       errorMessage = error.message!;
+//     }
+//   }
+
+
+
+
+
+ /////////// تم التعديل بنجاح
+           ///
+//          Fluttertoast.showToast(
+// msg:"تم تعديل الحساب بنجاح",
+// );
+
+//        Navigator.push(context,
+//                     MaterialPageRoute(builder: (context) => ReaderProfile()));
 
 
 }

@@ -70,6 +70,9 @@ class _CreateAccountState extends State<CreateAccount> {
   String? validateAge(String? formAge) {
     if (formAge == null || formAge.isEmpty)
       return 'العمر مطلوب';
+    else if (CharRegex.hasMatch(formAge) ||
+        LetterRegex.hasMatch(formAge))
+      return 'يجب أن يحوي العمر على أرقام فقط';
     else
       return null;
   }
@@ -91,7 +94,7 @@ class _CreateAccountState extends State<CreateAccount> {
       return 'كلمة المرور مطلوبة';
     else if (formPassword.length < 8)
       return 'يجب ان تحتوي كلمة المرور على 8 خانات أو أكثر';
-    else if (!numericRegex.hasMatch(formPassword) &&
+    else if (!numericRegex.hasMatch(formPassword) ||
         !LetterRegex.hasMatch(formPassword))
       return 'يجب أن تحتوي كلمة المرور على أرقام وحروف';
     else
@@ -120,7 +123,7 @@ class _CreateAccountState extends State<CreateAccount> {
           //padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/housebg.png'),
+                image: AssetImage('assets/images/loginbg.png'),
                 fit: BoxFit.cover),
           ),
           child: Center(
@@ -164,36 +167,39 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     ),
 
-                    TextFormField(
-                      controller: nameController,
-                      validator: validateName,
-                      textAlign: TextAlign.right,
-                      cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.person,
-                          color: Color(0xFF90B28D),
-                        ),
-                        hintText: "الاسم",
-                        hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
+                    
+                      TextFormField(
+                        controller: nameController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validateName,
+                        textAlign: TextAlign.right,
+                        cursorColor: Color(0xFF90B28D),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.person,
+                            color: Color(0xFF90B28D),
+                          ),
+                          hintText: "الاسم",
+                          hintStyle: TextStyle(
+                            color: Color(0xFF909A99),
+                          ),
                         ),
                       ),
-                    ),
+                    
 
                     //------------------------age---------------------
                     SizedBox(
@@ -214,37 +220,39 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     ),
 
-                    TextFormField(
-                      controller: ageController,
-                      validator: validateAge,
-                      textAlign: TextAlign.right,
-                      cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.calendar_month,
-                          color: Color(0xFF90B28D),
+                      TextFormField(
+                        controller: ageController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validateAge,
+                        textAlign: TextAlign.right,
+                        cursorColor: Color(0xFF90B28D),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.calendar_month,
+                            color: Color(0xFF90B28D),
+                          ),
+                          hintText: "العمر",
+                          hintStyle: TextStyle(
+                            color: Color(0xFF909A99),
+                          ),
                         ),
-                        hintText: "العمر",
-                        hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
-                        ),
+                        keyboardType: TextInputType.number,
                       ),
-                      keyboardType: TextInputType.number,
-                    ),
+                    
 
                     //------------------------Username-----------------------------
                     SizedBox(
@@ -264,35 +272,38 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                       ),
                     ),
-                    TextFormField(
-                      controller: usernameController,
-                      validator: validateUserName,
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        counterText: "",
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.account_box,
-                          color: Color(0xFF90B28D),
-                        ),
-                        hintText: "اسم المستخدم",
-                        hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
+                    
+                      TextFormField(
+                        controller: usernameController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validateUserName,
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          counterText: "",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.account_box,
+                            color: Color(0xFF90B28D),
+                          ),
+                          hintText: "اسم المستخدم",
+                          hintStyle: TextStyle(
+                            color: Color(0xFF909A99),
+                          ),
                         ),
                       ),
-                    ),
+                    
 
                     //---------------------------Email----------------------------------
                     SizedBox(
@@ -312,38 +323,39 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                       ),
                     ),
-                    TextFormField(
-                      controller: emailController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validateEmail,
-                      textAlign: TextAlign.right,
-                      cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.mail,
-                          color: Color(0xFF90B28D),
+                      TextFormField(
+                        controller: emailController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validateEmail,
+                        textAlign: TextAlign.right,
+                        cursorColor: Color(0xFF90B28D),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.9),
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.mail,
+                            color: Color(0xFF90B28D),
+                          ),
+                          hintText: 'email@address.com',
+                          hintStyle: TextStyle(
+                            color: Color(0xFF909A99),
+                          ),
                         ),
-                        hintText: 'email@address.com',
-                        hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
-                        ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
+                    
 
                     //-------------------------------Password------------------------------
                     SizedBox(
@@ -364,56 +376,58 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     ),
 
-                    TextFormField(
-                      controller: passwordController,
-                      validator: validatePassword,
-                      textAlign: TextAlign.right,
-                      obscureText: obscure_text,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.lock,
-                          color: Color(0xFF90B28D),
-                        ),
-                        prefixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (obscure_text == true) {
-                                obscure_text = false;
-                                iconfirst = Icon(
-                                  Icons.visibility,
-                                  color: Color(0xFF90B28D),
-                                );
-                              } else {
-                                obscure_text = true;
-                                iconfirst = Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey.shade300,
-                                );
-                              }
-                            });
-                          },
-                          child: iconfirst,
-                        ),
-                        hintText: "كلمة المرور",
-                        hintStyle: TextStyle(
-                          color: Color(0xFF909A99),
+                      TextFormField(
+                        controller: passwordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validatePassword,
+                        textAlign: TextAlign.right,
+                        obscureText: obscure_text,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.9),
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.lock,
+                            color: Color(0xFF90B28D),
+                          ),
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (obscure_text == true) {
+                                  obscure_text = false;
+                                  iconfirst = Icon(
+                                    Icons.visibility,
+                                    color: Color(0xFF90B28D),
+                                  );
+                                } else {
+                                  obscure_text = true;
+                                  iconfirst = Icon(
+                                    Icons.visibility_off,
+                                    color: Colors.grey.shade300,
+                                  );
+                                }
+                              });
+                            },
+                            child: iconfirst,
+                          ),
+                          hintText: "كلمة المرور",
+                          hintStyle: TextStyle(
+                            color: Color(0xFF909A99),
+                          ),
                         ),
                       ),
-                    ),
+                    
 
                     SizedBox(
                       height: 20.0,
@@ -429,8 +443,8 @@ class _CreateAccountState extends State<CreateAccount> {
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          backgroundColor: Assets.shared.RedColor,
-                          elevation: 0.0,
+                          primary: Assets.shared.darkRedOrange,
+                          elevation: 3,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -470,7 +484,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "ElMessiri",
                                     fontSize: 16.0,
-                                    color: Color.fromARGB(255, 0, 0, 0)),
+                                    color: Assets.shared.GreenColor),
                               ),
                             ),
                             Text(

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //import 'package:reader_profile_dummyversion/welcomePage.dart';
@@ -62,6 +63,7 @@ class ReaderProfileState extends State<ReaderProfile> {
                   style: TextStyle(
                       fontFamily: 'Tajawal', fontWeight: FontWeight.bold)),
               onTap: () {
+                FirebaseAuth.instance.signOut();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const welcome()));
               },

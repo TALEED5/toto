@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toto/TaleedApp.dart';
 import 'BottomNavBar.dart';
+import 'assets.dart';
 import 'storyInfo.dart';
 
 class writeStory1 extends StatefulWidget {
@@ -21,55 +22,66 @@ class _writeStory1 extends State<writeStory1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffE7E2D6),
+      
+      backgroundColor: Assets.shared.background1, //Color(0xffE7E2D6),
       floatingActionButtonLocation: FloatingActionButtonLocation
           .miniEndDocked, /////howwwwww to minimize the button and put it on the right!!!
 
       //------------------app bar----------------------------------------------
       appBar: AppBar(
-          backgroundColor: const Color(0xff5F7858),
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+          ),
+          backgroundColor: Colors.white,
           title: const Text(
             "كتابة قصة",
-            style:
-                TextStyle(fontFamily: 'tajawal', fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontFamily: 'Tajawal',
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF433F36),
+            ),
           ),
           centerTitle: true,
           leading: IconButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    (context),
-                    MaterialPageRoute(builder: (context) => navBar()),
-                    (route) => false);
-              },
-              icon: Icon(Icons.clear),
-              color: Colors.white)),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  (context),
+                  MaterialPageRoute(builder: (context) => navBar()),
+                  (route) => false);
+            },
+            icon: Icon(Icons.clear),
+            color: Color(0xFF433F36),
+          )),
 
       //---------------------navigation bar-----------------------------
-      floatingActionButton:
-          // color: const Color(0xffF6F6F6),
-          // height: 56,
+      // floatingActionButton:
+      //     // color: const Color(0xffF6F6F6),
+      //     // height: 56,
 
-          // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-          // ),
-          FloatingActionButton.extended(
-        onPressed: () {
-          setState(() {
-            if (btnActive == true) {
-              infoPage();
-            }
-          });
-        },
-        heroTag: 'next',
-        elevation: 0,
-        backgroundColor: Color.fromARGB(255, 201, 167, 139),
-        label: Text("التالي",
-            style: TextStyle(
-                color: Colors.brown,
-                fontFamily: 'Tajawal',
-                fontWeight: FontWeight.bold)),
-        icon: Icon(Icons.arrow_right, color: Colors.brown),
-      ),
+      //     // Padding(
+      //     //   padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+      //     // ),
+      //     FloatingActionButton.extended(
+      //   onPressed: () {
+      //     setState(() {
+      //       if (btnActive == true) {
+      //         infoPage();
+      //       }
+      //     });
+      //   },
+      //   heroTag: 'next',
+      //   elevation: 0,
+      //   backgroundColor: Color.fromARGB(255, 201, 167, 139),
+      //   label: Text("التالي",
+      //       style: TextStyle(
+      //           color: Colors.brown,
+      //           fontFamily: 'Tajawal',
+      //           fontWeight: FontWeight.bold)),
+      //   icon: Icon(Icons.arrow_right, color: Colors.brown),
+      // ),
 
       //-------------------------------body-----------------------------------------------
       body: Padding(
@@ -80,11 +92,19 @@ class _writeStory1 extends State<writeStory1> {
             Row(
               //mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: NetworkImage(
-                      'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685'),
+                SizedBox(
+                  width: 6,
                 ),
+                Icon(
+                    Icons.account_circle,
+                    color: Color.fromRGBO(95, 120, 88, 1),
+                    size: 47,
+                  ),
+                // const CircleAvatar(
+                //   radius: 30.0,
+                //   backgroundImage: NetworkImage(
+                //       'https://cdn-icons-png.flaticon.com/512/727/727393.png?w=1380&t=st=1670965308~exp=1670965908~hmac=d9ce5f3b247a3430e05ea0a0d16a3ea094ea82681921eac9c585fa847df8c685'),
+                // ),
                 const SizedBox(
                   width: 10,
                 ),
@@ -98,7 +118,7 @@ class _writeStory1 extends State<writeStory1> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      TaleedApp.loggedInUser.username.toString(),
+                      TaleedApp.loggedInUser.username.toString() + "@",
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -110,16 +130,16 @@ class _writeStory1 extends State<writeStory1> {
               ],
             ),
             const SizedBox(
-              height: 15.0,
+              height: 10.0,
             ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Divider(
-                height: 4.0,
-                color: Color.fromARGB(255, 197, 197, 197),
-                thickness: 2.0,
-              ),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.all(10.0),
+            //   // child: Divider(
+            //   //   height: 4.0,
+            //   //   color: Color.fromARGB(255, 197, 197, 197),
+            //   //   thickness: 2.0,
+            //   // ),
+            // ),
             const SizedBox(
               height: 10,
             ),
@@ -153,6 +173,28 @@ class _writeStory1 extends State<writeStory1> {
                     });
                   },
                 ),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Container(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  setState(() {
+                    if (btnActive == true) {
+                      infoPage();
+                    }
+                  });
+                },
+                heroTag: 'next',
+                elevation: 0,
+                backgroundColor: Color.fromARGB(255, 201, 167, 139),
+                label: Text("التالي",
+                    style: TextStyle(
+                        color: Colors.brown,
+                        fontFamily: 'Tajawal',
+                        fontWeight: FontWeight.bold)),
+                icon: Icon(Icons.arrow_right, color: Colors.brown),
               ),
             ),
           ]),

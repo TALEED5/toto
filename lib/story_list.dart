@@ -27,7 +27,7 @@ class StoryList extends StatelessWidget {
                     return Card(
                       //color: Color.fromRGBO(241, 239, 233, 1),
                       margin: const EdgeInsets.only(
-                          left: 20, top: 5, right: 20, bottom: 5),
+                          left: 20, top: 6, right: 20, bottom: 6),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
@@ -64,13 +64,15 @@ class StoryList extends StatelessWidget {
                                 ),
                                 IconButton(
                                   alignment: Alignment.centerLeft,
-                                  onPressed: (() {
+                                 onPressed: (() {
                                     if (storylist.ARlink != '')
-                                      link = storylist.ARlink;
+                                    link = '';
+                                    link = storylist.ARlink;
                                     _launchURL();
                                   }),
-                                  disabledColor: Colors.grey[600],
-                                  icon: Icon(Icons.api_rounded,
+                                    disabledColor: Colors
+                                        .grey[600], //عجبني لكن مدري كيف استخدمه
+                                    icon: Icon(Icons.api_rounded,
                                       color: storylist.ARlink == ''
                                           ? Colors.grey[600]
                                           : const Color.fromARGB(
@@ -102,14 +104,15 @@ class StoryList extends StatelessWidget {
                                 Text(
                                   storylist.discreption,
                                   style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                     fontFamily: "ElMessiri",
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          SizedBox(height: 4,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -122,6 +125,7 @@ class StoryList extends StatelessWidget {
                                         const Icon(
                                           Icons.location_on_outlined,
                                           color: Color.fromRGBO(154, 61, 33, 1),
+                                          size: 19,
                                         ),
                                         Text(
                                           storylist.region,
@@ -137,20 +141,21 @@ class StoryList extends StatelessWidget {
                                         const Icon(
                                           Icons.calendar_month_outlined,
                                           color: Color.fromRGBO(95, 120, 88, 1),
+                                          size: 19,
                                         ),
                                         Text(
                                           DateFormat.y().format(storylist.date),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        const VerticalDivider(
-                                          color:
-                                              Color.fromRGBO(231, 226, 214, 1),
-                                        ),
-                                        const Icon(
-                                          Icons.align_vertical_bottom_rounded,
-                                          color: Color.fromRGBO(154, 61, 33, 1),
-                                        ),
+                                        // const VerticalDivider(
+                                        //   color:
+                                        //       Color.fromRGBO(231, 226, 214, 1),
+                                        // ),
+                                        // const Icon(
+                                        //   Icons.align_vertical_bottom_rounded,
+                                        //   color: Color.fromRGBO(154, 61, 33, 1),
+                                        // ),
                                         const VerticalDivider(
                                           color:
                                               Color.fromRGBO(231, 226, 214, 1),
@@ -158,6 +163,7 @@ class StoryList extends StatelessWidget {
                                         const Icon(
                                           Icons.favorite_rounded,
                                           color: Color.fromRGBO(154, 61, 33, 1),
+                                          size: 19,
                                         ),
                                         Text(storylist.likecount.toString(),
                                             style: const TextStyle(
@@ -218,11 +224,11 @@ class StoryList extends StatelessWidget {
         });
   }
 
-  _launchURL() async {
-    // url = link;
-    final uri = Uri.parse(link);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+ _launchURL() async {
+
+    // final uri = Uri.parse(link);
+    if (await canLaunch(link)) {
+      await launch(link);
     } else {
       throw 'Could not launch $link';
     }

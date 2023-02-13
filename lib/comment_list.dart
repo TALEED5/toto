@@ -47,32 +47,38 @@ class comment_list extends StatelessWidget {
                         Comment.fromJson(snapshot.data.docs[index]);
 
                     return Card(
-                      elevation: 0,
-                      color: Color.fromRGBO(231, 226, 216, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 0.4,
+                      color: Colors.white, //Color.fromRGBO(231, 226, 216, 1),
                       margin: EdgeInsets.only(
-                          left: 20, top: 5, right: 20, bottom: 5),
+                          left: 20, top: 3, right: 20, bottom: 3),
+                    
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(width: 4,),
                           Icon(
                             Icons.account_circle,
                             color: colors[i], //from my list
-                            size: 44,
+                            size: 35,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(children: [
                                   Text(commentlist.name,
                                       style: TextStyle(
                                           fontFamily: "ElMessiri",
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700)),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(commentlist.username,
+                                    child: Text(commentlist.username + "@",
                                         style: TextStyle(
                                           color: Colors.blueGrey[200],
                                           fontFamily: "ElMessiri",
@@ -83,11 +89,13 @@ class comment_list extends StatelessWidget {
                                 Text(
                                   commentlist.comnt,
                                   style: TextStyle(
-                                    color: Colors.blueGrey[200],
+                                    color: Color(
+                                        0xFF433C31), //Colors.blueGrey[500],
                                     fontFamily: "ElMessiri",
                                     fontSize: 16,
                                   ),
-                                )
+                                ),
+                                SizedBox(height: 4,)
                               ],
                             ),
                           ),

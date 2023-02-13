@@ -1,4 +1,48 @@
-import 'package:flutter/material.dart' show AppBar, AsyncSnapshot, BlurStyle, BorderRadius, BoxDecoration, BoxShadow, BuildContext, Center, CircularProgressIndicator, ClipRRect, Color, Colors, Column, Container, CrossAxisAlignment, EdgeInsets, Expanded, FontWeight, Icon, IconButton, IconThemeData, Icons, Image, InkWell, Key, ListView, MainAxisAlignment, MaterialPageRoute, MediaQuery, Navigator, Offset, Padding, Row, Scaffold, SingleChildScrollView, SizedBox, State, StatefulWidget, StreamBuilder, Text, TextAlign, TextStyle, Widget;
+import 'package:flutter/material.dart'
+    show
+        AppBar,
+        AsyncSnapshot,
+        BlurStyle,
+        BorderRadius,
+        BoxDecoration,
+        BoxShadow,
+        BuildContext,
+        Center,
+        CircularProgressIndicator,
+        ClipRRect,
+        Color,
+        Colors,
+        Column,
+        Container,
+        CrossAxisAlignment,
+        EdgeInsets,
+        Expanded,
+        FontWeight,
+        Icon,
+        IconButton,
+        IconThemeData,
+        Icons,
+        Image,
+        InkWell,
+        Key,
+        ListView,
+        MainAxisAlignment,
+        MaterialPageRoute,
+        MediaQuery,
+        Navigator,
+        Offset,
+        Padding,
+        Row,
+        Scaffold,
+        SingleChildScrollView,
+        SizedBox,
+        State,
+        StatefulWidget,
+        StreamBuilder,
+        Text,
+        TextAlign,
+        TextStyle,
+        Widget;
 import 'package:intl/intl.dart';
 import 'package:toto/searchUser.dart';
 import 'TaleedApp.dart';
@@ -23,45 +67,44 @@ class _MainChatRoomsState extends State<MainChatRooms> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-           IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Color.fromARGB(255, 67, 63, 54),//Color(0XFFd7ab65),
-                size: 30,
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => search()));
-              },
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Color.fromARGB(255, 67, 63, 54), //Color(0XFFd7ab65),
+              size: 30,
             ),
-          
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => search()));
+            },
+          ),
         ],
-          elevation: 0,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          // leading: IconButton(
-          //   icon: Icon(
-          //     Icons.arrow_back,
-          //     color: Color(0XFFd7ab65),
-          //   ),
-          //   onPressed: () => Navigator.of(context).pop(),
-          // ),
-          title: Text(
-            textAlign: TextAlign.center,
-            'المحادثات',
-            style: TextStyle(
-                color: Color.fromARGB(255, 67, 63, 54),//Color(0XFFd7ab65),
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Tajawal'),
-          ),
-          centerTitle: true,
-          ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.arrow_back,
+        //     color: Color(0XFFd7ab65),
+        //   ),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
+        title: Text(
+          textAlign: TextAlign.center,
+          'المحادثات',
+          style: TextStyle(
+              color: Color.fromARGB(255, 67, 63, 54), //Color(0XFFd7ab65),
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Tajawal'),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            
             Container(
+              color: Color.fromRGBO(239, 235, 229, 1),
               height: MediaQuery.of(context).size.height * 0.75,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -70,8 +113,7 @@ class _MainChatRoomsState extends State<MainChatRooms> {
                       stream: readRequests(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                            return getChatRoomItem(snapshot, false);
-                          
+                          return getChatRoomItem(snapshot, false);
                         } else if (snapshot.hasError) {
                           return Text(
                               "Some thing went wrong! ${snapshot.error}");
@@ -139,12 +181,10 @@ class _MainChatRoomsState extends State<MainChatRooms> {
 
           return InkWell(
             onTap: () async {
-              
-                await ChatProvider().markMessageAsReaded(
-                    roomId: '${chatRoom.senderId}-${chatRoom.RecieverUserID}',
-                    messageId: "${chatRoom.message?.messageId}",
-                    chatType: "NormalChat");
-              
+              await ChatProvider().markMessageAsReaded(
+                  roomId: '${chatRoom.senderId}-${chatRoom.RecieverUserID}',
+                  messageId: "${chatRoom.message?.messageId}",
+                  chatType: "NormalChat");
 
               String fcmToken = await TaleedApp().getFCMUser(id: nameId);
 
@@ -183,7 +223,7 @@ class _MainChatRoomsState extends State<MainChatRooms> {
                         child: Image.network(
                           userImg.isNotEmpty
                               ? userImg
-                              : 'https://cdn-icons-png.flaticon.com/512/7698/7698958.png',//"https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars.png",
+                              : 'https://cdn-icons-png.flaticon.com/512/7698/7698958.png', //"https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars.png",
                           width: 50,
                         ),
                       ),
@@ -278,9 +318,9 @@ class _MainChatRoomsState extends State<MainChatRooms> {
   }
 
   Stream<List<ChatRoomModel>> readRequests() {
-    
-      return ChatProvider().roomsStream(
-          chatType: 'NormalChat', id: TaleedApp.loggedInUser.userID!, isClient: true);
-    
+    return ChatProvider().roomsStream(
+        chatType: 'NormalChat',
+        id: TaleedApp.loggedInUser.userID!,
+        isClient: true);
   }
 }

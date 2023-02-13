@@ -11,7 +11,7 @@ class Assets {
 
   final Color GreenColor = const Color(0xff427859);
 
-  final Color Gcolor = Color.fromARGB(255, 61, 85, 63);
+  final Color Gcolor = Color(0xFF3D553F);
 
   final Color BeigeColor = Color.fromARGB(255, 219, 201, 155);
 
@@ -22,6 +22,12 @@ class Assets {
   final Color scaffoldBackgroundColor = Color.fromARGB(255, 255, 238, 228);
 
   final Color hintColor = Color(0xFF909A99);
+
+  final Color lightRedOrange = Color(0xFFB36248);
+
+  final Color darkRedOrange = Color(0xFFA03C1B);
+
+  final Color background1 = Color(0xFFF6F4F0);
 
   // Fonts
 

@@ -130,7 +130,7 @@ class _forgetpassState extends State<forgetpass> {
                     },
                     style: ElevatedButton.styleFrom(
                         fixedSize: Size(280, 40),
-                        backgroundColor: Assets.shared.RedColor,
+                        primary: Assets.shared.RedColor,
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(

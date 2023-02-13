@@ -31,7 +31,7 @@ class _MyAppState extends State<login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  var user = FirebaseAuth.instance.currentUser!;
+  final _auth = FirebaseAuth.instance;
   final numericRegex = RegExp(r'[0-9]');
   final CharRegex = RegExp(r'[!@#\$&*~]');
   final LetterRegex = RegExp(r'[a-z A-Z]');
@@ -46,6 +46,15 @@ class _MyAppState extends State<login> {
   String? get formEmail => null;
 
   String? get formPassword => null;
+
+  Future<bool> registerEmail(String email) async {
+    var readUsers;
+    readUsers = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: '$email')
+        .get();
+    return await readUsers.docs.isEmpty ? false : true;
+  }
 
   String? validateEmail(String? formEmail) {
     if (formEmail == null || formEmail.isEmpty)
@@ -67,7 +76,7 @@ class _MyAppState extends State<login> {
       return 'كلمة المرور مطلوبة';
     else if (formPassword.length < 8)
       return 'يجب ان تحتوي كلمة المرور على 8 خانات أو أكثر';
-    else if (!numericRegex.hasMatch(formPassword) &&
+    else if (!numericRegex.hasMatch(formPassword) ||
         !LetterRegex.hasMatch(formPassword))
       return 'يجب أن تحتوي كلمة المرور على أرقام وحروف';
     // else if (formPassword.isNotEmpty && donthaveP)
@@ -100,7 +109,7 @@ class _MyAppState extends State<login> {
           //padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/housebg.png'),
+                image: AssetImage('assets/images/loginbg.png'),
                 fit: BoxFit.cover),
           ),
           child: Center(
@@ -141,38 +150,39 @@ class _MyAppState extends State<login> {
                         ),
                       ),
                     ),
-                    TextFormField(
-                      controller: emailController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: validateEmail,
-                      textAlign: TextAlign.right,
-                      cursorColor: Color(0xFF90B28D),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.mail,
-                          color: Assets.shared.iconColor,
+                      TextFormField(
+                        controller: emailController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validateEmail,
+                        textAlign: TextAlign.right,
+                        cursorColor: Color(0xFF90B28D),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.9),
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.mail,
+                            color: Assets.shared.iconColor,
+                          ),
+                          hintText: 'email@address.com',
+                          hintStyle: TextStyle(
+                            color: Assets.shared.hintColor,
+                          ),
                         ),
-                        hintText: 'email@address.com',
-                        hintStyle: TextStyle(
-                          color: Assets.shared.hintColor,
-                        ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
+                    
 //---------------------------------password-------------------------------------
                     SizedBox(
                       height: 10.0,
@@ -192,56 +202,62 @@ class _MyAppState extends State<login> {
                       ),
                     ),
 
-                    TextFormField(
-                      controller: passwordController,
-                      validator: validatePassword,
-                      textAlign: TextAlign.right,
-                      obscureText: obscure_text,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.9),
-                        counterText: "",
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(30)),
-                        suffixIcon: Icon(
-                          Icons.lock,
-                          color: Assets.shared.iconColor,
-                        ),
-                        prefixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (obscure_text == true) {
-                                obscure_text = false;
-                                iconfirst = Icon(
-                                  Icons.visibility,
-                                  color: Color.fromARGB(255, 93, 125, 90),
-                                );
-                              } else {
-                                obscure_text = true;
-                                iconfirst = Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey.shade300,
-                                );
-                              }
-                            });
-                          },
-                          child: iconfirst,
-                        ),
-                        hintText: "كلمة المرور",
-                        hintStyle: TextStyle(
-                          color: Assets.shared.hintColor,
+                    // Material(
+                    //   elevation: 0.5,
+                    //   borderRadius: BorderRadius.circular(30),
+                      //child: 
+                      TextFormField(
+                        controller: passwordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: validatePassword,
+                        textAlign: TextAlign.right,
+                        obscureText: obscure_text,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.9),
+                          counterText: "",
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(30)),
+                          suffixIcon: Icon(
+                            Icons.lock,
+                            color: Assets.shared.iconColor,
+                          ),
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (obscure_text == true) {
+                                  obscure_text = false;
+                                  iconfirst = Icon(
+                                    Icons.visibility,
+                                    color: Color.fromARGB(255, 93, 125, 90),
+                                  );
+                                } else {
+                                  obscure_text = true;
+                                  iconfirst = Icon(
+                                    Icons.visibility_off,
+                                    color: Colors.grey.shade300,
+                                  );
+                                }
+                              });
+                            },
+                            child: iconfirst,
+                          ),
+                          hintText: "كلمة المرور",
+                          hintStyle: TextStyle(
+                            color: Assets.shared.hintColor,
+                          ),
                         ),
                       ),
-                    ),
+                    //),
 
                     Container(
                       alignment: Alignment.topLeft,
@@ -275,10 +291,10 @@ class _MyAppState extends State<login> {
                       onPressed: logIn,
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(280, 40),
-                          backgroundColor: Assets.shared.RedColor,
+                          primary: Assets.shared.lightRedOrange,
                           // backgroundColor: Color(0xFFA03C1B),
 
-                          elevation: 0.0,
+                          elevation: 2,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -315,10 +331,11 @@ class _MyAppState extends State<login> {
                             child: Text(
                               "تسجيل جديد",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "ElMessiri",
-                                  fontSize: 16.0,
-                                  color: Color.fromARGB(255, 0, 0, 0)),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "ElMessiri",
+                                fontSize: 16.0,
+                                color: Assets.shared.GreenColor,
+                              ),
                             ),
                           ),
                           Text(
@@ -358,10 +375,10 @@ class _MyAppState extends State<login> {
           password: passwordController.text.trim(),
         );
         //////////////////check age//////////////////
-
+        User? user = _auth.currentUser;
         FirebaseFirestore.instance
             .collection('users')
-            .doc(user.uid)
+            .doc(user?.uid)
             .snapshots()
             .listen((userData) {
           var userAge = userData.data()!['age'];
@@ -372,7 +389,7 @@ class _MyAppState extends State<login> {
 ////////////retrieves and saves the current users information
           FirebaseFirestore.instance
               .collection("users")
-              .doc(user.uid)
+              .doc(user?.uid)
               .get()
               .then((value) {
             setState(() {
@@ -390,8 +407,10 @@ class _MyAppState extends State<login> {
                 content: Text("!مرحبًا بك مجددًا"),
                 actions: [
                   TextButton(
-                      child: Text("حسنًا"),
-                      onPressed: () => Navigator.pop(context)),
+                    child: Text("حسنًا"),
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ],
               ),
             );
@@ -404,8 +423,10 @@ class _MyAppState extends State<login> {
                 content: Text("!مرحبًا بك مجددًا"),
                 actions: [
                   TextButton(
-                      child: Text("حسنًا"),
-                      onPressed: () => Navigator.pop(context)),
+                    child: Text("حسنًا"),
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ],
               ),
             );
@@ -416,17 +437,42 @@ class _MyAppState extends State<login> {
       } catch (e) {
         if (emailController.text.isNotEmpty &&
             passwordController.text.isNotEmpty) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Text("البريد الإلكتروني أو كلمة السر خاطئة"),
-              actions: [
-                TextButton(
+          bool emailo = await registerEmail(emailController.text);
+
+          if (!emailo) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Expanded(
+                  child: AlertDialog(
+                    content: Text(
+                        'البريد الالكتروني غير مسجل, فضلا قم بتسجيل حساب جديد '),
+                    actions: [
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.of(context, rootNavigator: true).pop(),
+                        child: const Text('حسنًا'),
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                content: Text("البريد الإلكتروني أو كلمة السر خاطئة"),
+                actions: [
+                  TextButton(
                     child: Text("حسنًا"),
-                    onPressed: () => Navigator.pop(context)),
-              ],
-            ),
-          );
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
+                ],
+              ),
+            );
+          }
         }
       }
     }
